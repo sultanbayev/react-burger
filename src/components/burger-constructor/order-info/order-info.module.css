@@ -1,0 +1,14 @@
+.total {
+    display: flex;
+    align-items: center;
+}
+
+.order_info {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit {
+    margin-left: 40px;
+}

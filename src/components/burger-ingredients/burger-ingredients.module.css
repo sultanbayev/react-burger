@@ -1,0 +1,10 @@
+.container {
+    width: 600px;
+    box-sizing: border-box;
+}
+
+.ingredients {
+    height: 750px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}

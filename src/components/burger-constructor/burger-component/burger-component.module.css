@@ -1,0 +1,10 @@
+.drag_icon {
+    margin-right: 8px;
+}
+
+.component {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}

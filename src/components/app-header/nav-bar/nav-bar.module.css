@@ -1,0 +1,22 @@
+ul.list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li.item {
+    display: inline-block;
+    margin: 0;
+    margin-right: 8px;
+    padding: 0;
+}
+
+li.item:last-child {
+    margin-right: 0;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

@@ -1,0 +1,5 @@
+.logo {
+    position: absolute;
+    left: calc(50% - 290px/2);
+    top: calc(50% - 50px/2)
+}

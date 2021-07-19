@@ -1,0 +1,31 @@
+.card {
+    display: flex;
+    width: 272px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.image {
+    width: 240px;
+    height: 120px;
+}
+
+.name {
+    height: 48px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.price {
+    display: flex;
+    margin: 4px 0;
+}
+
+.count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
+}

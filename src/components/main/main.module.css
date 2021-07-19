@@ -1,0 +1,6 @@
+.main {
+    width: 1240px;
+    margin: 0 auto 40px;
+    display: flex;
+    justify-content: space-between;
+}
