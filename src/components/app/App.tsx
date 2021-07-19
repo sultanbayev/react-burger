@@ -1,10 +1,13 @@
 import React from 'react';
-import styles from './app.module.css';
 import AppHeader from '../app-header/AppHeader';
+import Main from '../main/Main';
 
 function App() {
   return (
-    <AppHeader></AppHeader>
+    <React.Fragment>
+      <AppHeader />
+      <Main />
+    </React.Fragment>
   );
 }
 
