@@ -1,8 +1,8 @@
 import React from "react";
 import styles from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
-import ComponentList from './component-list/ComponentList';
-import OrderInfo from './order-info/OrderInfo';
+import ComponentList from './component-list/component-list';
+import OrderInfo from './order-info/order-info';
 
 function BurgerConstructor({ components }) {
     const staffingPrice = components.staffing.reduce((total, component) => total + component.price, 0);

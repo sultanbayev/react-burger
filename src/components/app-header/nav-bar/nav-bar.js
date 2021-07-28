@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from '../nav-link/NavLink';
+import NavLink from '../nav-link/nav-link';
 import { BurgerIcon, ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './nav-bar.module.css';
 

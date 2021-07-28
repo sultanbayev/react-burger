@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './ingredient-group.module.css';
 import PropTypes from 'prop-types';
-import IngredientCard from "../ingredient-card/IngredientCard";
+import IngredientCard from "../ingredient-card/ingredient-card";
 
 function IngredientGroup({ name, ingredients }) {
 

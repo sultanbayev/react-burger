@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './burger-ingredients.module.css';
-import TabBar from './tab-bar/TabBar';
-import IngredientGroup from './ingredient-group/IngredientGroup';
+import TabBar from './tab-bar/tab-bar';
+import IngredientGroup from './ingredient-group/ingredient-group';
 import data from '../../utils/data';
 
 function BurgerIngredients() {

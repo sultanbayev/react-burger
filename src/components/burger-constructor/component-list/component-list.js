@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import styles from './component-list.module.css';
-import BurgerComponent from '../burger-component/BurgerComponent';
+import BurgerComponent from '../burger-component/burger-component';
 
 function ComponentList({ components }) {
     return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './main.module.css';
-import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 
 function Main() {
     const state = {
