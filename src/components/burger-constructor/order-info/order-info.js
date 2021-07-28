@@ -23,4 +23,4 @@ OrderInfo.propTypes = {
     total: PropTypes.number.isRequired,
 }
 
-export default OrderInfo;
+export default React.memo(OrderInfo);

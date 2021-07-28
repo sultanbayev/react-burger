@@ -26,4 +26,4 @@ IngredientCard.propTypes = {
     count: PropTypes.number,
 }
 
-export default IngredientCard;
+export default React.memo(IngredientCard);

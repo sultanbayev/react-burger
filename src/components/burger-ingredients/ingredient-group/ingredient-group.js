@@ -2,16 +2,17 @@ import React from "react";
 import styles from './ingredient-group.module.css';
 import PropTypes from 'prop-types';
 import IngredientCard from "../ingredient-card/ingredient-card";
+import ingredientShape from "../../../utils/prop-types";
 
-function IngredientGroup({ name, ingredients }) {
+function IngredientGroup({ name, id, ingredients }) {
 
     return (
         <section >
-            <h2 className="text text_type_main-medium mb-6">{name}</h2>
+            <h2 id={id} className="text text_type_main-medium mb-6">{name}</h2>
             <ul className={styles.list}>
                 {
-                    ingredients.map(ingredient =>
-                        <li className={styles.item}>
+                    ingredients.map((ingredient, key) =>
+                        <li key={key} className={styles.item}>
                             <IngredientCard
                                 key={ingredient._id}
                                 name={ingredient.name}
@@ -27,9 +28,9 @@ function IngredientGroup({ name, ingredients }) {
     );
 }
 
-export default IngredientGroup;
+export default React.memo(IngredientGroup);
 
 IngredientGroup.propTypes = {
     name: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+    ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape).isRequired).isRequired
 }

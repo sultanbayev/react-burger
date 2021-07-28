@@ -3,10 +3,13 @@
     margin: 0;
     padding: 0;
 
-    margin-top: 100px;
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.outerList {
+    margin-top: 100px;
 }
 
 .bun {
@@ -17,7 +20,7 @@
     padding: 0 8px 0 16px;
 }
 
-.staffing_container {
+.ingredients_container {
     overflow-y: auto;
     box-sizing: border-box;
     height: 464px;

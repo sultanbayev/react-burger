@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from 'prop-types';
 import styles from './component-list.module.css';
 import BurgerComponent from '../burger-component/burger-component';
+import ingredientShape from '../../../utils/prop-types';
 
 function ComponentList({ components }) {
     return (
-        <ul className={styles.list}>
+        <ul className={[styles.list, styles.outerList].join(' ')}>
             <li className={styles.bun}>
                 <BurgerComponent
                     type="top"
@@ -15,10 +16,11 @@ function ComponentList({ components }) {
                     thumbnail={components.bun.image_mobile}                    
                 />
             </li>
-            <li className={styles.staffing_container}>
+            <li className={styles.ingredients_container}>
+                <ul className={styles.list}>
                 {
-                    components.staffing.map(component => 
-                        <li key={component._id} className={styles.staffing}>
+                    components.ingredients.map((component, key) => 
+                        <li key={key} className={styles.staffing}>
                             <BurgerComponent
                                 text={component.name}
                                 price={component.price}
@@ -27,6 +29,7 @@ function ComponentList({ components }) {
                         </li> 
                     )
                 }
+                </ul>
             </li>
             <li className={styles.bun}>
                 <BurgerComponent
@@ -42,10 +45,10 @@ function ComponentList({ components }) {
 }
 
 ComponentList.propTypes = {
-    components: PropTypes.arrayOf(PropTypes.shape({
-        bun: PropTypes.object.isRequired,
-        staffing: PropTypes.arrayOf(PropTypes.object).isRequired
-    })).isRequired
+    components: PropTypes.shape({
+        bun: PropTypes.shape(ingredientShape).isRequired,
+        ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape)).isRequired
+    }).isRequired
 }
 
-export default ComponentList;
+export default React.memo(ComponentList);

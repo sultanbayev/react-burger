@@ -29,4 +29,4 @@ BurgerComponent.propTypes = {
     thumbnail: PropTypes.string.isRequired
 }
 
-export default BurgerComponent;
+export default React.memo(BurgerComponent);

@@ -16,4 +16,4 @@ NavLink.propTypes = {
     isActive: PropTypes.bool.isRequired
 };
 
-export default NavLink;
+export default React.memo(NavLink);
