@@ -2,17 +2,18 @@ import React, { useMemo } from "react";
 import styles from './burger-ingredients.module.css';
 import TabBar from './tab-bar/tab-bar';
 import IngredientGroup from './ingredient-group/ingredient-group';
-import data from '../../utils/data';
+import PropTypes from 'prop-types';
+import ingredientShape from "../../utils/prop-types";
 
-function BurgerIngredients() {
+function BurgerIngredients({ ingredients }) {
 
-    const ingredients = useMemo(() => {
-        return data.map(ingredient => ({...ingredient, count: 1}));
-    }, [])
+    const ingredientsWithCount = useMemo(() => {
+        return ingredients.map(ingredient => ({...ingredient, count: 1}));
+    }, [ingredients])
 
-    const buns = useMemo(() => ingredients.filter((ingredient) => ingredient.type === 'bun'), [ingredients]);
-    const sauces = useMemo(() => ingredients.filter((ingredient) => ingredient.type === 'sauce'), [ingredients]);
-    const mains = useMemo(() => ingredients.filter((ingredient) => ingredient.type === 'main'), [ingredients]);
+    const buns = useMemo(() => ingredientsWithCount.filter((ingredient) => ingredient.type === 'bun'), [ingredientsWithCount]);
+    const sauces = useMemo(() => ingredientsWithCount.filter((ingredient) => ingredient.type === 'sauce'), [ingredientsWithCount]);
+    const mains = useMemo(() => ingredientsWithCount.filter((ingredient) => ingredient.type === 'main'), [ingredientsWithCount]);
 
     return (
         <section className={styles.container}>
@@ -25,6 +26,10 @@ function BurgerIngredients() {
             </section>
         </section>
     );
+}
+
+BurgerIngredients.propTypes = {
+    ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape).isRequired).isRequired
 }
 
 export default BurgerIngredients;
