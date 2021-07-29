@@ -22,4 +22,4 @@ function NavBar() {
     );
 }
 
-export default React.memo(NavBar);
+export default NavBar;

@@ -27,4 +27,4 @@ function BurgerIngredients() {
     );
 }
 
-export default React.memo(BurgerIngredients);
+export default BurgerIngredients;

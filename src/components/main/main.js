@@ -14,4 +14,4 @@ function Main() {
     );
 }
 
-export default React.memo(Main);
+export default Main;

@@ -20,4 +20,4 @@ function AppHeader() {
     
 }
 
-export default React.memo(AppHeader);
+export default AppHeader;
