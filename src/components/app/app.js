@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
@@ -6,11 +6,29 @@ import Modal from '../modal/modal';
 function App() {
   
   const [ingredients, setIngredients] = React.useState([])
+
+  const [modal, setModal] = React.useState({
+    visible: false,
+    content: null,
+  });
+
+  const onModalClose = useCallback(() => {
+    setModal({
+      ...modal,
+      visible: false,
+      content: null,
+    })
+  }, [modal])
+
+  const onModalOpen = useCallback((content) => {
+    setModal({
+      ...modal,
+      visible: true,
+      content,
+    })
+  }, [modal])
+
   const url = 'https://norma.nomoreparties.space/api/ingredients';
-  // const [modal, setModal] = React.useState({
-  //   visible: false,
-  //   content: null,
-  // });
 
   useEffect(() => {
     try {
@@ -27,8 +45,8 @@ function App() {
   return (
     <>
       <AppHeader />
-      <Main ingredients={ingredients} />
-      {/* <Modal ></Modal> */}
+      <Main ingredients={ingredients} onModalOpen={onModalOpen} />
+      {modal.visible && <Modal title={modal.title} onModalClose={onModalClose}>{modal.content}</Modal>}
     </>
   );
 }

@@ -5,7 +5,7 @@ import IngredientGroup from './ingredient-group/ingredient-group';
 import PropTypes from 'prop-types';
 import ingredientShape from "../../utils/prop-types";
 
-function BurgerIngredients({ ingredients }) {
+function BurgerIngredients({ ingredients, onModalOpen }) {
 
     const ingredientsWithCount = useMemo(() => {
         return ingredients.map(ingredient => ({...ingredient, count: 1}));
@@ -20,16 +20,17 @@ function BurgerIngredients({ ingredients }) {
             <h1 className="text text_type_main-large mb-5 mt-10">Соберите бургер</h1>
             <TabBar />
             <section className={styles.ingredients}>
-                <IngredientGroup id='buns' name="Булки" ingredients={buns} />
-                <IngredientGroup id='sauces' name="Соусы" ingredients={sauces} />
-                <IngredientGroup id='mains' name="Начинка" ingredients={mains} />
+                <IngredientGroup id='buns' name="Булки" ingredients={buns} onModalOpen={onModalOpen} />
+                <IngredientGroup id='sauces' name="Соусы" ingredients={sauces} onModalOpen={onModalOpen} />
+                <IngredientGroup id='mains' name="Начинка" ingredients={mains} onModalOpen={onModalOpen} />
             </section>
         </section>
     );
 }
 
 BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape).isRequired).isRequired
+    ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape).isRequired).isRequired,
+    onModalOpen: PropTypes.func.isRequired
 }
 
 export default BurgerIngredients;

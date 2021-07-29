@@ -10,12 +10,14 @@
 .image {
     width: 240px;
     height: 120px;
+    cursor: pointer;
 }
 
 .name {
     height: 48px;
     overflow: hidden;
     text-align: center;
+    cursor: pointer;
 }
 
 .price {
