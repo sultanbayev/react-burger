@@ -14,7 +14,6 @@ function IngredientGroup({ name, id, ingredients }) {
                     ingredients.map((ingredient, key) =>
                         <li key={key} className={styles.item}>
                             <IngredientCard
-                                key={ingredient._id}
                                 name={ingredient.name}
                                 image={ingredient.image}
                                 price={ingredient.price}
