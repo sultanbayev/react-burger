@@ -2,7 +2,8 @@ import React, { useCallback, useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
-
+import { URL } from '../../utils/constants';
+ 
 function App() {
   
   const [ingredients, setIngredients] = React.useState([])
@@ -28,12 +29,15 @@ function App() {
     })
   }, [modal])
 
-  const url = 'https://norma.nomoreparties.space/api/ingredients';
-
   useEffect(() => {
     try {
-      fetch(url)
-        .then(response => response.json())
+      fetch(URL)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Ошибка сети')
+          }
+          return response.json();
+        })
         .then(data => {
           if (data.success) setIngredients(data.data)
         })
