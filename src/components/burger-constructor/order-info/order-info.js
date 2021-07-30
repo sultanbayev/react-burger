@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from 'prop-types';
 import styles from './order-info.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import OrderDetails from '../../modal/order-details/order-details';
 
 function OrderInfo({ total, onModalOpen }) {
 
     const onClick = () => {
-        onModalOpen(<div></div>);
+        onModalOpen(<OrderDetails orderNumber={'034536'} />);
     }
 
     return (

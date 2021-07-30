@@ -46,7 +46,7 @@ function App() {
     <>
       <AppHeader />
       <Main ingredients={ingredients} onModalOpen={onModalOpen} />
-      {modal.visible && <Modal title={modal.title} onModalClose={onModalClose}>{modal.content}</Modal>}
+      {modal.visible && modal.content && <Modal onModalClose={onModalClose}>{modal.content}</Modal>}
     </>
   );
 }

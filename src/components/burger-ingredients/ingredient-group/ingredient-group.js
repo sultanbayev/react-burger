@@ -14,10 +14,7 @@ function IngredientGroup({ name, id, ingredients, onModalOpen }) {
                     ingredients.map((ingredient, key) =>
                         <li key={key} className={styles.item}>
                             <IngredientCard
-                                name={ingredient.name}
-                                image={ingredient.image}
-                                price={ingredient.price}
-                                count={ingredient.count}
+                                ingredient={ingredient}
                                 onModalOpen={onModalOpen}
                             />
                         </li>
@@ -28,11 +25,15 @@ function IngredientGroup({ name, id, ingredients, onModalOpen }) {
     );
 }
 
-export default React.memo(IngredientGroup);
-
 IngredientGroup.propTypes = {
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape).isRequired).isRequired,
+    ingredients: PropTypes.arrayOf(PropTypes.shape({
+        ...ingredientShape,
+        count: PropTypes.number.isRequired
+    }).isRequired).isRequired,
     onModalOpen: PropTypes.func.isRequired
 }
+
+export default React.memo(IngredientGroup);
+
