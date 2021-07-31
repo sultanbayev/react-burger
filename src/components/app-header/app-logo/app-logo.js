@@ -10,4 +10,4 @@ function AppLogo() {
     );
 }
 
-export default React.memo(AppLogo);
+export default AppLogo;

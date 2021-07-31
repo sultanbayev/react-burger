@@ -1,0 +1,35 @@
+.details {
+    width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.header {
+    height: 64px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    align-self: flex-start;
+    margin-right: 50px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info {
+    display: flex;
+    margin-bottom: 20px;
+    grid-gap: 20px;
+}
+
+.info_item {
+    width: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

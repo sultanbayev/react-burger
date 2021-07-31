@@ -2,28 +2,42 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ingredient-card.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import ingredientShape from '../../../utils/prop-types';
+import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
 
-function IngredientCard({ name, image, price, count }) {
+function IngredientCard({ ingredient, onModalOpen }) {
+
+    const onClick = () => {
+        onModalOpen(<IngredientDetails
+            name={ingredient.name}
+            image={ingredient.image_large}
+            calories={ingredient.calories}
+            proteins={ingredient.proteins}
+            fat={ingredient.fat}
+            carbs={ingredient.carbohydrates} />)
+    }
+
     return (
         <article className={styles.card}>
-            <img className={styles.image} src={image} alt="" />
+            <img className={styles.image} src={ingredient.image} alt="" onClick={onClick} />
             <div className={styles.price}>
-                <p className="text text_type_digits-default mr-2">{price}</p>
+                <p className="text text_type_digits-default mr-2">{ingredient.price}</p>
                 <CurrencyIcon type="primary" />
             </div>
             <div className={styles.name}>
-                <h3 className="text text_type_main-default">{name}</h3>
+                <h3 className="text text_type_main-default" onClick={onClick}>{ingredient.name}</h3>
             </div>
-            { count && <Counter count={count} size="default" />}
+            { ingredient.count && <Counter count={ingredient.count} size="default" />}
         </article>
     );
 }
 
 IngredientCard.propTypes = {
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    count: PropTypes.number,
+    ingredient: PropTypes.shape({
+        ...ingredientShape,
+        count: PropTypes.number.isRequired
+    }).isRequired,
+    onModalOpen: PropTypes.func.isRequired
 }
 
 export default React.memo(IngredientCard);

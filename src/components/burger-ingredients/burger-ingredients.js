@@ -2,29 +2,35 @@ import React, { useMemo } from "react";
 import styles from './burger-ingredients.module.css';
 import TabBar from './tab-bar/tab-bar';
 import IngredientGroup from './ingredient-group/ingredient-group';
-import data from '../../utils/data';
+import PropTypes from 'prop-types';
+import ingredientShape from "../../utils/prop-types";
 
-function BurgerIngredients() {
+function BurgerIngredients({ ingredients, onModalOpen }) {
 
-    const ingredients = useMemo(() => {
-        return data.map(ingredient => ({...ingredient, count: 1}));
-    }, [])
+    const ingredientsWithCount = useMemo(() => {
+        return ingredients.map(ingredient => ({...ingredient, count: 1}));
+    }, [ingredients])
 
-    const buns = useMemo(() => ingredients.filter((ingredient) => ingredient.type === 'bun'), [ingredients]);
-    const sauces = useMemo(() => ingredients.filter((ingredient) => ingredient.type === 'sauce'), [ingredients]);
-    const mains = useMemo(() => ingredients.filter((ingredient) => ingredient.type === 'main'), [ingredients]);
+    const buns = useMemo(() => ingredientsWithCount.filter((ingredient) => ingredient.type === 'bun'), [ingredientsWithCount]);
+    const sauces = useMemo(() => ingredientsWithCount.filter((ingredient) => ingredient.type === 'sauce'), [ingredientsWithCount]);
+    const mains = useMemo(() => ingredientsWithCount.filter((ingredient) => ingredient.type === 'main'), [ingredientsWithCount]);
 
     return (
         <section className={styles.container}>
             <h1 className="text text_type_main-large mb-5 mt-10">Соберите бургер</h1>
             <TabBar />
             <section className={styles.ingredients}>
-                <IngredientGroup id='buns' name="Булки" ingredients={buns} />
-                <IngredientGroup id='sauces' name="Соусы" ingredients={sauces} />
-                <IngredientGroup id='mains' name="Начинка" ingredients={mains} />
+                <IngredientGroup id='buns' name="Булки" ingredients={buns} onModalOpen={onModalOpen} />
+                <IngredientGroup id='sauces' name="Соусы" ingredients={sauces} onModalOpen={onModalOpen} />
+                <IngredientGroup id='mains' name="Начинка" ingredients={mains} onModalOpen={onModalOpen} />
             </section>
         </section>
     );
 }
 
-export default React.memo(BurgerIngredients);
+BurgerIngredients.propTypes = {
+    ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape).isRequired).isRequired,
+    onModalOpen: PropTypes.func.isRequired
+}
+
+export default BurgerIngredients;

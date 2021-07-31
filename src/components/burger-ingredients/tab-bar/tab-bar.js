@@ -20,4 +20,4 @@ function TabBar() {
     );
 }
 
-export default React.memo(TabBar);
+export default TabBar;
