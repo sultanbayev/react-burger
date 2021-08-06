@@ -1,48 +1,40 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
-import { URL } from '../../utils/constants';
+import { URL } from '../../constants/constants';
+import { CLOSE_MODAL, OPEN_MODAL } from '../../constants/actions';
+import reducer from '../../reducers/modal';
  
 function App() {
-  
   const [ingredients, setIngredients] = React.useState([])
-
-  const [modal, setModal] = React.useState({
+  const [modalState, modalDispatch] = useReducer(reducer, {
     visible: false,
     content: null,
   });
 
   const onModalClose = useCallback(() => {
-    setModal({
-      ...modal,
-      visible: false,
-      content: null,
-    })
-  }, [modal])
+    modalDispatch({ type: CLOSE_MODAL })
+  }, [])
 
   const onModalOpen = useCallback((content) => {
-    setModal({
-      ...modal,
-      visible: true,
-      content,
-    })
-  }, [modal])
+    modalDispatch({ type: OPEN_MODAL, payload: { content: content } })
+  }, [])
 
   useEffect(() => {
     try {
       fetch(URL)
         .then((response) => {
-          if (!response.ok) {
-            throw new Error('Ошибка сети')
+          if (response.ok) {
+            return response.json();
           }
-          return response.json();
+          return Promise.reject(response);
         })
         .then(data => {
           if (data.success) setIngredients(data.data)
         })
     } catch (error) {
-      console.log("error", error);
+      console.log("Что-то пошло не так.", error);
     }
   }, [])
 
@@ -50,7 +42,7 @@ function App() {
     <>
       <AppHeader />
       <Main ingredients={ingredients} onModalOpen={onModalOpen} />
-      {modal.visible && modal.content && <Modal onModalClose={onModalClose}>{modal.content}</Modal>}
+      {modalState.visible && modalState.content && <Modal onModalClose={onModalClose}>{modalState.content}</Modal>}
     </>
   );
 }
