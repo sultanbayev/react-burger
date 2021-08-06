@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import IngredientCard from "../ingredient-card/ingredient-card";
 import ingredientShape from "../../../utils/prop-types";
 
-function IngredientGroup({ name, id, ingredients, onModalOpen }) {
+function IngredientGroup({ name, id, ingredients }) {
 
     return (
         <section >
@@ -15,7 +15,6 @@ function IngredientGroup({ name, id, ingredients, onModalOpen }) {
                         <li key={key} className={styles.item}>
                             <IngredientCard
                                 ingredient={ingredient}
-                                onModalOpen={onModalOpen}
                             />
                         </li>
                     )
@@ -32,7 +31,6 @@ IngredientGroup.propTypes = {
         ...ingredientShape,
         count: PropTypes.number.isRequired
     }).isRequired).isRequired,
-    onModalOpen: PropTypes.func.isRequired
 }
 
 export default React.memo(IngredientGroup);

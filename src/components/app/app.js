@@ -5,6 +5,7 @@ import Modal from '../modal/modal';
 import { URL } from '../../constants/constants';
 import { CLOSE_MODAL, OPEN_MODAL } from '../../constants/actions';
 import reducer from '../../reducers/modal';
+import { ModalContext } from './context';
  
 function App() {
   const [ingredients, setIngredients] = React.useState([])
@@ -41,8 +42,10 @@ function App() {
   return (
     <>
       <AppHeader />
-      <Main ingredients={ingredients} onModalOpen={onModalOpen} />
-      {modalState.visible && modalState.content && <Modal onModalClose={onModalClose}>{modalState.content}</Modal>}
+      <ModalContext.Provider value={{onModalOpen, onModalClose}}>
+        <Main ingredients={ingredients} />
+        {modalState.visible && modalState.content && <Modal>{modalState.content}</Modal>}
+      </ModalContext.Provider>
     </>
   );
 }

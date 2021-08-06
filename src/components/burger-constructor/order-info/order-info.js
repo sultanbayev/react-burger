@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from 'prop-types';
 import styles from './order-info.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../../modal/order-details/order-details';
+import { ModalContext } from "../../app/context";
 
-function OrderInfo({ total, onModalOpen }) {
+function OrderInfo({ total }) {
+    const {onModalOpen} = useContext(ModalContext);
 
     const onClick = () => {
         onModalOpen(<OrderDetails orderNumber={'034536'} />);
@@ -27,7 +29,6 @@ function OrderInfo({ total, onModalOpen }) {
 
 OrderInfo.propTypes = {
     total: PropTypes.number.isRequired,
-    onModalOpen: PropTypes.func.isRequired
 }
 
 export default React.memo(OrderInfo);
