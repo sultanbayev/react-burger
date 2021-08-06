@@ -10,14 +10,17 @@ function IngredientGroup({ name, id, ingredients }) {
         <section >
             <h2 id={id} className="text text_type_main-medium mb-6">{name}</h2>
             <ul className={styles.list}>
-                {
-                    ingredients.map((ingredient, key) =>
-                        <li key={key} className={styles.item}>
-                            <IngredientCard
-                                ingredient={ingredient}
-                            />
-                        </li>
-                    )
+                {   
+                    ingredients.length === 0 ?
+                        ( <p className="text text_type_main-default">Ой, похоже ничего нет...</p> )
+                    :
+                        ( ingredients.map((ingredient, key) =>
+                            <li key={key} className={styles.item}>
+                                <IngredientCard
+                                    ingredient={ingredient}
+                                />
+                            </li>
+                        ) )
                 }
             </ul>
         </section>

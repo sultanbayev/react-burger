@@ -1,29 +1,38 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo, useContext, useEffect } from "react";
+import { IngredientsContext } from "../app/context";
 import styles from './burger-constructor.module.css';
-import PropTypes from 'prop-types';
 import ComponentList from './component-list/component-list';
 import OrderInfo from './order-info/order-info';
-import ingredientShape from '../../utils/prop-types';
-import components from '../../utils/components';
 
-function BurgerConstructor({ingredients}) {
+function BurgerConstructor() {
+    const ingredients = useContext(IngredientsContext);
+    const [components, setComponents] = useState({
+        bun: null,
+        staffings: []
+    });
 
-    const price = useMemo(() => {
-        const ingredientsPrice = components.ingredients.reduce((total, component) => total + component.price, 0);
-        const bunPrice = components.bun.price * 2;
-        return ingredientsPrice + bunPrice;
-    }, [])
+    useEffect(() => {
+        setComponents({
+            bun: (() => {
+                const buns = ingredients.filter(i => i.type === 'bun');
+                return buns[Math.floor(Math.random() * buns.length)]
+            })(),
+            staffings: ingredients.filter(i => i.type !== 'bun').filter(() => Math.floor(Math.random() * 2) === 0),
+        });
+    }, [ingredients]);
+
+    const totalPrice = useMemo(() => {
+        const bunPrice = components.bun ? components.bun.price * 2 : 0;
+        const staffingsTotalPrice = components.staffings.reduce((total, i) => total + i.price, 0);
+        return bunPrice + staffingsTotalPrice;
+    }, [components]);
 
     return (
         <section className={styles.burger_constructor}>
             <ComponentList components={components} />
-            <OrderInfo total={price} />
+            {components.staffings.length !== 0 && <OrderInfo total={totalPrice} />}
         </section>
     );
-}
-
-BurgerConstructor.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape).isRequired).isRequired,
 }
 
 export default React.memo(BurgerConstructor);

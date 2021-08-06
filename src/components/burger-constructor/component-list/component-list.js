@@ -8,18 +8,19 @@ function ComponentList({ components }) {
     return (
         <ul className={[styles.list, styles.outerList].join(' ')}>
             <li className={styles.bun}>
+                {components.bun &&
                 <BurgerComponent
                     type="top"
                     isLocked={true}
                     text={components.bun.name}
                     price={components.bun.price}
                     thumbnail={components.bun.image_mobile}                    
-                />
+                />}
             </li>
             <li className={styles.ingredients_container}>
                 <ul className={styles.list}>
                 {
-                    components.ingredients.map((component, key) => 
+                    components.staffings.map((component, key) => 
                         <li key={key} className={styles.staffing}>
                             <BurgerComponent
                                 text={component.name}
@@ -32,13 +33,14 @@ function ComponentList({ components }) {
                 </ul>
             </li>
             <li className={styles.bun}>
+                {components.bun &&
                 <BurgerComponent
                     type="bottom"
                     isLocked={true}
                     text={components.bun.name}
                     price={components.bun.price}
                     thumbnail={components.bun.image_mobile}                    
-                />
+                />}
             </li>
         </ul>
     );
@@ -47,7 +49,7 @@ function ComponentList({ components }) {
 ComponentList.propTypes = {
     components: PropTypes.shape({
         bun: PropTypes.shape(ingredientShape).isRequired,
-        ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape)).isRequired
+        staffings: PropTypes.arrayOf(PropTypes.shape(ingredientShape)).isRequired
     }).isRequired
 }
 

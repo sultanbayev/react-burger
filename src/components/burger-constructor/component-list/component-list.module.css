@@ -23,7 +23,7 @@
 .ingredients_container {
     overflow-y: auto;
     box-sizing: border-box;
-    height: 464px;
+    max-height: 464px;
     display: flex;
     flex-direction: column;
     align-items: center;
