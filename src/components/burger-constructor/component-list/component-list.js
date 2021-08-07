@@ -1,21 +1,21 @@
-import React from "react";
-import PropTypes from 'prop-types';
+import React, { useContext } from "react";
 import styles from './component-list.module.css';
 import BurgerComponent from '../burger-component/burger-component';
-import ingredientShape from '../../../utils/prop-types';
 import DummyComponent from '../dummy-component/dummy-component';
+import { BurgerConstructorContext } from "../burger-constructor";
 
-function ComponentList({ components }) {
+function ComponentList() {
+
+    const { componentsState } = useContext(BurgerConstructorContext)
+
     return (
         <ul className={[styles.list, styles.outerList].join(' ')}>
-            { components.bun ?
+            { componentsState.bun ?
                 <li className={styles.bun}>
                     <BurgerComponent
                         type="top"
                         isLocked={true}
-                        text={components.bun.name}
-                        price={components.bun.price}
-                        thumbnail={components.bun.image_mobile}                    
+                        component={componentsState.bun}
                     />
                 </li>
                 :
@@ -23,15 +23,13 @@ function ComponentList({ components }) {
                     <DummyComponent type={"top"}>Верхняя булка...</DummyComponent>
                 </li>
             }
-            { (components.staffings && components.staffings.length !== 0) ?
+            { (componentsState.staffings && componentsState.staffings.length !== 0) ?
                 <li className={styles.ingredients_container}>
                     <ul className={styles.list}>
-                        { components.staffings.map((component, key) => 
+                        { componentsState.staffings.map((component, key) => 
                             <li key={key} className={styles.staffing}>
                                 <BurgerComponent
-                                    text={component.name}
-                                    price={component.price}
-                                    thumbnail={component.image_mobile}                    
+                                    component={component}                    
                                 />
                             </li>
                         )}
@@ -42,14 +40,12 @@ function ComponentList({ components }) {
                     <DummyComponent>Основные ингредиенты и соусы...</DummyComponent>
                 </li>
             }  
-            { components.bun ?
+            { componentsState.bun ?
                 <li className={styles.bun}>
                     <BurgerComponent
                         type="bottom"
                         isLocked={true}
-                        text={components.bun.name}
-                        price={components.bun.price}
-                        thumbnail={components.bun.image_mobile}                    
+                        component={componentsState.bun}                  
                     />
                 </li>
                 :
@@ -59,13 +55,6 @@ function ComponentList({ components }) {
             }
         </ul>
     );
-}
-
-ComponentList.propTypes = {
-    components: PropTypes.shape({
-        bun: PropTypes.shape(ingredientShape),
-        staffings: PropTypes.arrayOf(PropTypes.shape(ingredientShape))
-    }).isRequired
 }
 
 export default React.memo(ComponentList);
