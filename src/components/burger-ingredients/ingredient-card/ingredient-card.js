@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ingredient-card.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientShape from '../../../utils/prop-types';
+import { ingredientShape } from '../../../utils/prop-types';
 import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
-import { ModalContext } from '../../app/context';
+import { ModalContext } from '../../app/app';
 
 function IngredientCard({ ingredient }) {
 

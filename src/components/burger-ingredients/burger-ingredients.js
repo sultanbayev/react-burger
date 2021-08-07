@@ -2,7 +2,7 @@ import React, { useContext, useMemo } from "react";
 import styles from './burger-ingredients.module.css';
 import TabBar from './tab-bar/tab-bar';
 import IngredientGroup from './ingredient-group/ingredient-group';
-import { IngredientsContext } from "../app/context";
+import { IngredientsContext } from "../app/app";
 
 function BurgerIngredients() {
 

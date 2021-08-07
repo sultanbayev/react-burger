@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer, createContext } from 'react';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
-import { URL } from '../../constants/constants';
+import { INGREDIENTS_URL } from '../../constants/constants';
 import { CLOSE_MODAL, OPEN_MODAL } from '../../constants/actions';
 import reducer from '../../reducers/modal';
-import { IngredientsContext, ModalContext } from './context';
+
+export const ModalContext = createContext();
+export const IngredientsContext = createContext();
  
 function App() {
   const [ingredientsState, setIngredientsState] = React.useState({
@@ -29,7 +31,7 @@ function App() {
   useEffect(() => {
     try {
       setIngredientsState({...ingredientsState, loading: true})
-      fetch(URL)
+      fetch(INGREDIENTS_URL)
         .then((response) => {
           if (response.ok) {
             return response.json();

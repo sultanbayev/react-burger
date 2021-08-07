@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import styles from './ingredient-group.module.css';
 import PropTypes from 'prop-types';
 import IngredientCard from "../ingredient-card/ingredient-card";
-import ingredientShape from "../../../utils/prop-types";
-import { IngredientsContext } from "../../app/context";
+import { ingredientShape } from "../../../utils/prop-types";
+import { IngredientsContext } from "../../app/app";
 
 function IngredientGroup({ name, id, ingredients }) {
 
