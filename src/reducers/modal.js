@@ -1,6 +1,6 @@
 import { CLOSE_MODAL, OPEN_MODAL } from '../constants/actions';
 
-export default function reducer(state = {}, action) {
+export default function reducer(state, action) {
     switch (action.type) {
       case CLOSE_MODAL:
         return {...state, visible: false, content: null};
