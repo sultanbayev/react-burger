@@ -8,7 +8,11 @@ import reducer from '../../reducers/modal';
 import { IngredientsContext, ModalContext } from './context';
  
 function App() {
-  const [ingredients, setIngredients] = React.useState([])
+  const [ingredientsState, setIngredientsState] = React.useState({
+    loading: false,
+    success: false,
+    data: []
+  });
   const [modalState, modalDispatch] = useReducer(reducer, {
     visible: false,
     content: null,
@@ -24,6 +28,7 @@ function App() {
 
   useEffect(() => {
     try {
+      setIngredientsState({...ingredientsState, loading: true})
       fetch(URL)
         .then((response) => {
           if (response.ok) {
@@ -31,8 +36,23 @@ function App() {
           }
           return Promise.reject(response);
         })
-        .then(data => {
-          if (data.success) setIngredients(data.data)
+        .then(responseData => {
+          if (responseData.success) {
+            setIngredientsState({
+              ...ingredientsState,
+              loading: false,
+              success: true,
+              data: responseData.data,
+              // data: [],
+            });
+          } else {
+            setIngredientsState({
+              ...ingredientsState,
+              loading: false,
+              success: false,
+              data: [],
+            });
+          }
         })
     } catch (error) {
       console.log("Что-то пошло не так.", error);
@@ -43,7 +63,7 @@ function App() {
     <>
       <AppHeader />
       <ModalContext.Provider value={{onModalOpen, onModalClose}}>
-        <IngredientsContext.Provider value={ingredients}>
+        <IngredientsContext.Provider value={ingredientsState}>
           <Main />
         </IngredientsContext.Provider>
         {modalState.visible && modalState.content && <Modal>{modalState.content}</Modal>}

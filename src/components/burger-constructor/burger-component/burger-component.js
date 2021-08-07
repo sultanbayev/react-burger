@@ -7,9 +7,11 @@ function BurgerComponent({ type, text, isLocked, price, thumbnail }) {
     
     return (
         <div className={styles.component}>
-            <div className={styles.drag_icon}>
-                { !isLocked && <DragIcon type="primary" />}
-            </div>
+            { !isLocked &&
+                <div className={styles.drag_icon}>
+                    <DragIcon type="primary" />
+                </div>
+            }
             <ConstructorElement
                 type={type}
                 isLocked={isLocked}

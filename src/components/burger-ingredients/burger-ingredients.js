@@ -6,11 +6,11 @@ import { IngredientsContext } from "../app/context";
 
 function BurgerIngredients() {
 
-    const ingredients = useContext(IngredientsContext);
+    const ingredientsState = useContext(IngredientsContext);
 
     const ingredientsWithCount = useMemo(() => {
-        return ingredients.map(ingredient => ({...ingredient, count: 1}));
-    }, [ingredients])
+        return ingredientsState.data.map(i => ({...i, count: 1}));
+    }, [ingredientsState])
 
     const buns = useMemo(() => ingredientsWithCount.filter(i => i.type === 'bun'), [ingredientsWithCount]);
     const sauces = useMemo(() => ingredientsWithCount.filter(i => i.type === 'sauce'), [ingredientsWithCount]);

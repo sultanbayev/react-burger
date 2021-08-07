@@ -2,7 +2,6 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -12,12 +11,13 @@
     margin-top: 100px;
 }
 
-.bun {
-    padding: 0 16px;
+.bun, .dummy {
+    margin: 0 16px;
+    padding-left: 32px;
 }
 
 .staffing {
-    padding: 0 8px 0 16px;
+    margin: 0 8px 0 16px;
 }
 
 .ingredients_container {
@@ -26,6 +26,6 @@
     max-height: 464px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     gap: 16px;
 }
