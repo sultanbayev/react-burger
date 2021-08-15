@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styles from './component-list.module.css';
 import BurgerComponent from '../burger-component/burger-component';
 import DummyComponent from '../dummy-component/dummy-component';
-import { BurgerConstructorContext } from "../burger-constructor";
+import { BurgerConstructorContext } from "../../../contexts";
 
 function ComponentList() {
 
@@ -15,7 +15,7 @@ function ComponentList() {
                     <BurgerComponent
                         type="top"
                         isLocked={true}
-                        component={componentsState.bun}
+                        component={{...componentsState.bun, name: componentsState.bun.name + ' (верх)' }}
                     />
                 </li>
                 :
@@ -45,7 +45,7 @@ function ComponentList() {
                     <BurgerComponent
                         type="bottom"
                         isLocked={true}
-                        component={componentsState.bun}                  
+                        component={{...componentsState.bun, name: componentsState.bun.name + ' (низ)' }}                  
                     />
                 </li>
                 :

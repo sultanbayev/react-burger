@@ -1,13 +1,11 @@
-import React, { useContext, useMemo, useReducer, useEffect, createContext, useCallback } from "react";
+import React, { useContext, useMemo, useReducer, useEffect, useCallback } from "react";
 import styles from './burger-constructor.module.css';
 import ComponentList from './component-list/component-list';
 import OrderInfo from './order-info/order-info';
 import { v4 as uuid } from 'uuid';
 import reducer from "../../reducers/burger-constructor";
 import { ADD_STAFFING, REMOVE_STAFFING, SET_BUN } from '../../constants/actions';
-import { IngredientsContext } from "../app/app";
-
-export const BurgerConstructorContext = createContext();
+import { IngredientsContext, BurgerConstructorContext } from "../../contexts";
 
 function BurgerConstructor() {
     const [componentsState, componentsStateDispatch] = useReducer(reducer, {

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import PropTypes from 'prop-types';
 import styles from './burger-component.module.css';
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { BurgerConstructorContext } from "../burger-constructor";
+import { BurgerConstructorContext } from "../../../contexts";
 import { componentShape } from '../../../utils/prop-types'
 
 function BurgerComponent({ type, isLocked, component }) {

@@ -3,17 +3,20 @@ import PropTypes from 'prop-types';
 import styles from './order-info.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../../modal/order-details/order-details';
-import { ModalContext } from "../../app/app";
+import { ModalContext } from "../../../contexts";
 import { ORDERS_URL } from '../../../constants/constants';
-import { BurgerConstructorContext } from "../burger-constructor";
+import { BurgerConstructorContext } from "../../../contexts";
 
 function OrderInfo({ total }) {
     const { onModalOpen } = useContext(ModalContext);
-    const [orderNumber, setOrderNumber] = useState(null);
+    const [orderState, setOrderState] = useState({
+        isLoading: false,
+        isFailed: false,
+    });
 
     const { componentsState } = useContext(BurgerConstructorContext);
 
-    const data = useMemo(() => {
+    const ingredientsToSend = useMemo(() => {
         if (componentsState.bun && componentsState.staffings.length !== 0) {
             const staffingIds = componentsState.staffings.map(c => c._id)
             return { ingredients: [componentsState.bun._id, componentsState.bun._id, ...staffingIds]}
@@ -22,7 +25,8 @@ function OrderInfo({ total }) {
     }, [componentsState])
 
     useEffect(() => {
-        if (!data) return;
+        if (!ingredientsToSend) return;
+        if (!orderState.isLoading) return;
         try {
             fetch(ORDERS_URL, {
                 method: 'POST',
@@ -30,7 +34,7 @@ function OrderInfo({ total }) {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                   },
-                body: JSON.stringify(data)
+                body: JSON.stringify(ingredientsToSend)
             })
                 .then(response => {
                     if (response.ok) {
@@ -40,16 +44,35 @@ function OrderInfo({ total }) {
                 })
                 .then(data => {
                     if (data.success) {
-                        setOrderNumber(data.order.number)
+                        setOrderState({
+                            ...orderState,
+                            isLoading: false,
+                            isFailed: false,
+                        });
+                        onModalOpen(<OrderDetails orderNumber={data.order.number} />);
+                    } else {
+                        setOrderState({
+                            ...orderState,
+                            isLoading: false,
+                            isFailed: true,
+                        })
                     }
                 })
         } catch (error) {
+            setOrderState({
+                ...orderState,
+                isLoading: false,
+                isFailed: true,
+            });
             console.log("Что-то пошло не так c заказом.", error);
         }
-    }, [data])
+    }, [ingredientsToSend, orderState])
 
     const onClick = () => {
-        onModalOpen(<OrderDetails orderNumber={orderNumber} />);
+        setOrderState({
+            ...orderState,
+            isLoading: true,
+        });
     }
 
     return (

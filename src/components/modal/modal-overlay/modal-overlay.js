@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styles from './modal-overlay.module.css';
-import { ModalContext } from '../../app/app';
+import { ModalContext } from '../../../contexts';
 
 function ModalOverlay() {
     const {onModalClose} = useContext(ModalContext);

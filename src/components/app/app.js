@@ -1,13 +1,11 @@
-import React, { useCallback, useEffect, useReducer, createContext } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
 import { INGREDIENTS_URL } from '../../constants/constants';
 import { CLOSE_MODAL, OPEN_MODAL } from '../../constants/actions';
 import reducer from '../../reducers/modal';
-
-export const ModalContext = createContext();
-export const IngredientsContext = createContext();
+import { ModalContext, IngredientsContext } from '../../contexts';
  
 function App() {
   const [ingredientsState, setIngredientsState] = React.useState({

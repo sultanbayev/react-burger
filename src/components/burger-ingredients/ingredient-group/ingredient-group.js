@@ -3,7 +3,7 @@ import styles from './ingredient-group.module.css';
 import PropTypes from 'prop-types';
 import IngredientCard from "../ingredient-card/ingredient-card";
 import { ingredientShape } from "../../../utils/prop-types";
-import { IngredientsContext } from "../../app/app";
+import { IngredientsContext } from "../../../contexts";
 
 function IngredientGroup({ name, id, ingredients }) {
 

@@ -4,7 +4,7 @@ import styles from './ingredient-card.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ingredientShape } from '../../../utils/prop-types';
 import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
-import { ModalContext } from '../../app/app';
+import { ModalContext } from '../../../contexts';
 
 function IngredientCard({ ingredient }) {
 
