@@ -1,56 +1,73 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
-import { URL } from '../../utils/constants';
+import { INGREDIENTS_URL } from '../../constants/constants';
+import { CLOSE_MODAL, OPEN_MODAL } from '../../constants/actions';
+import reducer from '../../reducers/modal';
+import { ModalContext, IngredientsContext } from '../../contexts';
  
 function App() {
-  
-  const [ingredients, setIngredients] = React.useState([])
-
-  const [modal, setModal] = React.useState({
+  const [ingredientsState, setIngredientsState] = React.useState({
+    loading: false,
+    success: false,
+    data: []
+  });
+  const [modalState, modalDispatch] = useReducer(reducer, {
     visible: false,
     content: null,
   });
 
   const onModalClose = useCallback(() => {
-    setModal({
-      ...modal,
-      visible: false,
-      content: null,
-    })
-  }, [modal])
+    modalDispatch({ type: CLOSE_MODAL })
+  }, [])
 
   const onModalOpen = useCallback((content) => {
-    setModal({
-      ...modal,
-      visible: true,
-      content,
-    })
-  }, [modal])
+    modalDispatch({ type: OPEN_MODAL, payload: { content: content } })
+  }, [])
 
   useEffect(() => {
     try {
-      fetch(URL)
+      setIngredientsState({...ingredientsState, loading: true})
+      fetch(INGREDIENTS_URL)
         .then((response) => {
-          if (!response.ok) {
-            throw new Error('Ошибка сети')
+          if (response.ok) {
+            return response.json();
           }
-          return response.json();
+          return Promise.reject(response);
         })
-        .then(data => {
-          if (data.success) setIngredients(data.data)
+        .then(responseData => {
+          if (responseData.success) {
+            setIngredientsState({
+              ...ingredientsState,
+              loading: false,
+              success: true,
+              data: responseData.data,
+              // data: [],
+            });
+          } else {
+            setIngredientsState({
+              ...ingredientsState,
+              loading: false,
+              success: false,
+              data: [],
+            });
+          }
         })
     } catch (error) {
-      console.log("error", error);
+      console.log("Что-то пошло не так.", error);
     }
   }, [])
 
   return (
     <>
       <AppHeader />
-      <Main ingredients={ingredients} onModalOpen={onModalOpen} />
-      {modal.visible && modal.content && <Modal onModalClose={onModalClose}>{modal.content}</Modal>}
+      <ModalContext.Provider value={{onModalOpen, onModalClose}}>
+        <IngredientsContext.Provider value={ingredientsState}>
+          <Main />
+        </IngredientsContext.Provider>
+        {modalState.visible && modalState.content && <Modal>{modalState.content}</Modal>}
+      </ModalContext.Provider>
     </>
   );
 }

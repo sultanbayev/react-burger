@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ingredient-card.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientShape from '../../../utils/prop-types';
+import { ingredientShape } from '../../../utils/prop-types';
 import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
+import { ModalContext } from '../../../contexts';
 
-function IngredientCard({ ingredient, onModalOpen }) {
+function IngredientCard({ ingredient }) {
+
+    const {onModalOpen} = useContext(ModalContext)
 
     const onClick = () => {
         onModalOpen(<IngredientDetails
@@ -37,7 +40,6 @@ IngredientCard.propTypes = {
         ...ingredientShape,
         count: PropTypes.number.isRequired
     }).isRequired,
-    onModalOpen: PropTypes.func.isRequired
 }
 
 export default React.memo(IngredientCard);

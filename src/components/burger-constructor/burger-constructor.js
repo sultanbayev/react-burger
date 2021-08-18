@@ -1,31 +1,70 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo, useReducer, useEffect, useCallback } from "react";
 import styles from './burger-constructor.module.css';
-import PropTypes from 'prop-types';
 import ComponentList from './component-list/component-list';
 import OrderInfo from './order-info/order-info';
-import ingredientShape from '../../utils/prop-types';
-import components from '../../utils/components';
+import { v4 as uuid } from 'uuid';
+import reducer from "../../reducers/burger-constructor";
+import { ADD_STAFFING, REMOVE_STAFFING, SET_BUN } from '../../constants/actions';
+import { IngredientsContext, BurgerConstructorContext } from "../../contexts";
 
-function BurgerConstructor({ingredients, onModalOpen}) {
+function BurgerConstructor() {
+    const [componentsState, componentsStateDispatch] = useReducer(reducer, {
+        bun: null,
+        staffings: [],
+    });
 
-    const price = useMemo(() => {
-        const ingredientsPrice = components.ingredients.reduce((total, component) => total + component.price, 0);
-        const bunPrice = components.bun.price * 2;
-        return ingredientsPrice + bunPrice;
-    }, [])
+    const onStaffingAdd = useCallback((component) => {
+        if (component.type === 'bun') return;
+        const componentWithUuid = { ...component, uuid: uuid() };
+        componentsStateDispatch({ type: ADD_STAFFING, payload: { toAdd: componentWithUuid } });
+    }, []);
+
+    const onStaffingRemove = useCallback((componentWithUuid) => {
+        if (componentWithUuid.type === 'bun') return;
+        componentsStateDispatch({ type: REMOVE_STAFFING, payload: { toRemove: componentWithUuid } });
+    }, []);
+
+    const onBunSet = useCallback((component) => {
+        if (component.type !== 'bun') return;
+        const componentWithUuid = { ...component, uuid: uuid() };
+        componentsStateDispatch({ type: SET_BUN, payload: { bun: componentWithUuid }});
+    }, []);
+
+    const ingredientsState = useContext(IngredientsContext);
+
+    useEffect(() => {
+        if (ingredientsState.success) {
+            const buns = ingredientsState.data.filter(c => c.type === 'bun')
+            const bun = buns[Math.floor(Math.random() * buns.length)]
     
+            onBunSet(bun);
+    
+            const staffings = ingredientsState.data
+                .filter(c => c.type !== 'bun')
+                .filter(() => Math.floor(Math.random() * 2) === 0);
+            
+            staffings.forEach(c => {
+                onStaffingAdd(c);
+            });
+        }
+    }, [ingredientsState])
+    
+
+    const totalPrice = useMemo(() => {
+        const bunPrice = componentsState.bun ? componentsState.bun.price * 2 : 0;
+        const staffingsTotalPrice = componentsState.staffings.reduce((total, i) => total + i.price, 0);
+        return bunPrice + staffingsTotalPrice;
+    }, [componentsState]);
 
     return (
         <section className={styles.burger_constructor}>
-            <ComponentList components={components} />
-            <OrderInfo onModalOpen={onModalOpen} total={price} />
+            <BurgerConstructorContext.Provider value={{ componentsState, onStaffingRemove }}>
+                <ComponentList />
+                <OrderInfo total={totalPrice} />
+            </BurgerConstructorContext.Provider>
+            
         </section>
     );
-}
-
-BurgerConstructor.propTypes = {
-    ingredients: PropTypes.arrayOf(PropTypes.shape(ingredientShape).isRequired).isRequired,
-    onModalOpen: PropTypes.func.isRequired
 }
 
 export default React.memo(BurgerConstructor);

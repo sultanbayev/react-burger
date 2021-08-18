@@ -1,16 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './modal-overlay.module.css';
-import PropTypes from 'prop-types';
+import { ModalContext } from '../../../contexts';
 
-function ModalOverlay({onModalClose}) {
-
+function ModalOverlay() {
+    const {onModalClose} = useContext(ModalContext);
     return (
         <div className={styles.overlay} onClick={onModalClose}></div>
     );
-}
-
-ModalOverlay.propTypes = {
-    onModalClose: PropTypes.func.isRequired
 }
 
 export default React.memo(ModalOverlay);

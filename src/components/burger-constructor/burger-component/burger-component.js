@@ -1,21 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from 'prop-types';
 import styles from './burger-component.module.css';
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { BurgerConstructorContext } from "../../../contexts";
+import { componentShape } from '../../../utils/prop-types'
 
-function BurgerComponent({ type, text, isLocked, price, thumbnail }) {
+function BurgerComponent({ type, isLocked, component }) {
+
+    const { onStaffingRemove } = useContext(BurgerConstructorContext);
     
     return (
         <div className={styles.component}>
-            <div className={styles.drag_icon}>
-                { !isLocked && <DragIcon type="primary" />}
-            </div>
+            { !isLocked &&
+                <div className={styles.drag_icon}>
+                    <DragIcon type="primary" />
+                </div>
+            }
             <ConstructorElement
                 type={type}
                 isLocked={isLocked}
-                text={text}
-                price={price}
-                thumbnail={thumbnail}                    
+                text={component.name}
+                price={component.price}
+                thumbnail={component.image} 
+                handleClose={() => onStaffingRemove(component)}                   
             />
         </div>
     );
@@ -23,10 +30,8 @@ function BurgerComponent({ type, text, isLocked, price, thumbnail }) {
 
 BurgerComponent.propTypes = {
     type: PropTypes.string,
-    text: PropTypes.string.isRequired,
     isLocked: PropTypes.bool,
-    price: PropTypes.number.isRequired,
-    thumbnail: PropTypes.string.isRequired
+    component: PropTypes.shape(componentShape),
 }
 
 export default React.memo(BurgerComponent);

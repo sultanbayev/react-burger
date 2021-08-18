@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from './modal-overlay/modal-overlay';
 import PropTypes from 'prop-types';
+import { ModalContext } from '../../contexts';
 
 const modalRoot = document.getElementById("modal-root");
 
-function Modal({children, onModalClose}) {
+function Modal({children}) {
+    const {onModalClose} = useContext(ModalContext);
 
     useEffect(() => {
         const onClose = (e) => {
@@ -34,7 +36,6 @@ function Modal({children, onModalClose}) {
 
 Modal.propTypes = {
     children: PropTypes.element.isRequired,
-    onModalClose: PropTypes.func.isRequired
 }
 
 export default React.memo(Modal);

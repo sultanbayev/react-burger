@@ -18,7 +18,7 @@ function OrderDetails({orderNumber}) {
 }
 
 OrderDetails.propTypes = {
-    orderNumber: PropTypes.string.isRequired
+    orderNumber: PropTypes.number.isRequired
 }
 
 export default React.memo(OrderDetails);

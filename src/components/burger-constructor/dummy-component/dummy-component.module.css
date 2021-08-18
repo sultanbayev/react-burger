@@ -1,0 +1,20 @@
+.dummy {
+    padding: 16px 24px;
+    border: 2px dashed #F2F2F3;
+    border-radius: 40px;
+    max-width: 488px;
+    min-height: 48px;
+    line-height: 24px;
+    color: #F2F2F3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dummy_top {
+    border-radius: 88px 88px 40px 40px;
+}
+
+.dummy_bottom {
+    border-radius: 40px 40px 88px 88px;
+}
