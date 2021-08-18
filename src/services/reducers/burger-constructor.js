@@ -1,7 +1,8 @@
 import {
     ADD_CONSTRUCTOR_COMPONENT,
     REMOVE_CONSTRUCTOR_COMPONENT,
-    REORDER_CONSTRUCTOR_COMPONENTS
+    REORDER_CONSTRUCTOR_COMPONENTS,
+    CLEAR_CONSTRUCTOR_COMPONENTS
 } from '../actions/burger-constructor';
 import { v4 as uuid } from 'uuid';
 
@@ -36,6 +37,9 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                 ...state,
                 staffings: action.reordered
             }
+        }
+        case CLEAR_CONSTRUCTOR_COMPONENTS: {
+            return initialState;
         }
         default: {
             return state;

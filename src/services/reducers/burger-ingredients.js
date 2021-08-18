@@ -3,7 +3,8 @@ import {
     GET_INGREDIENTS_SUCCESS,
     GET_INGREDIENTS_FAILED,
     INCREASE_INGREDIENT_COUNT,
-    DECREASE_INGREDIENT_COUNT
+    DECREASE_INGREDIENT_COUNT,
+    RESET_INGREDIENTS_COUNT
 } from '../actions/burger-ingredients';
 
 const initialState = {
@@ -41,7 +42,7 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
                     ...state,
                     items: [...state.items]
                         .map(item => item.type === 'bun' ? {...item, count: 0} : item)
-                        .map(item => item._id === action.item._id ? {...item, count: ++item.count} : item)
+                        .map(item => item._id === action.item._id ? {...item, count: item.count + 2} : item)
                 }
             }
             return {
@@ -55,6 +56,13 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
                 ...state,
                 items: [...state.items]
                     .map(item => item._id === action.item._id ? {...item, count: --item.count} : item)
+            }
+        }
+        case RESET_INGREDIENTS_COUNT: {
+            return {
+                ...state,
+                items: [...state.items]
+                    .map(item => ({ ...item, count: 0 }))
             }
         }
         default: {

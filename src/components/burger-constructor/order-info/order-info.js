@@ -3,11 +3,10 @@ import styles from './styles.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchOrder } from '../../../services/actions/order';
-import { OPEN_MODAL_WITH_ORDER } from "../../../services/actions/modal";
 
 function OrderInfo() {
     const dispatch = useDispatch();
-    const { burgerConstructor, order } = useSelector(store => store);
+    const burgerConstructor = useSelector(store => store.burgerConstructor);
 
     const ingredientsToSend = useMemo(() => {
         if (burgerConstructor.bun && burgerConstructor.staffings.length !== 0) {
@@ -20,9 +19,6 @@ function OrderInfo() {
     const handleClick = () => {
         if (ingredientsToSend) {
             dispatch(fetchOrder(ingredientsToSend));
-            if (!order.orderFailed) {
-                dispatch({ type: OPEN_MODAL_WITH_ORDER })
-            }
         }
     }
 

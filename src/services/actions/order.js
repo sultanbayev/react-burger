@@ -1,4 +1,6 @@
 import { getOrderNumber } from '../utils/api';
+import { OPEN_MODAL_WITH_ORDER } from './modal';
+import { clearComponentsAndResetCounts } from "./burger-constructor";
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
@@ -16,6 +18,10 @@ export const fetchOrder = (ingredientsToSend) => {
                         type: GET_ORDER_SUCCESS,
                         number: res.order.number.toString()
                     });
+                    dispatch({
+                        type: OPEN_MODAL_WITH_ORDER
+                    });
+                    dispatch(clearComponentsAndResetCounts());
                 } else {
                     dispatch({
                         type: GET_ORDER_FAILED

@@ -3,7 +3,7 @@ import {
     OPEN_MODAL_WITH_ORDER,
     CLOSE_MODAL
 } from '../actions/modal';
-import { contentTypes } from '../utils/constants';
+import { modalContentTypes } from '../utils/constants';
 
 const initialState = {
     isOpen: false,
@@ -16,14 +16,14 @@ export const modalReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isOpen: true,
-                content: contentTypes.INGREDIENT_DETAILS,
+                content: modalContentTypes.INGREDIENT_DETAILS,
             };
         }
         case OPEN_MODAL_WITH_ORDER: {
             return {
                 ...state,
                 isOpen: true,
-                content: contentTypes.ORDER_DETAILS,
+                content: modalContentTypes.ORDER_DETAILS,
             };
         }
         case CLOSE_MODAL: {
