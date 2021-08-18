@@ -1,10 +1,9 @@
-import { useCallback } from 'react';
 import styles from './styles.module.css';
 import BurgerComponent from '../burger-component/burger-component';
 import DummyComponent from '../dummy-component/dummy-component';
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
-import { addConstructorComponent, REORDER_CONSTRUCTOR_COMPONENTS } from "../../../services/actions/burger-constructor";
+import { addConstructorComponent } from "../../../services/actions/burger-constructor";
 import { dndTypes } from "../../../services/utils/constants";
 
 function ComponentList() {
