@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import styles from './dummy-component.module.css';
+import { useMemo } from 'react'
+import styles from './styles.module.css';
 import PropTypes from 'prop-types';
 
 

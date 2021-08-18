@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './tab-bar.module.css';
+import styles from './styles.module.css';
+import PropTypes from 'prop-types';
 
-function TabBar() {
+function TabBar({ active }) {
     const [current, setCurrent] = React.useState('buns');
+
+    useEffect(() => {
+        setCurrent(active)
+    }, [active])
 
     const setTab = (tabValue) => {
         setCurrent(tabValue);
@@ -20,4 +25,8 @@ function TabBar() {
     );
 }
 
-export default TabBar;
+TabBar.propTypes = {
+    active: PropTypes.string.isRequired,
+}
+
+export default React.memo(TabBar);

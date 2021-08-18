@@ -1,73 +1,31 @@
-import React, { useCallback, useEffect, useReducer } from 'react';
+import { useCallback } from 'react';
 import AppHeader from '../app-header/app-header';
 import Main from '../main/main';
 import Modal from '../modal/modal';
-import { INGREDIENTS_URL } from '../../constants/constants';
-import { CLOSE_MODAL, OPEN_MODAL } from '../../constants/actions';
-import reducer from '../../reducers/modal';
-import { ModalContext, IngredientsContext } from '../../contexts';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeModalWithIngredient } from '../../services/actions/modal';
+import { modalContentTypes } from '../../services/utils/constants';
+import IngredientDetails from '../modal/ingredient-details/ingredient-details';
+import OrderDetails from '../modal/order-details/order-details';
  
 function App() {
-  const [ingredientsState, setIngredientsState] = React.useState({
-    loading: false,
-    success: false,
-    data: []
-  });
-  const [modalState, modalDispatch] = useReducer(reducer, {
-    visible: false,
-    content: null,
-  });
+
+  const dispatch = useDispatch();
+  const modal = useSelector(store => store.modal);
 
   const onModalClose = useCallback(() => {
-    modalDispatch({ type: CLOSE_MODAL })
-  }, [])
+    dispatch(closeModalWithIngredient());
+  }, [dispatch]);
 
-  const onModalOpen = useCallback((content) => {
-    modalDispatch({ type: OPEN_MODAL, payload: { content: content } })
-  }, [])
-
-  useEffect(() => {
-    try {
-      setIngredientsState({...ingredientsState, loading: true})
-      fetch(INGREDIENTS_URL)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          return Promise.reject(response);
-        })
-        .then(responseData => {
-          if (responseData.success) {
-            setIngredientsState({
-              ...ingredientsState,
-              loading: false,
-              success: true,
-              data: responseData.data,
-              // data: [],
-            });
-          } else {
-            setIngredientsState({
-              ...ingredientsState,
-              loading: false,
-              success: false,
-              data: [],
-            });
-          }
-        })
-    } catch (error) {
-      console.log("Что-то пошло не так.", error);
-    }
-  }, [])
+  const content = modal.content === modalContentTypes.INGREDIENT_DETAILS
+    ? <IngredientDetails />
+    : <OrderDetails />
 
   return (
     <>
       <AppHeader />
-      <ModalContext.Provider value={{onModalOpen, onModalClose}}>
-        <IngredientsContext.Provider value={ingredientsState}>
-          <Main />
-        </IngredientsContext.Provider>
-        {modalState.visible && modalState.content && <Modal>{modalState.content}</Modal>}
-      </ModalContext.Provider>
+      <Main />
+      { modal.isOpen && <Modal onModalClose={onModalClose}>{content}</Modal> }
     </>
   );
 }

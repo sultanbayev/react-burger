@@ -1,7 +1,6 @@
-import React from 'react';
 import NavLink from '../nav-link/nav-link';
 import { BurgerIcon, ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './nav-bar.module.css';
+import styles from './styles.module.css';
 
 function NavBar() {
     return (
