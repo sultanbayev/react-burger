@@ -1,36 +1,36 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './ingredient-card.module.css';
+import styles from './styles.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientShape } from '../../../utils/prop-types';
-import IngredientDetails from '../../modal/ingredient-details/ingredient-details';
-import { ModalContext } from '../../../contexts';
+import { ingredientShape } from '../../../services/utils/prop-types';
+import { useDispatch } from 'react-redux';
+import { openModalWithIngredient } from '../../../services/actions/modal';
+import { useDrag } from 'react-dnd';
+import { dndTypes } from '../../../services/utils/constants';
 
 function IngredientCard({ ingredient }) {
+    const dispatch = useDispatch();
 
-    const {onModalOpen} = useContext(ModalContext)
+    const [, drag] = useDrag({
+        type: dndTypes.INGREDIENT,
+        item: ingredient,
+    });
 
-    const onClick = () => {
-        onModalOpen(<IngredientDetails
-            name={ingredient.name}
-            image={ingredient.image_large}
-            calories={ingredient.calories}
-            proteins={ingredient.proteins}
-            fat={ingredient.fat}
-            carbs={ingredient.carbohydrates} />)
+    const onClickHandle = () => {
+        dispatch(openModalWithIngredient(ingredient));
     }
 
     return (
-        <article className={styles.card}>
-            <img className={styles.image} src={ingredient.image} alt="" onClick={onClick} />
+        <article ref={drag} className={styles.card}>
+            <img className={styles.image} src={ingredient.image} alt={ingredient.name} onClick={onClickHandle} />
             <div className={styles.price}>
                 <p className="text text_type_digits-default mr-2">{ingredient.price}</p>
                 <CurrencyIcon type="primary" />
             </div>
-            <div className={styles.name}>
-                <h3 className="text text_type_main-default" onClick={onClick}>{ingredient.name}</h3>
+            <div className={styles.name} onClick={onClickHandle}>
+                <h3 className="text text_type_main-default">{ingredient.name}</h3>
             </div>
-            { ingredient.count && <Counter count={ingredient.count} size="default" />}
+            { (!!ingredient.count && ingredient.count !== 0) && <Counter count={ingredient.count} size="default" />}
         </article>
     );
 }

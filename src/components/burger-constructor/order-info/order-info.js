@@ -1,88 +1,45 @@
-import React, { useContext, useMemo, useState, useEffect } from "react";
-import PropTypes from 'prop-types';
-import styles from './order-info.module.css';
+import { useMemo } from "react";
+import styles from './styles.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import OrderDetails from '../../modal/order-details/order-details';
-import { ModalContext } from "../../../contexts";
-import { ORDERS_URL } from '../../../constants/constants';
-import { BurgerConstructorContext } from "../../../contexts";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchOrder } from '../../../services/actions/order';
+import { OPEN_MODAL_WITH_ORDER } from "../../../services/actions/modal";
 
-function OrderInfo({ total }) {
-    const { onModalOpen } = useContext(ModalContext);
-    const [orderState, setOrderState] = useState({
-        isLoading: false,
-        isFailed: false,
-    });
-
-    const { componentsState } = useContext(BurgerConstructorContext);
+function OrderInfo() {
+    const dispatch = useDispatch();
+    const { burgerConstructor, order } = useSelector(store => store);
 
     const ingredientsToSend = useMemo(() => {
-        if (componentsState.bun && componentsState.staffings.length !== 0) {
-            const staffingIds = componentsState.staffings.map(c => c._id)
-            return { ingredients: [componentsState.bun._id, componentsState.bun._id, ...staffingIds]}
+        if (burgerConstructor.bun && burgerConstructor.staffings.length !== 0) {
+            const staffingIds = burgerConstructor.staffings.map(c => c._id)
+            return [burgerConstructor.bun._id, burgerConstructor.bun._id, ...staffingIds]
         }
         return null;
-    }, [componentsState])
+    }, [burgerConstructor])
 
-    useEffect(() => {
-        if (!ingredientsToSend) return;
-        if (!orderState.isLoading) return;
-        try {
-            fetch(ORDERS_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                  },
-                body: JSON.stringify(ingredientsToSend)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json()
-                    }
-                    return Promise.reject(response);
-                })
-                .then(data => {
-                    if (data.success) {
-                        setOrderState({
-                            ...orderState,
-                            isLoading: false,
-                            isFailed: false,
-                        });
-                        onModalOpen(<OrderDetails orderNumber={data.order.number} />);
-                    } else {
-                        setOrderState({
-                            ...orderState,
-                            isLoading: false,
-                            isFailed: true,
-                        })
-                    }
-                })
-        } catch (error) {
-            setOrderState({
-                ...orderState,
-                isLoading: false,
-                isFailed: true,
-            });
-            console.log("Что-то пошло не так c заказом.", error);
+    const handleClick = () => {
+        if (ingredientsToSend) {
+            dispatch(fetchOrder(ingredientsToSend));
+            if (!order.orderFailed) {
+                dispatch({ type: OPEN_MODAL_WITH_ORDER })
+            }
         }
-    }, [ingredientsToSend, orderState])
-
-    const onClick = () => {
-        setOrderState({
-            ...orderState,
-            isLoading: true,
-        });
     }
+
+    const totalPrice = useMemo(() => {
+        const bunPrice = burgerConstructor.bun ? burgerConstructor.bun.price * 2 : 0;
+        const staffingsTotalPrice = burgerConstructor.staffings.reduce((total, i) => total + i.price, 0);
+        return bunPrice + staffingsTotalPrice;
+    }, [burgerConstructor]);
 
     return (
         <div className={styles.order_info}>
             <div className={styles.total}>
-                <p className="text text_type_digits-medium mr-2">{total}</p>
+                <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
                 <CurrencyIcon type="primary" />
             </div>
             <div className={styles.submit}>
-                <Button type="primary" size="large" onClick={onClick}>
+                <Button type="primary" size="large" onClick={handleClick}>
                     Оформить заказ
                 </Button>
             </div>
@@ -90,8 +47,4 @@ function OrderInfo({ total }) {
     );
 }
 
-OrderInfo.propTypes = {
-    total: PropTypes.number.isRequired,
-}
-
-export default React.memo(OrderInfo);
+export default OrderInfo;

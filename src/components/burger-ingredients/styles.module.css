@@ -3,7 +3,7 @@
     box-sizing: border-box;
 }
 
-.ingredients {
+.groups {
     height: 750px;
     overflow-y: auto;
     box-sizing: border-box;

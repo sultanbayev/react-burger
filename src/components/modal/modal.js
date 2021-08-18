@@ -1,15 +1,24 @@
-import React, { useContext, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import styles from './modal.module.css';
+import styles from './styles.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from './modal-overlay/modal-overlay';
-import PropTypes from 'prop-types';
-import { ModalContext } from '../../contexts';
+import { useSelector, useDispatch } from 'react-redux';
+import { contentTypes } from '../../services/utils/constants';
+import IngredientDetails from './ingredient-details/ingredient-details';
+import OrderDetails from './order-details/order-details';
+import { closeModalWithIngredient } from '../../services/actions/modal';
 
 const modalRoot = document.getElementById("modal-root");
 
-function Modal({children}) {
-    const {onModalClose} = useContext(ModalContext);
+function Modal() {
+
+    const dispatch = useDispatch();
+    const modal = useSelector(store => store.modal);
+
+    const onModalClose = useCallback(() => {
+        dispatch(closeModalWithIngredient());
+    }, [dispatch])
 
     useEffect(() => {
         const onClose = (e) => {
@@ -19,23 +28,25 @@ function Modal({children}) {
         return () => document.removeEventListener('keydown', onClose);
     }, [onModalClose])
 
-    return ReactDOM.createPortal(
-        (
-            <div className={styles.container}>
-                <div className={styles.modal}>
-                    <div className={styles.close}>
-                        <CloseIcon type="primary" onClick={onModalClose} />
+    if (modal.isOpen) {
+        return ReactDOM.createPortal(
+            (
+                <div className={styles.container}>
+                    <div className={styles.modal}>
+                        <div className={styles.close}>
+                            <CloseIcon type="primary" onClick={onModalClose} />
+                        </div>
+                        { modal.content === contentTypes.INGREDIENT_DETAILS
+                            ? <IngredientDetails />
+                            : <OrderDetails />}
                     </div>
-                    {children}
+                    <ModalOverlay onModalClose={onModalClose} />
                 </div>
-                <ModalOverlay onModalClose={onModalClose} />
-            </div>
-        ), modalRoot
-    );
+            ), modalRoot
+        );
+    } else {
+        return null;
+    }
 }
 
-Modal.propTypes = {
-    children: PropTypes.element.isRequired,
-}
-
-export default React.memo(Modal);
+export default Modal;

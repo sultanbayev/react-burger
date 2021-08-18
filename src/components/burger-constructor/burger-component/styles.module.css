@@ -1,8 +1,17 @@
 .drag_icon {
     margin-right: 8px;
+    cursor: pointer;
 }
 
 .component {
     display: flex;
     align-items: center;
+}
+
+.hovered {
+    padding-top: 40px;
+}
+
+.dragged {
+    display: none;
 }
