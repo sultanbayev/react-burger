@@ -1,5 +1,5 @@
 import styles from './styles.module.css';
-import ConfirmedLogo from '../../../images/confirm-order.svg';
+import ConfirmedLogo from '../../../assets/images/confirm-order.svg';
 import { useSelector } from 'react-redux';
 
 function OrderDetails() {
