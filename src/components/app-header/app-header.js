@@ -1,4 +1,3 @@
-import React from "react";
 import styles from './styles.module.css';
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import NavLink from './nav-link/nav-link';
