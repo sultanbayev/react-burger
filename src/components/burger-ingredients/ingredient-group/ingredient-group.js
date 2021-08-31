@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import IngredientCard from "../ingredient-card/ingredient-card";
 import { useSelector } from "react-redux";
 import PropTypes from 'prop-types';
-import { ingredientShape } from "../../../services/utils/prop-types";
+import { ingredientShape } from "../../../utils/prop-types";
 
 function IngredientGroup({ name, id, items, setHeight }) {
 

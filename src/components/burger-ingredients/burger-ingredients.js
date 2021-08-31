@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import TabBar from './tab-bar/tab-bar';
 import IngredientGroup from './ingredient-group/ingredient-group';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchIngredients } from '../../services/actions/burger-ingredients';
+import { fetchIngredients } from '../../redux/actions/burger-ingredients';
 
 function BurgerIngredients() {
 

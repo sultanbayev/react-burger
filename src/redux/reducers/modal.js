@@ -3,7 +3,7 @@ import {
     OPEN_MODAL_WITH_ORDER,
     CLOSE_MODAL
 } from '../actions/modal';
-import { modalContentTypes } from '../utils/constants';
+import { modalContentTypes } from '../../utils/constants';
 
 const initialState = {
     isOpen: false,

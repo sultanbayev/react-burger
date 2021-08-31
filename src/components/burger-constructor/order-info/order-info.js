@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import styles from './styles.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchOrder } from '../../../services/actions/order';
+import { fetchOrder } from '../../../redux/actions/order';
 
 function OrderInfo() {
     const dispatch = useDispatch();

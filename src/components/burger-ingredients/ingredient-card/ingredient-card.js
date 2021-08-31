@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientShape } from '../../../services/utils/prop-types';
+import { ingredientShape } from '../../../utils/prop-types';
 import { useDispatch } from 'react-redux';
-import { openModalWithIngredient } from '../../../services/actions/modal';
+import { openModalWithIngredient } from '../../../redux/actions/modal';
 import { useDrag } from 'react-dnd';
-import { dndTypes } from '../../../services/utils/constants';
+import { dndTypes } from '../../../utils/constants';
 
 function IngredientCard({ ingredient }) {
     const dispatch = useDispatch();

@@ -2,11 +2,11 @@ import React, { useRef } from "react";
 import PropTypes from 'prop-types';
 import styles from './styles.module.css';
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { componentShape } from '../../../services/utils/prop-types';
+import { componentShape } from '../../../utils/prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeConstructorComponent, REORDER_CONSTRUCTOR_COMPONENTS } from "../../../services/actions/burger-constructor";
+import { removeConstructorComponent, REORDER_CONSTRUCTOR_COMPONENTS } from "../../../redux/actions/burger-constructor";
 import { useDrag, useDrop } from "react-dnd";
-import { dndTypes } from "../../../services/utils/constants";
+import { dndTypes } from "../../../utils/constants";
 
 function BurgerComponent({ type, isLocked, item }) {
     const dispatch = useDispatch();

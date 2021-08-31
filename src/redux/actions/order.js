@@ -1,4 +1,4 @@
-import { getOrderNumber } from '../utils/api';
+import { getOrderNumber } from '../../services/api';
 import { OPEN_MODAL_WITH_ORDER } from './modal';
 import { clearComponentsAndResetCounts } from "./burger-constructor";
 
