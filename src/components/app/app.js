@@ -1,32 +1,27 @@
-import { useCallback } from 'react';
-import AppHeader from '../app-header/app-header';
-import Main from '../main/main';
-import Modal from '../modal/modal';
-import { useDispatch, useSelector } from 'react-redux';
-import { closeModalWithIngredient } from '../../redux/actions/modal';
-import { modalContentTypes } from '../../utils/constants';
-import IngredientDetails from '../modal/ingredient-details/ingredient-details';
-import OrderDetails from '../modal/order-details/order-details';
+import BaseLayout from '../layouts/base-layout';
+import HomePage from '../../pages/home/home';
+import NotFoundPage from '../../pages/not-found/not-found';
+import { Provider } from 'react-redux';
+import { store } from '../../redux/store';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
  
 function App() {
 
-  const dispatch = useDispatch();
-  const modal = useSelector(store => store.modal);
-
-  const onModalClose = useCallback(() => {
-    dispatch(closeModalWithIngredient());
-  }, [dispatch]);
-
-  const content = modal.content === modalContentTypes.INGREDIENT_DETAILS
-    ? <IngredientDetails />
-    : <OrderDetails />
-
-  return (
-    <>
-      <AppHeader />
-      <Main />
-      { modal.isOpen && <Modal onModalClose={onModalClose}>{content}</Modal> }
-    </>
+  return (   
+    <Provider store={store}>
+      <Router>
+        <BaseLayout>
+          <Switch>
+            <Route path="/" exact>
+              <HomePage />
+            </Route>
+            <Route>
+              <NotFoundPage path="*" />
+            </Route>
+          </Switch>
+        </BaseLayout>
+      </Router>
+    </Provider>
   );
 }
 
