@@ -1,6 +1,10 @@
 .wrapper {
-    min-height: 400px; 
+    min-height: calc(100vh - 128px); 
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.link, .link:hover {
+    color: #4C4CFF;
 }
