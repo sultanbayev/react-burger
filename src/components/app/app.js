@@ -10,6 +10,7 @@ import IngredientPage from '../../pages/ingredient/ingredient';
 import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import PrivateRoute from '../private-route/private-route';
  
 function App() {
 
@@ -18,13 +19,13 @@ function App() {
       <Router>
         <BaseLayout>
           <Switch>
-            <Route path="/" exact><HomePage /></Route>
+            <PrivateRoute path="/" exact><HomePage /></PrivateRoute>
             <Route path="/profile" exact><ProfilePage /></Route>
             <Route path="/login" exact><LoginPage /></Route>
             <Route path="/register" exact><RegisterPage /></Route>
             <Route path="/forgot-password" exact><ForgotPasswordPage /></Route>
             <Route path="/reset-password" exact><ResetPasswordPage /></Route>
-            <Route path="/ingredient/:id" exact><IngredientPage /></Route>
+            <PrivateRoute path="/ingredient/:id" exact><IngredientPage /></PrivateRoute>
             <Route><NotFoundPage path="*" /></Route>
           </Switch>
         </BaseLayout>
