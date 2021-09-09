@@ -11,14 +11,20 @@ function OrderInfo() {
     const ingredientsToSend = useMemo(() => {
         if (burgerConstructor.bun && burgerConstructor.staffings.length !== 0) {
             const staffingIds = burgerConstructor.staffings.map(c => c._id)
-            return [burgerConstructor.bun._id, burgerConstructor.bun._id, ...staffingIds]
+            return [
+                burgerConstructor.bun._id,
+                burgerConstructor.bun._id,
+                ...staffingIds
+            ];
         }
         return null;
     }, [burgerConstructor])
 
     const handleClick = () => {
         if (ingredientsToSend) {
-            dispatch(fetchOrder(ingredientsToSend));
+            dispatch(fetchOrder({
+                ingredients: ingredientsToSend
+            }));
         }
     }
 
