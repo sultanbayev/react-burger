@@ -14,6 +14,7 @@ function IngredientGroup({ name, id, items, setHeight }) {
     useEffect(() => {
         const height = groupRef.current.getBoundingClientRect().height;
         setHeight(height);
+    // eslint-disable-next-line
     }, [items])
 
     return (
