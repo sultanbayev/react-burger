@@ -1,34 +1,90 @@
-import { BASE_URL } from "../utils/constants";
+import { getCookie } from "../utils/cookie";
 
-const getResponse = (response) => {
-    if (response.ok) {
-        return response.json()
-    } else {
-        return Promise.reject('Статус пришел не ОК. Ошибка: ' + response.status);
-    }
-}
+export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
-export const getOrderNumber = (data) => {
-    const request = {
+export function sendData(endpoint, form) {
+    const reqOptions = {
         method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            ingredients: data
-        }),
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(form),
     };
-    const url = BASE_URL + '/orders/';
-    return fetch(url, request).then(getResponse);
+    return fetch(BASE_URL + endpoint, reqOptions);
 }
 
-export const getIngredients = () => {
-    const request = {
+export function getResponse(res) {
+    return res.ok
+        ? res.json()
+        : Promise.reject('Статус пришел не ОК. Ошибка: ' + res.status);
+}
+
+export function sendOrderNumberRequest(ingredients) {
+    return sendData('/orders', ingredients).then(res => getResponse(res));
+}
+
+export function getIngredients() {
+    return fetch(BASE_URL + '/ingredients').then(res => getResponse(res));
+}
+
+export function sendRegisterRequest(formData) {
+    return sendData('/auth/register', formData).then(res => getResponse(res));
+}
+
+export function getUser() {
+    const reqOptions = {
         method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + getCookie('accessToken')
         },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer'
+    }
+    return fetch(BASE_URL + '/auth/user', reqOptions).then(res => getResponse(res));
+}
+
+export function sendLoginREquest(formData) {
+    return sendData('/auth/login', formData).then(res => getResponse(res));
+}
+
+export function sendLogoutRequest(token) {
+    return sendData('/auth/logout', token).then(res => getResponse(res));
+}
+
+export function sendResetPasswordRequest(formData) {
+    return sendData('/password-reset', formData).then(res => getResponse(res));
+}
+
+export function sendRestorePasswordRequest(formData) {
+    return sendData('/password-reset/reset', formData).then(res => getResponse(res))
+}
+
+export function patchUser(data) {
+    const reqOptions = {
+        method: 'PATCH',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + getCookie('accessToken')
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
     };
-    const url = BASE_URL + '/ingredients/';
-    return fetch(url, request).then(getResponse);
+    return fetch(BASE_URL + '/auth/user', reqOptions).then(res => getResponse(res));
+}
+
+export function sendRefreshTokenRequest(token) {
+    return sendData('/auth/token', token).then(res => getResponse(res));
 }
