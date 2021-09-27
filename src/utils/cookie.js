@@ -38,7 +38,3 @@ export function setAccessCookie(accessToken) {
       setCookie('accessToken', accessToken.split('Bearer ')[1])
   }
 }
-
-export function setRefreshCookie(refreshToken) {
-  setCookie('refreshToken', refreshToken)
-}
