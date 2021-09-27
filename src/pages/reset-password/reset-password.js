@@ -1,9 +1,12 @@
 import styles from './style.module.css';
 import { useState, useRef } from 'react';
 import { Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { restorePassword } from '../../redux/actions/user';
+import { Redirect } from 'react-router-dom';
 
 function ResetPasswordPage() {
-    const [state, setState] = useState({
+    const [form, setForm] = useState({
         code: {
             value: '',
         },
@@ -16,10 +19,10 @@ function ResetPasswordPage() {
     const passwordRef = useRef(null);
 
     const onChange = e => {
-        setState({
-            ...state,
+        setForm({
+            ...form,
             [e.target.name]: {
-                ...state[e.target.name],
+                ...form[e.target.name],
                 value: e.target.value,
             }
         })
@@ -28,19 +31,19 @@ function ResetPasswordPage() {
     const onIconClick = () => {
         if (passwordRef.current.type === 'password') {
             passwordRef.current.type = 'text';
-            setState({
-                ...state,
+            setForm({
+                ...form,
                 password: {
-                    ...state.password,
+                    ...form.password,
                     icon: 'HideIcon',
                 }
             })
         } else {
             passwordRef.current.type = 'password'
-            setState({
-                ...state,
+            setForm({
+                ...form,
                 password: {
-                    ...state.password,
+                    ...form.password,
                     icon: 'ShowIcon',
                 }
             })
@@ -49,6 +52,34 @@ function ResetPasswordPage() {
 
     const setStyle = (styles) => {
         return styles.join(' ');
+    }
+
+    const dispatch = useDispatch();
+
+    const onRestoreClick = () => {
+        const formData = {
+            password: form.password.value,
+            token: form.code.value,
+        }
+        dispatch(restorePassword(formData));
+    }
+
+    const { restorePasswordSuccess, restorePasswordRequest } = useSelector(store => store.user);
+
+    if (restorePasswordSuccess) {
+        return <Redirect to={'/login'} />
+    }
+
+    if (restorePasswordRequest) {
+        return (
+            <div className={styles.wrapper}>
+                <div className={styles.container}>
+                    <div className={setStyle([styles.header, styles.center])}>
+                        <p className="text text_type_main-medium">Ждите...</p>
+                    </div>
+                </div>
+            </div>
+        );
     }
     
     return (
@@ -60,10 +91,10 @@ function ResetPasswordPage() {
                 <div className={styles.form}>
                     <div className={setStyle([styles.center, 'mt-6'])}><Input
                         type={'password'}
-                        icon={state.password.icon}
+                        icon={form.password.icon}
                         onIconClick={onIconClick}
                         placeholder={'Введите новый пароль'}
-                        value={state.password.value}
+                        value={form.password.value}
                         ref={passwordRef}
                         name={'password'}
                         onChange={onChange}
@@ -72,13 +103,13 @@ function ResetPasswordPage() {
                     <div className={setStyle([styles.center, 'mt-6'])}><Input
                         type={'text'}
                         placeholder={'Введите код из письма'}
-                        value={state.code.value}
+                        value={form.code.value}
                         name={'code'}
                         onChange={onChange}
                         />
                     </div>
                     <div className={setStyle([styles.center, 'mt-6', 'mb-20'])}>
-                        <Button type="primary" size="medium">
+                        <Button type="primary" size="medium" onClick={onRestoreClick}>
                             Сохранить
                         </Button>
                     </div>

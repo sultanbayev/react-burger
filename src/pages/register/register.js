@@ -1,11 +1,13 @@
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.css';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { register } from '../../redux/actions/user';
+import { Redirect } from 'react-router-dom';
 
 function RegisterPage() {
 
-    const [state, setState] = useState({
+    const [form, setForm] = useState({
         name: {
             value: '',
         },
@@ -21,10 +23,10 @@ function RegisterPage() {
     const passwordRef = useRef(null);
 
     const onChange = e => {
-        setState({
-            ...state,
+        setForm({
+            ...form,
             [e.target.name]: {
-                ...state[e.target.name],
+                ...form[e.target.name],
                 value: e.target.value,
             }
         })
@@ -33,19 +35,19 @@ function RegisterPage() {
     const onIconClick = () => {
         if (passwordRef.current.type === 'password') {
             passwordRef.current.type = 'text';
-            setState({
-                ...state,
+            setForm({
+                ...form,
                 password: {
-                    ...state.password,
+                    ...form.password,
                     icon: 'HideIcon',
                 }
             })
         } else {
             passwordRef.current.type = 'password'
-            setState({
-                ...state,
+            setForm({
+                ...form,
                 password: {
-                    ...state.password,
+                    ...form.password,
                     icon: 'ShowIcon',
                 }
             })
@@ -54,6 +56,30 @@ function RegisterPage() {
 
     const setStyle = (styles) => {
         return styles.join(' ');
+    }
+
+    const dispatch = useDispatch();
+
+    const onRegisterClick = useCallback((e) => {
+        const formData = {
+            email: form.email.value,
+            name: form.name.value,
+            password: form.password.value,
+        } 
+        if (formData.email && formData.password && formData.name) {
+            e.preventDefault();
+            dispatch(register(formData));
+        }
+    }, [dispatch, form])
+
+    const { user } = useSelector(store => store.user)
+
+    if (user) {
+        return (
+            <Redirect
+                to={{ pathname: '/' }}
+            />
+        );
     }
     
     return (
@@ -66,7 +92,7 @@ function RegisterPage() {
                     <div className={setStyle([styles.center, 'mt-6'])}><Input
                         type={'text'}
                         placeholder={'Имя'}
-                        value={state.name.value}
+                        value={form.name.value}
                         name={'name'}
                         onChange={onChange}
                         />
@@ -74,24 +100,24 @@ function RegisterPage() {
                     <div className={setStyle([styles.center, 'mt-6'])}><Input
                         type={'email'}
                         placeholder={'E-mail'}
-                        value={state.email.value}
+                        value={form.email.value}
                         name={'email'}
                         onChange={onChange}
                         />
                     </div>
                     <div className={setStyle([styles.center, 'mt-6'])}><Input
                         type={'password'}
-                        icon={state.password.icon}
+                        icon={form.password.icon}
                         onIconClick={onIconClick}
                         placeholder={'Пароль'}
-                        value={state.password.value}
+                        value={form.password.value}
                         ref={passwordRef}
                         name={'password'}
                         onChange={onChange}
                         />
                     </div>
                     <div className={setStyle([styles.center, 'mt-6', 'mb-20'])}>
-                        <Button type="primary" size="medium">
+                        <Button type="primary" size="medium" onClick={onRegisterClick}>
                             Зарегистрироваться
                         </Button>
                     </div>
