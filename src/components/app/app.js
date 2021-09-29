@@ -20,7 +20,7 @@ function App() {
         <BaseLayout>
           <Switch>
             <PrivateRoute path="/" exact><HomePage /></PrivateRoute>
-            <Route path="/profile" exact><ProfilePage /></Route>
+            <PrivateRoute path="/profile" exact><ProfilePage /></PrivateRoute>
             <Route path="/login" exact><LoginPage /></Route>
             <Route path="/register" exact><RegisterPage /></Route>
             <Route path="/forgot-password" exact><ForgotPasswordPage /></Route>
