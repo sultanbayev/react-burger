@@ -1,126 +1,104 @@
 import styles from './style.module.css';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { restorePassword } from '../../redux/actions/user';
+import { resetUserPassword } from '../../redux/actions/user';
 import { Redirect } from 'react-router-dom';
+import FormWrapper from '../../components/form-wrapper/form-wrapper';
 
 function ResetPasswordPage() {
     const [form, setForm] = useState({
-        code: {
-            value: '',
-        },
-        password: {
-            value: '',
-            icon: 'ShowIcon',
-        }
-    })
-
+        token: '',
+        password: '',
+    });
+    const [passwordIcon, setPasswordIcon] = useState('ShowIcon');
     const passwordRef = useRef(null);
-
-    const onChange = e => {
-        setForm({
-            ...form,
-            [e.target.name]: {
-                ...form[e.target.name],
-                value: e.target.value,
-            }
-        })
-    }
+    const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
     const onIconClick = () => {
         if (passwordRef.current.type === 'password') {
             passwordRef.current.type = 'text';
-            setForm({
-                ...form,
-                password: {
-                    ...form.password,
-                    icon: 'HideIcon',
-                }
-            })
+            setPasswordIcon('HideIcon');
         } else {
-            passwordRef.current.type = 'password'
-            setForm({
-                ...form,
-                password: {
-                    ...form.password,
-                    icon: 'ShowIcon',
-                }
-            })
+            passwordRef.current.type = 'password';
+            setPasswordIcon('ShowIcon');
         }
     }
 
-    const setStyle = (styles) => {
-        return styles.join(' ');
-    }
-
+    const setStyle = styles => styles.join(' ');
     const dispatch = useDispatch();
 
-    const onRestoreClick = () => {
-        const formData = {
-            password: form.password.value,
-            token: form.code.value,
+    const onResetPasswordClick = useCallback(() => {
+        const formData = { ...form };
+        if (formData.password && formData.token) {
+            dispatch(resetUserPassword(formData));
         }
-        dispatch(restorePassword(formData));
-    }
+    }, [dispatch, form]);
 
-    const { restorePasswordSuccess, restorePasswordRequest } = useSelector(store => store.user);
+    useEffect(() => {
+        const onEnter = (e) => {
+            if (e.keyCode === 13) onResetPasswordClick();
+        }
+        document.addEventListener('keydown', onEnter);
+        return () => document.removeEventListener('keydown', onEnter);
+    }, [onResetPasswordClick]);
 
-    if (restorePasswordSuccess) {
-        return <Redirect to={'/login'} />
-    }
+    const { resetPasswordSuccess, resetPasswordRequest, resetPasswordErrorMessage } = useSelector(store => store.user);
 
-    if (restorePasswordRequest) {
+    if (resetPasswordSuccess) return (<Redirect to={'/login'} />);
+
+    if (resetPasswordRequest) {
         return (
-            <div className={styles.wrapper}>
-                <div className={styles.container}>
-                    <div className={setStyle([styles.header, styles.center])}>
-                        <p className="text text_type_main-medium">Ждите...</p>
-                    </div>
+            <FormWrapper>
+                <div className={styles.center}>
+                    <p className="text text_type_main-medium">Ждите...</p>
                 </div>
-            </div>
+            </FormWrapper>
         );
     }
     
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <div className={setStyle([styles.header, styles.center])}>
-                    <h2 className="text text_type_main-medium">Восстановление пароля</h2>
+        <FormWrapper>
+            <div className={styles.center}>
+                <h2 className="text text_type_main-medium">Восстановление пароля</h2>
+            </div>
+            <div className={styles.form}>
+                <div className={setStyle([styles.center, 'mt-6'])}><Input
+                    type={'password'}
+                    icon={passwordIcon}
+                    onIconClick={onIconClick}
+                    placeholder={'Введите новый пароль'}
+                    value={form.password}
+                    ref={passwordRef}
+                    name={'password'}
+                    onChange={onChange}
+                    />
                 </div>
-                <div className={styles.form}>
-                    <div className={setStyle([styles.center, 'mt-6'])}><Input
-                        type={'password'}
-                        icon={form.password.icon}
-                        onIconClick={onIconClick}
-                        placeholder={'Введите новый пароль'}
-                        value={form.password.value}
-                        ref={passwordRef}
-                        name={'password'}
-                        onChange={onChange}
-                        />
-                    </div>
-                    <div className={setStyle([styles.center, 'mt-6'])}><Input
-                        type={'text'}
-                        placeholder={'Введите код из письма'}
-                        value={form.code.value}
-                        name={'code'}
-                        onChange={onChange}
-                        />
-                    </div>
-                    <div className={setStyle([styles.center, 'mt-6', 'mb-20'])}>
-                        <Button type="primary" size="medium" onClick={onRestoreClick}>
-                            Сохранить
-                        </Button>
-                    </div>
+                <div className={setStyle([styles.center, 'mt-6'])}><Input
+                    type={'text'}
+                    placeholder={'Введите код из письма'}
+                    value={form.token}
+                    name={'token'}
+                    onChange={onChange}
+                    />
                 </div>
-                <div className={styles.center}>
-                    <p className="text text_type_main-default">Вспомнили пароль?&nbsp;
-                        <a href="/login" className={styles.link}>Войти</a>
+                { resetPasswordErrorMessage && <div className={setStyle([styles.center, 'mt-6'])}>
+                    <p className={setStyle([styles.center, styles.error, 'text text_type_main-default'])}>
+                        { resetPasswordErrorMessage }
                     </p>
+                </div> }
+                <div className={setStyle([styles.center, 'mt-6', 'mb-20'])}>
+                    <Button type="primary" size="medium" onClick={onResetPasswordClick}>
+                        Сохранить
+                    </Button>
                 </div>
             </div>
-        </div>
+            <div className={styles.center}>
+                <p className="text text_type_main-default">Вспомнили пароль?&nbsp;
+                    <a href="/login" className={styles.link}>Войти</a>
+                </p>
+            </div>
+        </FormWrapper>
     )
 }
 
