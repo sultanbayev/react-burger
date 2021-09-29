@@ -1,127 +1,118 @@
 import styles from './style.module.css';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../redux/actions/user';
+import { loginUser } from '../../redux/actions/user';
 import { Redirect, useLocation } from 'react-router-dom';
+import FormWrapper from '../../components/form-wrapper/form-wrapper';
 
 function LoginPage() {
-
     const [form, setForm] = useState({
-        email: { value: '' },
-        password: {
-            value: '',
-            icon: 'ShowIcon',
-        }
-    })
-
+        email: '',
+        password: '',
+    });
+    const [passwordIcon, setPasswordIcon] = useState('ShowIcon');
     const passwordRef = useRef(null);
-
-    const onChange = e => {
-        setForm({
-            ...form,
-            [e.target.name]: {
-                ...form[e.target.name],
-                value: e.target.value,
-            }
-        })
-    }
+    const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
     const onIconClick = () => {
         if (passwordRef.current.type === 'password') {
             passwordRef.current.type = 'text';
-            setForm({
-                ...form,
-                password: {
-                    ...form.password,
-                    icon: 'HideIcon',
-                }
-            })
+            setPasswordIcon('HideIcon');
         } else {
-            passwordRef.current.type = 'password'
-            setForm({
-                ...form,
-                password: {
-                    ...form.password,
-                    icon: 'ShowIcon',
-                }
-            })
+            passwordRef.current.type = 'password';
+            setPasswordIcon('ShowIcon');
         }
     }
 
-    const setStyle = (styles) => {
-        return styles.join(' ');
-    }
-
+    const setStyle = styles => styles.join(' ');
     const dispatch = useDispatch();
 
-    const onLoginClick = useCallback((e) => {
+    const onLoginClick = useCallback(() => {
         const formData = {
-            email: form.email.value,
-            password: form.password.value,
-        } 
+            email: form.email,
+            password: form.password,
+        };
         if (formData.email && formData.password) {
-            e.preventDefault();
-            dispatch(login(formData));
+            dispatch(loginUser(formData));
         }
     }, [dispatch, form])
 
-    const { user } = useSelector(store => store.user);
+    useEffect(() => {
+        const onEnter = (e) => {
+            if (e.keyCode === 13) onLoginClick();
+        }
+        document.addEventListener('keydown', onEnter);
+        return () => document.removeEventListener('keydown', onEnter);
+    }, [onLoginClick]);
+
+    const { loginRequest, isAuthorised, loginErrorMessage } = useSelector(store => store.user);
     const location = useLocation();
 
-    if (user) {
-        if (location.state) {
-            return <Redirect to={ location.state.from } />
-        }
+    if (loginRequest) {
         return (
-            <Redirect to={{ pathname: '/' }} />
+            <FormWrapper>
+                <div className={styles.center}>
+                    <p className="text text_type_main-medium">Ждите...</p>
+                </div>
+            </FormWrapper>
         );
     }
-    
+
+    if (isAuthorised) {
+        if (location.state) {
+            return (<Redirect to={ location.state.from } />);
+        }
+        return (<Redirect to={{ pathname: '/' }} />);
+    }
+
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <div className={setStyle([styles.header, styles.center])}>
-                    <h2 className="text text_type_main-medium">Вход</h2>
+        <FormWrapper>
+            <div className={styles.center}>
+                <h2 className="text text_type_main-medium">Вход</h2>
+            </div>
+            <div className={styles.form}>
+                <div className={setStyle([styles.center, 'mt-6'])}><Input
+                    type={'email'}
+                    placeholder={'E-mail'}
+                    value={form.email}
+                    name={'email'}
+                    onChange={onChange}
+                    />
                 </div>
-                <div className={styles.form}>
-                    <div className={setStyle([styles.center, 'mt-6'])}><Input
-                        type={'email'}
-                        placeholder={'E-mail'}
-                        value={form.email.value}
-                        name={'email'}
-                        onChange={onChange}
-                        />
-                    </div>
-                    <div className={setStyle([styles.center, 'mt-6'])}><Input
-                        type={'password'}
-                        icon={form.password.icon}
-                        onIconClick={onIconClick}
-                        placeholder={'Пароль'}
-                        value={form.password.value}
-                        ref={passwordRef}
-                        name={'password'}
-                        onChange={onChange}
-                        />
-                    </div>
-                    <div className={setStyle([styles.center, 'mt-6', 'mb-20'])}>
-                        <Button type="primary" size="medium" onClick={onLoginClick}>
-                            Войти
-                        </Button>
-                    </div>
+                <div className={setStyle([styles.center, 'mt-6'])}><Input
+                    type={'password'}
+                    icon={passwordIcon}
+                    onIconClick={onIconClick}
+                    placeholder={'Пароль'}
+                    value={form.password}
+                    ref={passwordRef}
+                    name={'password'}
+                    onChange={onChange}
+                    />
                 </div>
-                <div className={styles.center}>
-                    <p className="text text_type_main-default">Вы — новый пользователь?&nbsp;
-                        <a href="/register" className={styles.link}>Зарегистрироваться</a>
+                { loginErrorMessage && <div className={setStyle([styles.center, 'mt-6'])}>
+                    <p className={setStyle([styles.center, styles.error, 'text text_type_main-default'])}>
+                        { loginErrorMessage }
                     </p>
-                </div>
-                <div className={styles.center}>
-                    <p className="text text_type_main-default">Забыли пароль?&nbsp;
-                        <a href="/forgot-password" className={styles.link}>Восстановить пароль</a>
-                    </p>
+                </div> }
+                <div className={setStyle([styles.center, 'mt-6', 'mb-20'])}>
+                    <Button type="primary" size="medium" onClick={onLoginClick}>
+                        Войти
+                    </Button>
                 </div>
             </div>
-        </div>
+            <div className={styles.center}>
+                <p className="text text_type_main-default">Вы — новый пользователь?&nbsp;
+                    <a href="/register" className={styles.link}>Зарегистрироваться</a>
+                </p>
+            </div>
+            <div className={styles.center}>
+                <p className="text text_type_main-default">Забыли пароль?&nbsp;
+                    <a href="/forgot-password" className={styles.link}>Восстановить пароль</a>
+                </p>
+            </div>
+        </FormWrapper>
     )
 }
 
