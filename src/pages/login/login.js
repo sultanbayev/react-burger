@@ -36,7 +36,8 @@ function LoginPage() {
         if (formData.email && formData.password) {
             dispatch(loginUser(formData));
         }
-    }, [dispatch, form])
+        // eslint-disable-next-line
+    }, [form])
 
     useEffect(() => {
         const onEnter = (e) => {

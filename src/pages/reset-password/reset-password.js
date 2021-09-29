@@ -33,7 +33,8 @@ function ResetPasswordPage() {
         if (formData.password && formData.token) {
             dispatch(resetUserPassword(formData));
         }
-    }, [dispatch, form]);
+        // eslint-disable-next-line
+    }, [form]);
 
     useEffect(() => {
         const onEnter = (e) => {

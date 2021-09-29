@@ -36,7 +36,8 @@ function RegisterPage() {
         if (formData.email && formData.password && formData.name) {
             dispatch(registerUser(formData));
         }
-    }, [dispatch, form]);
+        // eslint-disable-next-line
+    }, [form]);
 
     useEffect(() => {
         const onEnter = (e) => {

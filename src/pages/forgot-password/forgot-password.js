@@ -19,7 +19,8 @@ function ForgotPasswordPage() {
         if (formData.email) {
             dispatch(forgotUserPassword(formData));
         }
-    }, [dispatch, email]);
+        // eslint-disable-next-line
+    }, [email]);
 
     useEffect(() => {
         const onEnter = (e) => {
