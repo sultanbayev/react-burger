@@ -8,7 +8,6 @@ import FormWrapper from '../../components/form-wrapper/form-wrapper';
 
 function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
-    const { forgotPasswordSuccess, forgotPasswordRequest } = useSelector(store => store.user);
     const onChange = e => setEmail(e.target.value);
 
     const setStyle = styles => styles.join(' ');
@@ -30,6 +29,9 @@ function ForgotPasswordPage() {
         return () => document.removeEventListener('keydown', onEnter);
     }, [onForgortPasswordClick]);
 
+    const { forgotPasswordSuccess, forgotPasswordRequest, isAuthorised } = useSelector(store => store.user);
+
+    if (isAuthorised) return (<Redirect to={{ pathname: '/' }} />);
     if (forgotPasswordSuccess) return (<Redirect to={'/reset-password'} />);
     
     if (forgotPasswordRequest) {

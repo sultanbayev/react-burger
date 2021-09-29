@@ -44,8 +44,11 @@ function ResetPasswordPage() {
         return () => document.removeEventListener('keydown', onEnter);
     }, [onResetPasswordClick]);
 
-    const { resetPasswordSuccess, resetPasswordRequest, resetPasswordErrorMessage } = useSelector(store => store.user);
+    const { resetPasswordSuccess, resetPasswordRequest, resetPasswordErrorMessage, isAuthorised } = useSelector(store => store.user);
 
+    const isResetPassword = localStorage.getItem('isResetPassword');
+    if (!isResetPassword) return (<Redirect to={'/forgot-password'} />);
+    if (isAuthorised) return (<Redirect to={'/'} />);
     if (resetPasswordSuccess) return (<Redirect to={'/login'} />);
 
     if (resetPasswordRequest) {

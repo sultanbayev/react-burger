@@ -13,20 +13,8 @@ function LoginPage() {
     });
     const [passwordIcon, setPasswordIcon] = useState('ShowIcon');
     const passwordRef = useRef(null);
-    const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
-
-    const onIconClick = () => {
-        if (passwordRef.current.type === 'password') {
-            passwordRef.current.type = 'text';
-            setPasswordIcon('HideIcon');
-        } else {
-            passwordRef.current.type = 'password';
-            setPasswordIcon('ShowIcon');
-        }
-    }
-
-    const setStyle = styles => styles.join(' ');
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const onLoginClick = useCallback(() => {
         const formData = {
@@ -48,7 +36,27 @@ function LoginPage() {
     }, [onLoginClick]);
 
     const { loginRequest, isAuthorised, loginErrorMessage } = useSelector(store => store.user);
-    const location = useLocation();
+
+    if (isAuthorised) {
+        if (location.state) {
+            return (<Redirect to={ location.state.from } />);
+        }
+        return (<Redirect to={{ pathname: '/' }} />);
+    }
+
+    const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+    const onIconClick = () => {
+        if (passwordRef.current.type === 'password') {
+            passwordRef.current.type = 'text';
+            setPasswordIcon('HideIcon');
+        } else {
+            passwordRef.current.type = 'password';
+            setPasswordIcon('ShowIcon');
+        }
+    }
+
+    const setStyle = styles => styles.join(' ');
 
     if (loginRequest) {
         return (
@@ -58,13 +66,6 @@ function LoginPage() {
                 </div>
             </FormWrapper>
         );
-    }
-
-    if (isAuthorised) {
-        if (location.state) {
-            return (<Redirect to={ location.state.from } />);
-        }
-        return (<Redirect to={{ pathname: '/' }} />);
     }
 
     return (
