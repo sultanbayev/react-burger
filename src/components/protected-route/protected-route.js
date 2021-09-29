@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-function PrivateRoute({ children, ...rest }) {
+function ProtectedRoute({ children, ...rest }) {
 
     const { isAuthorised } = useSelector(store => store.user);
 
@@ -14,9 +14,9 @@ function PrivateRoute({ children, ...rest }) {
     )
 }
 
-export default PrivateRoute;
+export default ProtectedRoute;
 
-PrivateRoute.propTypes = {
+ProtectedRoute.propTypes = {
     children: PropTypes.node.isRequired,
     rest: PropTypes.object
 }
