@@ -5,30 +5,38 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAILED,
     LOGIN_REQUEST,
+    FORGOT_PASSWORD_REQUEST,
+    FORGOT_PASSWORD_SUCCESS,
+    FORGOT_PASSWORD_FAILED,
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_SUCCESS,
     RESET_PASSWORD_FAILED,
-    RESTORE_PASSWORD_REQUEST,
-    RESTORE_PASSWORD_SUCCESS,
-    RESTORE_PASSWORD_FAILED,    
+    
+    GET_USER_REQUEST,
+    GET_USER_SUCCESS,
+    GET_USER_FAILED,    
 } from '../actions/user';
 
 const initialState = {
-    user: null,
-
+    user: {},
+    isAuthorised: false,
+    
     registerRequest: false,
     registerRequestFailed: false,
-
+    registerErrorMessage: '',
     loginRequest: false,
     loginRequestFailed: false,
-
+    loginErrorMessage: '',
+    forgotPasswordRequest: false,
+    forgotPasswordSuccess: false,
+    forgotPasswordFailed: false,
     resetPasswordRequest: false,
     resetPasswordSuccess: false,
     resetPasswordFailed: false,
+    resetPasswordErrorMessage: '',
 
-    restorePasswordRequest: false,
-    restorePasswordSuccess: false,
-    restorePasswordFailed: false,
+    getUserRequest: false,
+    getUserFailed: false,
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -44,14 +52,17 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 registerRequestFailed: false,
                 user: action.user,
-                registerRequest: false
+                isAuthorised: true,
+                registerRequest: false,
+                registerErrorMessage: '',
             };
         }
         case REGISTER_FAILED: {
             return {
                 ...state,
                 registerRequestFailed: true,
-                registerRequest: false
+                registerRequest: false,
+                registerErrorMessage: action.message,
             };
         }
         case LOGIN_REQUEST: {
@@ -64,15 +75,39 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loginRequestFailed: false,
-                user: action.user,
                 loginRequest: false,
+                user: action.user,
+                isAuthorised: true,
+                loginErrorMessage: '',
             };
         }
         case LOGIN_FAILED: {
             return {
                 ...state,
                 loginRequestFailed: true,
-                loginRequest: false
+                loginRequest: false,
+                loginErrorMessage: action.message,
+            };
+        }
+        case FORGOT_PASSWORD_REQUEST: {
+            return {
+                ...state,
+                forgotPasswordRequest: true,
+            };
+        }
+        case FORGOT_PASSWORD_SUCCESS: {
+            return {
+                ...state,
+                forgotPasswordSuccess: true,
+                forgotPasswordRequest: false,
+                forgotPasswordFailed: false,
+            };
+        }
+        case FORGOT_PASSWORD_FAILED: {
+            return {
+                ...state,
+                forgotPasswordFailed: true,
+                forgotPasswordRequest: false,
             };
         }
         case RESET_PASSWORD_REQUEST: {
@@ -87,33 +122,40 @@ export const userReducer = (state = initialState, action) => {
                 resetPasswordSuccess: true,
                 resetPasswordRequest: false,
                 resetPasswordFailed: false,
+                resetPasswordErrorMessage: '',
             };
         }
         case RESET_PASSWORD_FAILED: {
             return {
                 ...state,
                 resetPasswordFailed: true,
+                resetPasswordRequest: false,
+                resetPasswordErrorMessage: action.message,
             };
         }
-        case RESTORE_PASSWORD_REQUEST: {
+        
+
+        case GET_USER_REQUEST: {
             return {
                 ...state,
-                restorePasswordRequest: true,
-            };
+                getUserRequest: true,
+            }
         }
-        case RESTORE_PASSWORD_SUCCESS: {
+        case GET_USER_SUCCESS: {
             return {
                 ...state,
-                restorePasswordSuccess: true,
-                restorePasswordRequest: false,
-                restorePasswordFailed: false,
-            };
+                getUserRequest: false,
+                getUserFailed: false,
+                user: action.user,
+                isAuthorised: true,
+            }
         }
-        case RESTORE_PASSWORD_FAILED: {
+        case GET_USER_FAILED: {
             return {
                 ...state,
-                restorePasswordFailed: true,
-            };
+                getUserFailed: true,
+                getUserRequest: false,
+            }
         }
         default: {
             return state

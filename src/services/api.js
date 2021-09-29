@@ -1,8 +1,6 @@
-import { getCookie } from "../utils/cookie";
-
 export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
-export function sendData(endpoint, form) {
+export function sendData(endpoint, data) {
     const reqOptions = {
         method: 'POST',
         mode: 'cors',
@@ -13,15 +11,13 @@ export function sendData(endpoint, form) {
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-        body: JSON.stringify(form),
+        body: JSON.stringify(data),
     };
     return fetch(BASE_URL + endpoint, reqOptions);
 }
 
 export function getResponse(res) {
-    return res.ok
-        ? res.json()
-        : Promise.reject('Статус пришел не ОК. Ошибка: ' + res.status);
+    return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 }
 
 export function sendOrderNumberRequest(ingredients) {
@@ -32,59 +28,10 @@ export function getIngredients() {
     return fetch(BASE_URL + '/ingredients').then(res => getResponse(res));
 }
 
-export function sendRegisterRequest(formData) {
-    return sendData('/auth/register', formData).then(res => getResponse(res));
+export function forgotPassword(formData) {
+    return sendData('/password-reset', formData).then(getResponse);
 }
 
-export function getUser() {
-    const reqOptions = {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-            authorization: 'Bearer ' + getCookie('accessToken')
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer'
-    }
-    return fetch(BASE_URL + '/auth/user', reqOptions).then(res => getResponse(res));
-}
-
-export function sendLoginREquest(formData) {
-    return sendData('/auth/login', formData).then(res => getResponse(res));
-}
-
-export function sendLogoutRequest(token) {
-    return sendData('/auth/logout', token).then(res => getResponse(res));
-}
-
-export function sendResetPasswordRequest(formData) {
-    return sendData('/password-reset', formData).then(res => getResponse(res));
-}
-
-export function sendRestorePasswordRequest(formData) {
-    return sendData('/password-reset/reset', formData).then(res => getResponse(res))
-}
-
-export function patchUser(data) {
-    const reqOptions = {
-        method: 'PATCH',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-            authorization: 'Bearer ' + getCookie('accessToken')
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify(data)
-    };
-    return fetch(BASE_URL + '/auth/user', reqOptions).then(res => getResponse(res));
-}
-
-export function sendRefreshTokenRequest(token) {
-    return sendData('/auth/token', token).then(res => getResponse(res));
+export function resetPassword(formData) {
+    return sendData('/password-reset/reset', formData).then(getResponse)
 }
