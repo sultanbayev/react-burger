@@ -20,12 +20,12 @@ export function getResponse(res) {
     return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
 }
 
-export function sendOrderNumberRequest(ingredients) {
-    return sendData('/orders', ingredients).then(res => getResponse(res));
+export function sendOrder(ingredients) {
+    return sendData('/orders', ingredients).then(getResponse);
 }
 
 export function getIngredients() {
-    return fetch(BASE_URL + '/ingredients').then(res => getResponse(res));
+    return fetch(BASE_URL + '/ingredients').then(getResponse);
 }
 
 export function forgotPassword(formData) {

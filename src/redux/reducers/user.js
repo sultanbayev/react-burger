@@ -11,10 +11,15 @@ import {
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_SUCCESS,
     RESET_PASSWORD_FAILED,
-    
     GET_USER_REQUEST,
     GET_USER_SUCCESS,
-    GET_USER_FAILED,    
+    GET_USER_FAILED,
+    REFRESH_TOKEN_REQUEST,
+    REFRESH_TOKEN_SUCCESS,
+    REFRESH_TOKEN_FAILED,
+    PATCH_USER_REQUEST,
+    PATCH_USER_SUCCESS,
+    PATCH_USER_FAILED,
 } from '../actions/user';
 
 const initialState = {
@@ -22,10 +27,10 @@ const initialState = {
     isAuthorised: false,
     
     registerRequest: false,
-    registerRequestFailed: false,
+    registerFailed: false,
     registerErrorMessage: '',
     loginRequest: false,
-    loginRequestFailed: false,
+    loginFailed: false,
     loginErrorMessage: '',
     forgotPasswordRequest: false,
     forgotPasswordSuccess: false,
@@ -34,9 +39,16 @@ const initialState = {
     resetPasswordSuccess: false,
     resetPasswordFailed: false,
     resetPasswordErrorMessage: '',
-
     getUserRequest: false,
     getUserFailed: false,
+    getUserErrorMessage: '',
+    refreshTokenRequest: false,
+    refreshTokenSuccess: false,
+    refreshTokenFailed: false,
+    refreshTokenErrorMessage: '',
+    patchUserRequest: false,
+    patchUserFailed: false,
+    patchUserErrorMessage: '',
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -133,13 +145,11 @@ export const userReducer = (state = initialState, action) => {
                 resetPasswordErrorMessage: action.message,
             };
         }
-        
-
         case GET_USER_REQUEST: {
             return {
                 ...state,
                 getUserRequest: true,
-            }
+            };
         }
         case GET_USER_SUCCESS: {
             return {
@@ -148,14 +158,63 @@ export const userReducer = (state = initialState, action) => {
                 getUserFailed: false,
                 user: action.user,
                 isAuthorised: true,
-            }
+                getUserErrorMessage: '',
+            };
         }
         case GET_USER_FAILED: {
             return {
                 ...state,
                 getUserFailed: true,
                 getUserRequest: false,
-            }
+                getUserErrorMessage: action.message,
+            };
+        }
+        case REFRESH_TOKEN_REQUEST: {
+            return {
+                ...state,
+                refreshTokenRequest: true,
+            };
+        }
+        case REFRESH_TOKEN_SUCCESS: {
+            return {
+                ...state,
+                refreshTokenRequest: false,
+                refreshTokenFailed: false,
+                refreshTokenSuccess: true,
+                refreshTokenErrorMessage: '',
+            };
+        }
+        case REFRESH_TOKEN_FAILED: {
+            return {
+                ...state,
+                refreshTokenFailed: true,
+                refreshTokenRequest: false,
+                refreshTokenErrorMessage: action.message,
+            };
+        }
+        case PATCH_USER_REQUEST: {
+            return {
+                ...state,
+                patchUserRequest: true,
+            };
+        }
+        case PATCH_USER_SUCCESS: {
+            return {
+                ...state,
+                patchUserRequest: false,
+                patchUserFailed: false,
+                user: action.user,
+                isAuthorised: true,
+                patchUserErrorMessage: '',
+            };
+        }
+        case PATCH_USER_FAILED: {
+            return {
+                ...state,
+                patchUserFailed: true,
+                patchUserRequest: false,
+                patchUserErrorMessage: action.message,
+            };
         }
         default: {
             return state
