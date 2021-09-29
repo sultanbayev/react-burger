@@ -12,7 +12,8 @@ function BurgerIngredients() {
 
     useEffect(() => {
         dispatch(fetchIngredients());
-    }, [dispatch])
+        //eslint-disable-next-line
+    }, [])
 
     const buns = useMemo(() => {
         return burgerIngredients.filter(i => i.type === 'bun')
