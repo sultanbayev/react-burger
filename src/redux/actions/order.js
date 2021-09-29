@@ -1,4 +1,4 @@
-import { sendOrderNumberRequest } from '../../services/api';
+import { sendOrder } from '../../services/api';
 import { OPEN_MODAL_WITH_ORDER } from './modal';
 import { clearComponentsAndResetCounts } from "./burger-constructor";
 
@@ -11,7 +11,7 @@ export const fetchOrder = (ingredients) => {
         dispatch({
             type: GET_ORDER_REQUEST
         });
-        sendOrderNumberRequest(ingredients)
+        sendOrder(ingredients)
             .then((res) => {
                 if (res && res.success) {
                     dispatch({
