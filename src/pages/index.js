@@ -6,6 +6,7 @@ import ForgotPasswordPage from './forgot-password/forgot-password';
 import ResetPasswordPage from './reset-password/reset-password';
 import ProfilePage from './profile/profile';
 import IngredientPage from './ingredient/ingredient';
+import ProfileOrdersPage from './profile/profile-orders';
 
 export {
     HomePage,
@@ -15,5 +16,6 @@ export {
     ResetPasswordPage,
     ProfilePage,
     IngredientPage,
-    NotFoundPage
+    NotFoundPage,
+    ProfileOrdersPage
 };

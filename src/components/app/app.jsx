@@ -6,7 +6,8 @@ import {
     ResetPasswordPage,
     ProfilePage,
     IngredientPage,
-    NotFoundPage } from '../../pages';
+    NotFoundPage,
+    ProfileOrdersPage } from '../../pages';
 import BaseLayout from '../layouts/base-layout';
 import {
   BrowserRouter as Router,
@@ -53,6 +54,7 @@ function ModalSwitch() {
       <Switch location={ background || location } >
         <Route path="/" exact><HomePage /></Route>
         <ProtectedRoute path="/profile" exact><ProfilePage /></ProtectedRoute>
+        <ProtectedRoute path="/profile/orders" exact><ProfileOrdersPage /></ProtectedRoute>
         <Route path="/login" exact><LoginPage /></Route>
         <Route path="/register" exact><RegisterPage /></Route>
         <Route path="/forgot-password" exact><ForgotPasswordPage /></Route>
