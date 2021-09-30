@@ -1,31 +1,12 @@
+import React from 'react';
 import NavItem from '../nav-item/nav-item';
 import styles from './styles.module.css';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
-function NavBar() {
+function NavBar({ links }) {
 
-    const { isAuthorised } = useSelector(store => store.user);
-
-    const links = [
-        {   
-            id: 0,
-            path: '/',
-            text: 'Конструктор',
-            icon: 'burger',
-        },
-        {   
-            id: 1,
-            path: '/',
-            text: 'Лента заказов',
-            icon: 'list',
-        },
-        {   
-            id: 2,
-            path: isAuthorised ? '/profile' : '/login',
-            text: isAuthorised ? 'Личный кабинет' : 'Войти',
-            icon: 'profile',
-        },
-    ];
+    const activeClass = 'text text_type_main-default ml-2';
+    const passiveClass = 'text text_type_main-default ml-2 text_color_inactive';
 
     return (
         <nav className={styles.nav}>
@@ -33,7 +14,13 @@ function NavBar() {
                 { links.map((link) => {
                         return (
                             <li key={link.id} className={styles.item}>
-                                <NavItem path={link.path} text={link.text} icon={link.icon} />
+                                <NavItem
+                                    path={link.path}
+                                    text={link.text}
+                                    icon={link.icon}
+                                    activeClass={activeClass}
+                                    passiveClass={passiveClass}
+                                />
                             </li>
                         );
                     })
@@ -43,4 +30,13 @@ function NavBar() {
     );
 }
 
-export default NavBar;
+NavBar.propTypes = {
+    links: PropTypes.arrayOf(PropTypes.shape({   
+        id: PropTypes.number.isRequired,
+        path: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        icon: PropTypes.string,
+    }).isRequired).isRequired,
+};
+
+export default React.memo(NavBar);
