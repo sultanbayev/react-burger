@@ -1,6 +1,7 @@
 import { forgotPassword, resetPassword } from '../../services/api';
-import { register, login, getUser, refreshToken, patchUser } from '../../services/auth';
-import { setAccessCookie } from '../../utils/cookie';
+import { register, login, getUser, refreshToken, patchUser, logout } from '../../services/auth';
+import { deleteCookie, setAccessCookie } from '../../utils/cookie';
+import { clearComponentsAndResetCounts } from './burger-constructor';
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
@@ -23,6 +24,9 @@ export const REFRESH_TOKEN_FAILED = 'REFRESH_TOKEN_FAILED';
 export const PATCH_USER_REQUEST = 'PATCH_USER_REQUEST';
 export const PATCH_USER_SUCCESS = 'PATCH_USER_SUCCESS';
 export const PATCH_USER_FAILED = 'PATCH_USER_FAILED';
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILED = 'LOGOUT_FAILED';
 
 export const registerUser = (formData) => {
     return (dispatch) => {
@@ -196,5 +200,33 @@ export const patchUserData = (userData) => {
                 console.error(err);
             }
         });
+    });
+}
+
+export const logoutUser = () => {
+    return (dispatch => {
+        dispatch({
+            type: LOGOUT_REQUEST
+        });
+        const token = localStorage.getItem('refreshToken');
+        if (token) {
+            logout({ token: token })
+                .then(res => {
+                    if (res.success) {
+                        deleteCookie('accessToken');
+                        localStorage.removeItem('refreshToken');
+                        dispatch({
+                            type: LOGOUT_SUCCESS,
+                        });
+                        dispatch(clearComponentsAndResetCounts());
+                    }
+                }).catch(err => {
+                    dispatch({
+                        type: LOGOUT_FAILED,
+                        message: err.message
+                    });
+                    console.error(err);
+                });
+        }
     });
 }

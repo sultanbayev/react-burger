@@ -20,6 +20,9 @@ import {
     PATCH_USER_REQUEST,
     PATCH_USER_SUCCESS,
     PATCH_USER_FAILED,
+    LOGOUT_REQUEST,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAILED
 } from '../actions/user';
 
 const initialState = {
@@ -49,6 +52,9 @@ const initialState = {
     patchUserRequest: false,
     patchUserFailed: false,
     patchUserErrorMessage: '',
+    logoutRequest: false,
+    logoutFailed: false,
+    logoutErrorMessage: '',
 }
 
 export const userReducer = (state = initialState, action) => {
@@ -214,6 +220,30 @@ export const userReducer = (state = initialState, action) => {
                 patchUserFailed: true,
                 patchUserRequest: false,
                 patchUserErrorMessage: action.message,
+            };
+        }
+        case LOGOUT_REQUEST: {
+            return {
+                ...state,
+                logoutRequest: true,
+            };
+        }
+        case LOGOUT_SUCCESS: {
+            return {
+                ...state,
+                isAuthorised: false,
+                user: {},
+                logoutRequest: false,
+                logoutFailed: false,
+                logoutErrorMessage: '',
+            };
+        }
+        case LOGOUT_FAILED: {
+            return {
+                ...state,
+                logoutFailed: true,
+                logoutRequest: false,
+                logoutErrorMessage: action.message,
             };
         }
         default: {
