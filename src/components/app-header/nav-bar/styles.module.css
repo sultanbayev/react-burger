@@ -22,6 +22,14 @@ li.item > a {
     align-items: center;
 }
 
+li.item > a > svg {
+    fill: #8585ad;
+}
+
+li.item > a.active > svg {
+    fill: #ffffff;
+}
+
 li.item:last-child {
     position: absolute;
     right: 0;
@@ -33,4 +41,12 @@ li.item:last-child {
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.inactive {
+    color: #8585ad;
+}
+
+.active {
+    color: #ffffff;
 }

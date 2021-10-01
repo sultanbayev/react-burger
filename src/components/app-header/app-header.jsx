@@ -1,30 +1,28 @@
 import styles from './styles.module.css';
 import NavBar from './nav-bar/nav-bar';
 import AppLogo from './app-logo/app-logo';
-import { useSelector } from 'react-redux';
+import { BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function AppHeader() {
-
-    const { isAuthorised } = useSelector(store => store.user);
 
     const links = [
         {   
             id: 0,
-            path: '/',
+            to: '/',
             text: 'Конструктор',
-            icon: 'burger',
+            icon: <BurgerIcon />,
         },
         {   
             id: 1,
-            path: '/',
+            to: '/',
             text: 'Лента заказов',
-            icon: 'list',
+            icon: <ListIcon />,
         },
         {   
             id: 2,
-            path: isAuthorised ? '/profile' : '/login',
-            text: isAuthorised ? 'Личный кабинет' : 'Войти',
-            icon: 'profile',
+            to: '/profile',
+            text: 'Личный кабинет',
+            icon: <ProfileIcon />,
         },
     ];
 

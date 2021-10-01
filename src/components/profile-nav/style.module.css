@@ -1,0 +1,30 @@
+.aside {
+    width: 320px;
+    margin-right: 60px;
+}
+
+.menu {
+    margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.menu_item {
+    height: 64px;
+    color: #8585ad;
+}
+
+.description {
+    opacity: 40%;
+}
+
+.btn_logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.active, .active:hover {
+    color: #ffffff;
+}
