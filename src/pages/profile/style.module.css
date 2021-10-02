@@ -8,12 +8,6 @@
 .form {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-}
-
-.center {
-    display: flex;
-    justify-content: center;
 }
 
 .error {

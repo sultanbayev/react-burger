@@ -1,5 +1,5 @@
 import styles from './style.module.css';
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../services/actions/user';
@@ -16,25 +16,6 @@ function LoginPage() {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const onLoginClick = useCallback(() => {
-        const formData = {
-            email: form.email,
-            password: form.password,
-        };
-        if (formData.email && formData.password) {
-            dispatch(loginUser(formData));
-        }
-        // eslint-disable-next-line
-    }, [form])
-
-    useEffect(() => {
-        const onEnter = (e) => {
-            if (e.keyCode === 13) onLoginClick();
-        }
-        document.addEventListener('keydown', onEnter);
-        return () => document.removeEventListener('keydown', onEnter);
-    }, [onLoginClick]);
-
     const { loginRequest, isAuthorised, loginErrorMessage } = useSelector(store => store.user);
 
     if (isAuthorised) {
@@ -46,6 +27,14 @@ function LoginPage() {
 
     const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+        const formData = { ...form };
+        if (formData.email && formData.password) {
+            dispatch(loginUser(formData));
+        }
+    }
+
     const onIconClick = () => {
         if (passwordRef.current.type === 'password') {
             passwordRef.current.type = 'text';
@@ -56,60 +45,52 @@ function LoginPage() {
         }
     }
 
-    const setStyle = styles => styles.join(' ');
-
     if (loginRequest) {
         return (
             <FormWrapper>
-                <div className={styles.center}>
-                    <p className="text text_type_main-medium">Ждите...</p>
-                </div>
+                <div><p className="text text_type_main-medium">Ждите...</p></div>
             </FormWrapper>
         );
     }
 
     return (
         <FormWrapper>
-            <div className={styles.center}>
-                <h2 className="text text_type_main-medium">Вход</h2>
-            </div>
-            <div className={styles.form}>
-                <div className={setStyle([styles.center, 'mt-6'])}><Input
-                    type={'email'}
-                    placeholder={'E-mail'}
-                    value={form.email}
-                    name={'email'}
-                    onChange={onChange}
+            <h2 className="text text_type_main-medium">Вход</h2>
+            <form onSubmit={onSubmit} className={styles.form}>
+                <div className="mt-6">
+                    <Input
+                        type={'email'}
+                        placeholder={'E-mail'}
+                        value={form.email}
+                        name={'email'}
+                        onChange={onChange}
                     />
                 </div>
-                <div className={setStyle([styles.center, 'mt-6'])}><Input
-                    type={'password'}
-                    icon={passwordIcon}
-                    onIconClick={onIconClick}
-                    placeholder={'Пароль'}
-                    value={form.password}
-                    ref={passwordRef}
-                    name={'password'}
-                    onChange={onChange}
+                <div className="mt-6">
+                    <Input
+                        type={'password'}
+                        icon={passwordIcon}
+                        onIconClick={onIconClick}
+                        placeholder={'Пароль'}
+                        value={form.password}
+                        ref={passwordRef}
+                        name={'password'}
+                        onChange={onChange}
                     />
                 </div>
-                { loginErrorMessage && <div className={setStyle([styles.center, 'mt-6'])}>
-                    <p className={setStyle([styles.center, styles.error, 'text text_type_main-default'])}>
-                        { loginErrorMessage }
-                    </p>
-                </div> }
-                <div className={setStyle([styles.center, 'mt-6', 'mb-20'])}>
-                    <Button type="primary" size="medium" onClick={onLoginClick}>
-                        Войти
-                    </Button>
-                </div>
-            </div>
-            <div className={styles.center}>
+                { loginErrorMessage && (
+                    <div className={`mt-6 ${styles.error}`}>
+                        <p className="text text_type_main-default">{ loginErrorMessage }</p>
+                    </div> )
+                }
+                <div className="mt-6"><Button type="primary" size="medium">Войти</Button></div>
+            </form>
+            <div>
                 <p className="text text_type_main-default">Вы — новый пользователь?&nbsp;
                     <Link to="/register" className={styles.link}>Зарегистрироваться</Link>
                 </p>
             </div>
-            <div className={styles.center}>
+            <div>
                 <p className="text text_type_main-default">Забыли пароль?&nbsp;
                     <Link to="/forgot-password" className={styles.link}>Восстановить пароль</Link>
                 </p>
