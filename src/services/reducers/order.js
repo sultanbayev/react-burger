@@ -5,6 +5,7 @@ import {
 } from '../actions/order';
 
 const initialState = {
+    name: '',
     number: '',
     orderRequest: false,
     orderFailed: false,
@@ -22,6 +23,7 @@ export const orderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 orderFailed: false,
+                name: action.name,
                 number: action.number,
                 orderRequest: false
             };

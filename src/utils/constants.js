@@ -1,0 +1,4 @@
+export const dndTypes = {
+    INGREDIENT: 'INGREDIENT',
+    CONSTRUCTOR_ITEM: 'CONSTRUCTOR_ITEM'
+}

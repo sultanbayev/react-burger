@@ -2,6 +2,9 @@
     display: flex;
     align-items: center;
 }
+.messages {
+    text-align: end;
+}
 
 .order_info {
     margin-top: 40px;

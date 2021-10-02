@@ -10,6 +10,7 @@ import {
 const initialState = {
     items: [],
     itemsRequest: false,
+    itemsSuccess: false,
     itemsFailed: false,
 };
 
@@ -25,6 +26,7 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 itemsFailed: false,
+                itemsSuccess: true,
                 items: [...action.items].map((item) => ({ ...item, count: 0 })),
                 itemsRequest: false
             };

@@ -1,7 +1,9 @@
 ul.list {
+    width: 100%;
     list-style-type: none;
     margin: 0;
     padding: 0;
+    position: relative;
 }
 
 li.item {
@@ -11,12 +13,40 @@ li.item {
     padding: 0;
 }
 
+li.item > a {
+    height: 56px;
+    padding: 0 20px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+li.item > a > svg {
+    fill: #8585ad;
+}
+
+li.item > a.active > svg {
+    fill: #ffffff;
+}
+
 li.item:last-child {
+    position: absolute;
+    right: 0;
     margin-right: 0;
 }
 
 .nav {
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.inactive {
+    color: #8585ad;
+}
+
+.active {
+    color: #ffffff;
 }

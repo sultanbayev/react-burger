@@ -1,0 +1,15 @@
+.wrapper {
+    width: 1240px;
+    margin: 0 auto;
+    margin-top: 120px;
+    display: flex;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.error {
+    color: #FF0000;
+}

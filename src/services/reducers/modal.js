@@ -1,29 +1,17 @@
-import {
-    OPEN_MODAL_WITH_INGREDIENT,
-    OPEN_MODAL_WITH_ORDER,
-    CLOSE_MODAL
-} from '../actions/modal';
-import { modalContentTypes } from '../utils/constants';
+import { OPEN_MODAL, CLOSE_MODAL } from '../actions/modal';
 
 const initialState = {
     isOpen: false,
-    content: '',
+    content: null,
 }
 
 export const modalReducer = (state = initialState, action) => {
     switch (action.type) {
-        case OPEN_MODAL_WITH_INGREDIENT: {
+        case OPEN_MODAL: {
             return {
                 ...state,
                 isOpen: true,
-                content: modalContentTypes.INGREDIENT_DETAILS,
-            };
-        }
-        case OPEN_MODAL_WITH_ORDER: {
-            return {
-                ...state,
-                isOpen: true,
-                content: modalContentTypes.ORDER_DETAILS,
+                content: action.content,
             };
         }
         case CLOSE_MODAL: {
