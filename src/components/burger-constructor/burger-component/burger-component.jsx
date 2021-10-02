@@ -3,75 +3,83 @@ import PropTypes from 'prop-types';
 import styles from './styles.module.css';
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { componentShape } from '../../../utils/prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeConstructorComponent, REORDER_CONSTRUCTOR_COMPONENTS } from "../../../services/actions/burger-constructor";
+import { useDispatch } from 'react-redux';
+import { removeConstructorComponent } from "../../../services/actions/burger-constructor";
 import { useDrag, useDrop } from "react-dnd";
 import { dndTypes } from "../../../utils/constants";
 
-function BurgerComponent({ type, isLocked, item }) {
+function BurgerComponent({ type, isLocked, component, index, moveComponent }) {
+    const ref = useRef(null);
     const dispatch = useDispatch();
-    const staffings = useSelector(store => store.burgerConstructor.staffings)
 
-    const handleClose = () => {
-        dispatch(removeConstructorComponent(item))
+    const removeItem = () => {
+        dispatch(removeConstructorComponent(component));
     }
 
-    const ref = useRef(null)
+    const [{ handlerId }, drop] = useDrop({
+        accept: dndTypes.CONSTRUCTOR_ITEM,
+        collect(monitor) {
+            return {
+                handlerId: monitor.getHandlerId(),
+            };
+        },
+        hover(item, monitor) {
+            if (!ref.current) {
+                return;
+            }
+            const dragIndex = item.index;
+            const hoverIndex = index;
+            if (dragIndex === hoverIndex) {
+                return;
+            }
+            const hoverBoundingRect = ref.current?.getBoundingClientRect();
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            const clientOffset = monitor.getClientOffset();
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return;
+            }
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return;
+            }
+            moveComponent(dragIndex, hoverIndex);
+            item.index = hoverIndex;
+        }
+    });
 
-    const [{isDragging}, drag] = useDrag({
+    const [{ isDragging }, drag] = useDrag({
         type: dndTypes.CONSTRUCTOR_ITEM,
-        item: item,
+        item: () => {
+            return { id: component.uuid, index };
+        },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
-    })
-
-    const [{isHovered}, drop] = useDrop({
-        accept: dndTypes.CONSTRUCTOR_ITEM,
-        collect: (monitor) => ({
-            isHovered: monitor.isOver(),
-        }),
-        drop(dragItem) {
-            if (dragItem.uuid === item.uuid) return;
-            const dropItem = item;
-            let filtered = staffings.filter(i => i.uuid !== dragItem.uuid);
-            const dropIndex = filtered.findIndex(i => i.uuid === dropItem.uuid);
-            filtered.splice(dropIndex, 0, dragItem);
-            dispatch({
-                type: REORDER_CONSTRUCTOR_COMPONENTS,
-                reordered: filtered,
-            })
-        }
-    })
+    });
 
     drag(drop(ref));
-    const style = [styles.component, isHovered && styles.hovered, isDragging && styles.dragged];
 
     return (
-        item.type === 'bun' ? (
+        component.type === 'bun' ? (
             <div className={styles.component}>
                 <ConstructorElement
                     type={type}
                     isLocked={isLocked}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}                 
+                    text={component.name}
+                    price={component.price}
+                    thumbnail={component.image}                 
                 />
             </div>
         ) : (
-            <div ref={ref} className={style.join(' ')}>
-                { !isLocked &&
-                    <div className={styles.drag_icon}>
-                        <DragIcon type="primary" />
-                    </div>
-                }
+            <div ref={ref} style={{ opacity: isDragging ? 0 : 1 }} className={styles.component} data-handler-id={handlerId}>
+                { !isLocked && <div className={styles.drag_icon}><DragIcon type="primary" /></div> }
                 <ConstructorElement
                     type={type}
                     isLocked={isLocked}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image} 
-                    handleClose={handleClose}                   
+                    text={component.name}
+                    price={component.price}
+                    thumbnail={component.image} 
+                    handleClose={removeItem}                   
                 />
             </div>
         )
@@ -81,7 +89,7 @@ function BurgerComponent({ type, isLocked, item }) {
 BurgerComponent.propTypes = {
     type: PropTypes.string,
     isLocked: PropTypes.bool,
-    item: PropTypes.shape(componentShape),
+    component: PropTypes.shape(componentShape),
 }
 
 export default React.memo(BurgerComponent);
