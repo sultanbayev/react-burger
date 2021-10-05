@@ -7,6 +7,7 @@ import ResetPasswordPage from './reset-password/reset-password';
 import ProfilePage from './profile/profile';
 import IngredientPage from './ingredient/ingredient';
 import ProfileOrdersPage from './profile/profile-orders';
+import FeedPage from './feed/feed';
 
 export {
     HomePage,
@@ -17,5 +18,6 @@ export {
     ProfilePage,
     IngredientPage,
     NotFoundPage,
-    ProfileOrdersPage
+    ProfileOrdersPage,
+    FeedPage
 };

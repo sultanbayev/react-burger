@@ -7,7 +7,8 @@ import {
     ProfilePage,
     IngredientPage,
     NotFoundPage,
-    ProfileOrdersPage } from '../../pages';
+    ProfileOrdersPage,
+    FeedPage } from '../../pages';
 import BaseLayout from '../layouts/base-layout';
 import {
   BrowserRouter as Router,
@@ -60,6 +61,7 @@ function ModalSwitch() {
         <Route path="/forgot-password" exact><ForgotPasswordPage /></Route>
         <Route path="/reset-password" exact><ResetPasswordPage /></Route>
         <Route path="/ingredient/:id" exact><IngredientPage /></Route>
+        <Route path="/feed" exact><FeedPage /></Route>
         <Route><NotFoundPage path="*" /></Route>
       </Switch>
 
