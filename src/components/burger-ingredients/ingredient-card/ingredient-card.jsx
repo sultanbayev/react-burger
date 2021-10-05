@@ -28,10 +28,19 @@ function IngredientCard({ ingredient }) {
                      },
                 }} >
                 <img className={styles.image} src={ingredient.image} alt={ingredient.name} />
+            </Link>
                 <div className={styles.price}>
                     <p className="text text_type_digits-default mr-2">{ingredient.price}</p>
                     <CurrencyIcon type="primary" />
                 </div>
+            <Link
+                to={{
+                    pathname: `/ingredient/${ingredient._id}`,
+                    state: {
+                        background: location,
+                        ingredient: ingredient
+                        },
+                }} >
                 <div className={styles.name}>
                     <h3 className="text text_type_main-default">{ingredient.name}</h3>
                 </div>
