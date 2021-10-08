@@ -1,0 +1,28 @@
+.group {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.avatar {
+    margin-right: -18px;
+    z-index: 1;
+}
+
+.more {
+    width: 64px;
+    height: 64px;
+    position: relative;
+}
+
+.more > p {
+    color: #F2F2F3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.more > .avatar {
+    opacity: 0.6;
+}
