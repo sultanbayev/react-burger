@@ -1,24 +1,14 @@
 import styles from './style.module.css';
+import { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../services/actions/user';
+import { useLocation } from 'react-router-dom';
 
-function ProfileNav() {
+function ProfileNav({ links }) {
 
+    const location = useLocation();
     const dispatch = useDispatch();
-
-    const links = [
-        {   
-            id: 0,
-            to: '/profile',
-            text: 'Профиль',
-        },
-        {   
-            id: 1,
-            to: '/profile/orders',
-            text: 'История заказов',
-        },
-    ];
 
     const setStyle = styles => styles.join(' ');
 
@@ -26,8 +16,12 @@ function ProfileNav() {
         dispatch(logoutUser());
     }
 
+    const link = useMemo(() => {
+        return links.find(link => link.to === location.pathname);
+    }, [links, location]);
+
     return (
-        <aside className={styles.aside}>
+            <div>
             <div className={styles.menu}>
                 { links.map(link => {
                         return (
@@ -51,12 +45,14 @@ function ProfileNav() {
                         onClick={logout}>Выход</button>
                 </div>
             </div>
-            <div className={styles.description}>
-                <p className='text text_type_main-default text_color_inactive'>
-                    В этом разделе вы можете изменить свои персональные данные
-                </p>
+            { link && (
+                <div className={styles.description}>
+                    <p className='text text_type_main-default text_color_inactive'>
+                        { link.desc }
+                    </p>
+                </div>
+            ) }
             </div>
-        </aside>
     );
 }
 

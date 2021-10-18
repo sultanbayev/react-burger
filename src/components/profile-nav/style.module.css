@@ -1,8 +1,3 @@
-.aside {
-    width: 320px;
-    margin-right: 60px;
-}
-
 .menu {
     margin-bottom: 80px;
     display: flex;
@@ -12,6 +7,9 @@
 
 .menu_item {
     height: 64px;
+}
+
+.menu_item p {
     color: #8585ad;
 }
 
@@ -25,6 +23,10 @@
     cursor: pointer;
 }
 
-.active, .active:hover {
+.btn_logout:hover {
+    color: #ffffff;
+}
+
+.active p, .active:hover p {
     color: #ffffff;
 }

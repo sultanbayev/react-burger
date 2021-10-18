@@ -5,9 +5,10 @@
     display: flex;
 }
 
-.aside {
-    width: 320px;
-    margin: 80px 60px 0 0;
+.form {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
 }
 
 .error {
