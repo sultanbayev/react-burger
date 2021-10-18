@@ -15,6 +15,14 @@ export const ingredientShape = {
     __v: PropTypes.number.isRequired,
 };
 
+export const ingredientFeedShape = {
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    count: PropTypes.number.isRequired,
+}
+
 export const componentShape = {
     ...ingredientShape,
     uuid: PropTypes.string.isRequired,
