@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.number {
+    display: flex;
+    justify-content: center;
+}
+
+.ingredients {
+    box-sizing: border-box;
+    max-height: 224px;
+    margin-top: 24px;
+    overflow-y: auto;
+    padding-right: 32px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.item:last-child {
+    margin-bottom: 0;
+}
+
+.name {
+    flex-grow: 1;
+}
+
+.done {
+    color: #00CCCC;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.price {
+    display: flex;
+}
