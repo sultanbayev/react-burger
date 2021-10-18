@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './styles.module.css';
 import PropTypes from 'prop-types';
 
@@ -14,4 +15,4 @@ ComponentAvatar.propTypes = {
     alt: PropTypes.string.isRequired,
 }
 
-export default ComponentAvatar; 
+export default React.memo(ComponentAvatar); 

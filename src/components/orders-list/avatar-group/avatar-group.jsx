@@ -1,6 +1,8 @@
+import React from 'react';
 import styles from './styles.module.css';
 import ComponentAvatar from '../avatar/avatar';
 import PropTypes from 'prop-types';
+import { ingredientShape } from '../../../utils/prop-types';
 
 function ComponentAvatarGroup({ items, max }) {
 
@@ -46,13 +48,10 @@ function ComponentAvatarGroup({ items, max }) {
 
 ComponentAvatarGroup.propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
+        ...ingredientShape,
         count: PropTypes.number.isRequired,
-    })),
+    })).isRequired,
     max: PropTypes.number,
 }
 
-export default ComponentAvatarGroup; 
+export default React.memo(ComponentAvatarGroup); 

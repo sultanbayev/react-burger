@@ -8,7 +8,7 @@
     border-radius: 40px;
 }
 
-.top_details {
+.topDetails {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -28,43 +28,15 @@
     margin-top: 8px;
 }
 
-.bottom_details {
+.done {
+    color: #00CCCC;
+}
+
+.bottomDetails {
     margin-top: 24px;
     width: 100%;
     display: flex;
     justify-content: space-between;
-}
-
-.ingredients {
-    display: flex;
-}
-
-.badge {
-    margin-right: -18px;
-    width: 64px;
-    height: 64px;
-    background: #131316;
-    border-radius: 64px;
-    border: 2px solid #801AB2;
-    object-fit: cover;
-}
-
-.more {
-    width: 64px;
-    height: 64px;
-    position: relative;
-}
-
-.more > p {
-    color: #F2F2F3;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.more > img {
-    opacity: 0.6;
 }
 
 .price {
