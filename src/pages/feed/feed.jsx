@@ -1,242 +1,38 @@
 import styles from './style.module.css';
+import { useMemo } from 'react';
 import OrderList from '../../components/orders-list/order-list';
+import OrderStats from '../../components/orders-stats/order-stats';
+import { useSelector } from 'react-redux';
 
 function FeedPage() {
+    
+    const { orders, total, totalToday } = useSelector(store => store.orders);
 
-    const orders = [
-        {
-            id: '034535',
-            date: "2021-06-23T14:43:22.587Z",
-            name: 'Death Star Starship Main бургер',
-            ingredients: [
-                {
-                    id: '60d3b41abdacab0026a733c7',
-                    name: 'Флюоресцентная булка R2-D3',
-                    image: 'https://code.s3.yandex.net/react/code/bun-01-mobile.png',
-                    price: 988,
-                    count: 2,
-                },
-                {
-                    id: '60d3b41abdacab0026a733c8',
-                    name: 'Филе Люминесцентного тетраодонтимформа',
-                    image: 'https://code.s3.yandex.net/react/code/meat-03-mobile.png',
-                    price: 988,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d2',
-                    name: 'Кристаллы марсианских альфа-сахаридов',
-                    image: 'https://code.s3.yandex.net/react/code/core-mobile.png',
-                    price: 762,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d0',
-                    name: 'Хрустящие минеральные кольца',
-                    image: 'https://code.s3.yandex.net/react/code/mineral_rings-mobile.png',
-                    price: 300,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733ce',
-                    name: 'Соус традиционный галактический',
-                    image: 'https://code.s3.yandex.net/react/code/sauce-03-mobile.png',
-                    price: 15,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d4',
-                    name: 'Сыр с астероидной плесенью',
-                    image: 'https://code.s3.yandex.net/react/code/cheese-mobile.png',
-                    price: 4142,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d4',
-                    name: 'Сыр с астероидной плесенью',
-                    image: 'https://code.s3.yandex.net/react/code/cheese-mobile.png',
-                    price: 4142,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d4',
-                    name: 'Сыр с астероидной плесенью',
-                    image: 'https://code.s3.yandex.net/react/code/cheese-mobile.png',
-                    price: 4142,
-                    count: 1,
-                },
-            ],
-            price: 480,
-            status: 'Создан'
-        },
-        {
-            id: '034536',
-            date: new Date(),
-            name: 'Interstellar бургер',
-            ingredients: [
-                {
-                    id: '60d3b41abdacab0026a733c7',
-                    name: 'Флюоресцентная булка R2-D3',
-                    image: 'https://code.s3.yandex.net/react/code/bun-01-mobile.png',
-                    price: 988,
-                    count: 2,
-                },
-                {
-                    id: '60d3b41abdacab0026a733c8',
-                    name: 'Филе Люминесцентного тетраодонтимформа',
-                    image: 'https://code.s3.yandex.net/react/code/meat-03-mobile.png',
-                    price: 988,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d2',
-                    name: 'Кристаллы марсианских альфа-сахаридов',
-                    image: 'https://code.s3.yandex.net/react/code/core-mobile.png',
-                    price: 762,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d0',
-                    name: 'Хрустящие минеральные кольца',
-                    image: 'https://code.s3.yandex.net/react/code/mineral_rings-mobile.png',
-                    price: 300,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733ce',
-                    name: 'Соус традиционный галактический',
-                    image: 'https://code.s3.yandex.net/react/code/sauce-03-mobile.png',
-                    price: 15,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d4',
-                    name: 'Сыр с астероидной плесенью',
-                    image: 'https://code.s3.yandex.net/react/code/cheese-mobile.png',
-                    price: 4142,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d4',
-                    name: 'Сыр с астероидной плесенью',
-                    image: 'https://code.s3.yandex.net/react/code/cheese-mobile.png',
-                    price: 4142,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d4',
-                    name: 'Сыр с астероидной плесенью',
-                    image: 'https://code.s3.yandex.net/react/code/cheese-mobile.png',
-                    price: 4142,
-                    count: 1,
-                },
-            ],
-            price: 560,
-            status: 'Создан'
-        },
-        {
-            id: '034537',
-            date: new Date(),
-            name: 'Black Hole Singularity острый бургер',
-            ingredients: [
-                {
-                    id: '60d3b41abdacab0026a733c7',
-                    name: 'Флюоресцентная булка R2-D3',
-                    image: 'https://code.s3.yandex.net/react/code/bun-01-mobile.png',
-                    price: 988,
-                    count: 2,
-                },
-                {
-                    id: '60d3b41abdacab0026a733c8',
-                    name: 'Филе Люминесцентного тетраодонтимформа',
-                    image: 'https://code.s3.yandex.net/react/code/meat-03-mobile.png',
-                    price: 988,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d2',
-                    name: 'Кристаллы марсианских альфа-сахаридов',
-                    image: 'https://code.s3.yandex.net/react/code/core-mobile.png',
-                    price: 762,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d0',
-                    name: 'Хрустящие минеральные кольца',
-                    image: 'https://code.s3.yandex.net/react/code/mineral_rings-mobile.png',
-                    price: 300,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733ce',
-                    name: 'Соус традиционный галактический',
-                    image: 'https://code.s3.yandex.net/react/code/sauce-03-mobile.png',
-                    price: 15,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d4',
-                    name: 'Сыр с астероидной плесенью',
-                    image: 'https://code.s3.yandex.net/react/code/cheese-mobile.png',
-                    price: 4142,
-                    count: 1,
-                },
-            ],
-            price: 510,
-            status: 'Создан'
-        },
-        {
-            id: '034538',
-            date: new Date(),
-            name: 'Supernova Infinity бургер',
-            ingredients: [
-                {
-                    id: '60d3b41abdacab0026a733c7',
-                    name: 'Флюоресцентная булка R2-D3',
-                    image: 'https://code.s3.yandex.net/react/code/bun-01-mobile.png',
-                    price: 988,
-                    count: 2,
-                },
-                {
-                    id: '60d3b41abdacab0026a733c8',
-                    name: 'Филе Люминесцентного тетраодонтимформа',
-                    image: 'https://code.s3.yandex.net/react/code/meat-03-mobile.png',
-                    price: 988,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d2',
-                    name: 'Кристаллы марсианских альфа-сахаридов',
-                    image: 'https://code.s3.yandex.net/react/code/core-mobile.png',
-                    price: 762,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733d0',
-                    name: 'Хрустящие минеральные кольца',
-                    image: 'https://code.s3.yandex.net/react/code/mineral_rings-mobile.png',
-                    price: 300,
-                    count: 1,
-                },
-                {
-                    id: '60d3b41abdacab0026a733ce',
-                    name: 'Соус традиционный галактический',
-                    image: 'https://code.s3.yandex.net/react/code/sauce-03-mobile.png',
-                    price: 15,
-                    count: 1,
-                }
-            ],
-            price: 370,
-            status: 'Создан'
-        },
-    ];
+    const ordersDone = useMemo(() => {
+        return orders.filter(order => order.status === 'done').map(order => order.number)
+    }, [orders]);
+    const ordersPending = useMemo(() => {
+        return orders.filter(order => order.status === 'pending').map(order => order.number);
+    }, [orders]);
 
     return (
         <div className={styles.wrapper}>
             <h1 className="text text_type_main-large mb-5 mt-10">Лента заказов</h1>
-            <section className={styles.orders}>
-                <OrderList orders={orders} />
-            </section>
+            <div className={styles.container}>
+                <section className={styles.orders}>
+                    { orders.length
+                        ? <OrderList page={'feed'} orders={orders} />
+                        : <div><p className="text text_type_main-medium">Загрузка...</p></div>
+                    }
+                </section>
+                <section className={styles.stats}>
+                    { orders.length
+                        ? <OrderStats total={total} totalToday={totalToday} ordersDone={ordersDone} ordersPending={ordersPending} />
+                        : <div><p className="text text_type_main-medium">Загрузка...</p></div>
+                    }
+                </section>
+            </div>
+            
         </div>
     );
 }

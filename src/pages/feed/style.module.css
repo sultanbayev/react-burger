@@ -3,10 +3,19 @@
     margin: 0 auto;
 }
 
+.container {
+    display: flex;
+}
+
 .orders {
     height: 800px;
-    width: 600px;
+    min-width: 500px;
+    max-width: 600px;
     box-sizing: border-box;
     overflow-y: auto;
     padding-right: 8px;
+}
+
+.stats {
+    margin-left: 60px;
 }
