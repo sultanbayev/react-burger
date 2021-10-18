@@ -1,3 +1,5 @@
+import { getCookie } from '../utils/cookie';
+
 export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
 export function sendData(endpoint, data) {
@@ -21,7 +23,20 @@ export function getResponse(res) {
 }
 
 export function sendOrder(ingredients) {
-    return sendData('/orders', ingredients).then(getResponse);
+    const reqOptions = {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer ' + getCookie('accessToken'),
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(ingredients),
+    }
+    return fetch(BASE_URL + '/orders', reqOptions).then(getResponse);
 }
 
 export function getIngredients() {
