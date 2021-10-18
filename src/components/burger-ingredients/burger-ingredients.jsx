@@ -1,31 +1,24 @@
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import styles from './styles.module.css';
 import TabBar from './tab-bar/tab-bar';
 import IngredientGroup from './ingredient-group/ingredient-group';
-import { useSelector, useDispatch } from "react-redux";
-import { fetchIngredients } from '../../services/actions/burger-ingredients';
+import { useSelector } from "react-redux";
 
 function BurgerIngredients() {
 
-    const burgerIngredients = useSelector(store => store.burgerIngredients.items);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchIngredients());
-        //eslint-disable-next-line
-    }, [])
+    const { items } = useSelector(store => store.burgerIngredients);
 
     const buns = useMemo(() => {
-        return burgerIngredients.filter(i => i.type === 'bun')
-    }, [burgerIngredients]);
+        return items.filter(i => i.type === 'bun')
+    }, [items]);
 
     const sauces = useMemo(() => {
-        return burgerIngredients.filter(i => i.type === 'sauce')
-    }, [burgerIngredients]);
+        return items.filter(i => i.type === 'sauce')
+    }, [items]);
 
     const mains = useMemo(() => {
-        return burgerIngredients.filter(i => i.type === 'main')
-    }, [burgerIngredients]);
+        return items.filter(i => i.type === 'main')
+    }, [items]);
 
     const [bunsHeight, setBunsHeights] = useState(0);
     const [saucesHeight, setSaucesHeights] = useState(0);
