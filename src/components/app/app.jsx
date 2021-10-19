@@ -27,7 +27,6 @@ import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import FeedOrderInfo from '../feed-order-info/feed-order-info';
 import ProfileForm from '../profile-form/profile-form';
-import { WS_CONNECTION_START, USER_WS_CONNECTION_START } from '../../services/actions/wsActions';
  
 export default function App() {
 
@@ -39,9 +38,7 @@ export default function App() {
         dispatch(getUserData());
       }
       dispatch(fetchIngredients());
-      dispatch({ type: WS_CONNECTION_START});
-      dispatch({ type: USER_WS_CONNECTION_START});
-      //eslint-disable-next-line
+  //eslint-disable-next-line
   }, []);
 
   return (

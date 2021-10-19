@@ -1,15 +1,31 @@
 import styles from './style.module.css';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import FeedOrderInfo from '../../components/feed-order-info/feed-order-info';
+import { USER_WS_CONNECTION_CLOSE, USER_WS_CONNECTION_START } from '../../services/actions/wsActions';
 
 function ProfileOrderPage() {
 
     const { id } = useParams();
 
-    const { orders } = useSelector(store => store.userOrders);
+    const dispatch = useDispatch();
+    const { isAuthorised, wsConnected, orders } = useSelector(store => ({
+        orders: store.userOrders.orders,
+        wsConnected: store.userOrders.wsConnected,
+        isAuthorised: store.user.isAuthorised,
+    }));
     const [order, setOrder] = useState(null);
+
+    useEffect(() => {
+        if (isAuthorised && !wsConnected) {
+          dispatch({ type: USER_WS_CONNECTION_START});
+        }
+        return () => {
+            dispatch({ type: USER_WS_CONNECTION_CLOSE});
+        }
+        //eslint-disable-next-line
+    }, [isAuthorised]);
 
     useEffect(() => {
         const order = orders.find(o => o._id === id);

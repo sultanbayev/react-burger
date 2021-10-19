@@ -1,12 +1,24 @@
 import styles from './style.module.css';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import OrderList from '../../components/orders-list/order-list';
 import OrderStats from '../../components/orders-stats/order-stats';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSE } from '../../services/actions/wsActions';
 
 function FeedPage() {
     
-    const { orders, total, totalToday } = useSelector(store => store.orders);
+    const dispatch = useDispatch();
+    const { wsConnected, orders, total, totalToday } = useSelector(store => store.orders);
+
+    useEffect(() => {
+        if (!wsConnected) {
+            dispatch({ type: WS_CONNECTION_START});
+        }
+        return () => {
+            dispatch({ type: WS_CONNECTION_CLOSE});
+        }
+    //eslint-disable-next-line
+    }, []);
 
     const ordersDone = useMemo(() => {
         return orders.filter(order => order.status === 'done').map(order => order.number)
