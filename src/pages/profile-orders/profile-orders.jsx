@@ -8,8 +8,8 @@ function ProfileOrdersPage() {
 
     return (
         <section className={styles.orders}>
-            { orders.length
-                ? <OrderList page={'profile/orders'} orders={orders} withStatus />
+            { (orders && orders.length)
+                ? <OrderList page={'profile/orders'} orders={[ ...orders].reverse()} withStatus />
                 : <div><p className="text text_type_main-medium">Загрузка...</p></div>
             }
         </section>
