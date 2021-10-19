@@ -45,7 +45,7 @@ function ComponentList() {
                 </li>
                 :
                 <li className={styles.dummy}>
-                    <DummyComponent type={"top"}>Верхняя булка...</DummyComponent>
+                    <DummyComponent type={"top"}>Верхняя булка</DummyComponent>
                 </li>
             }
             { (staffings && staffings.length)
@@ -59,7 +59,7 @@ function ComponentList() {
                     </ul>
                 </li>
                 : <li className={styles.dummy}>
-                    <DummyComponent>Начните перетаскивать ингредиенты...</DummyComponent>
+                    <DummyComponent>Добавьте ингредиенты</DummyComponent>
                 </li>
             }  
             { bun
@@ -71,7 +71,7 @@ function ComponentList() {
                     />
                 </li>
                 : <li className={styles.dummy}>
-                    <DummyComponent type={"bottom"}>Нижняя булка...</DummyComponent>
+                    <DummyComponent type={"bottom"}>Нижняя булка</DummyComponent>
                 </li>
             }
         </ul>

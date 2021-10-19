@@ -1,0 +1,20 @@
+.list {
+    min-width: 130px;
+}
+
+.columns {
+    display: flex;
+    min-height: 150px;
+}
+
+.column {
+    margin-right: 24px;
+}
+
+.column:last-child {
+    margin-right: 0;
+}
+
+.done {
+    color: #00CCCC;
+}

@@ -14,7 +14,7 @@ function AppHeader() {
         },
         {   
             id: 1,
-            to: '/',
+            to: '/feed',
             text: 'Лента заказов',
             icon: <ListIcon />,
         },
