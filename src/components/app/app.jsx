@@ -20,19 +20,18 @@ import {
   useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import ProtectedRoute from '../protected-route/protected-route';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getUserData } from '../../services/actions/user';
 import { fetchIngredients } from '../../services/actions/burger-ingredients';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { USER_WS_CONNECTION_START, WS_CONNECTION_START } from '../../services/actions/wsActions';
 import FeedOrderInfo from '../feed-order-info/feed-order-info';
 import ProfileForm from '../profile-form/profile-form';
+import { WS_CONNECTION_START, USER_WS_CONNECTION_START } from '../../services/actions/wsActions';
  
 export default function App() {
 
   const dispatch = useDispatch();
-  const { isAuthorised } = useSelector(store => store.user);
   const refreshToken = localStorage.getItem('refreshToken');
 
   useEffect(() => {
@@ -40,16 +39,10 @@ export default function App() {
         dispatch(getUserData());
       }
       dispatch(fetchIngredients());
+      dispatch({ type: WS_CONNECTION_START});
+      dispatch({ type: USER_WS_CONNECTION_START});
       //eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (isAuthorised) {
-      dispatch({ type: WS_CONNECTION_START });
-      dispatch({ type: USER_WS_CONNECTION_START});
-    }
-    //eslint-disable-next-line
-  }, [isAuthorised]);
 
   return (
     <Router>
