@@ -33,7 +33,7 @@ import {
       case USER_WS_GET_MESSAGE:
         return {
             ...state,
-            orders: action.payload.orders,
+            orders: action.payload.orders ? action.payload.orders : state.orders,
         };
   
       default:

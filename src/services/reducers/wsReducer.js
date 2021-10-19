@@ -35,9 +35,9 @@ import {
       case WS_GET_MESSAGE:
         return {
             ...state,
-            orders: action.payload.orders,
-            total: action.payload.total,
-            totalToday: action.payload.totalToday,
+            orders: action.payload.orders ? action.payload.orders : state.orders ,
+            total: action.payload.total ? action.payload.total : state.total,
+            totalToday: action.payload.totalToday ? action.payload.totalToday : state.totalToday,
         };
   
       default:
