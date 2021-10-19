@@ -14,8 +14,6 @@ import {
     USER_WS_GET_MESSAGE
 } from './actions/wsActions';
 import { socketMiddleware } from './middleware/socketMiddleware';
-import { userSocketMiddleware } from './middleware/userSocketMiddleware';
-import { getCookie } from '../utils/cookie';
 
 const wsActions = {
     wsInit: WS_CONNECTION_START,
@@ -35,7 +33,6 @@ const userWsActions = {
 
 const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
 const userWsUrl = 'wss://norma.nomoreparties.space/orders';
-const accessToken = getCookie('accessToken');
 
 const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
@@ -44,7 +41,7 @@ const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_E
 const enhancer = composeEnhancers(applyMiddleware(
         thunk,
         socketMiddleware(wsUrl, wsActions),
-        userSocketMiddleware(userWsUrl, userWsActions, accessToken)
+        socketMiddleware(userWsUrl, userWsActions, true)
     ));
 
 export const store = createStore(rootReducer, enhancer);
