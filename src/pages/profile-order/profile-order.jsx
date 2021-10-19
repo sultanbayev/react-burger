@@ -17,7 +17,7 @@ function ProfileOrderPage() {
     //eslint-disable-next-line
     }, [orders]);
 
-    if (!orders.length) {
+    if (orders && !orders.length) {
         return (
             <div className={styles.wrapper}>
                 <div><p className="text text_type_main-medium">
@@ -26,7 +26,15 @@ function ProfileOrderPage() {
         );
     }
 
-    if (!order) {
+    if (order) {
+        return (
+            <div className={styles.wrapper}>
+                <div className={styles.container}>
+                    <FeedOrderInfo order={order} />
+                </div>
+            </div>
+        );
+    } else {
         return (
             <div className={styles.wrapper}>
                 <div><p className="text text_type_main-medium">
@@ -34,14 +42,6 @@ function ProfileOrderPage() {
             </div>
         );
     }
-
-    return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <FeedOrderInfo order={order} />
-            </div>
-        </div>
-    );
 }
 
 export default ProfileOrderPage;
