@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
-import { ILink } from '../app-header';
+import { TLink } from '../app-header';
 
-type TNavBarProps = {
-    links: Array<ILink>;
+type INavBarProps = {
+    links: TLink[];
 };
 
-const NavBar: FC<TNavBarProps> = ({ links }) => {
+const NavBar: FC<INavBarProps> = ({ links }) => {
 
     return (
         <nav className={styles.nav}>

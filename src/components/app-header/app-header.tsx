@@ -3,7 +3,7 @@ import NavBar from './nav-bar/nav-bar';
 import AppLogo from './app-logo/app-logo';
 import { BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export type ILink = {
+export type TLink = {
     id: number;
     to: string;
     text: string;
@@ -12,7 +12,7 @@ export type ILink = {
 
 function AppHeader() {
 
-    const links: ILink[] = [
+    const links: TLink[] = [
         {   
             id: 0,
             to: '/',
