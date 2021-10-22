@@ -7,22 +7,39 @@ import { useDrop } from "react-dnd";
 import { addConstructorComponent, REORDER_CONSTRUCTOR_COMPONENTS } from "../../../services/actions/burger-constructor";
 import { dndTypes } from "../../../utils/constants";
 import { v4 as uuid } from 'uuid';
+import { RootState } from '../../../services/reducers/index';
+
+export type TComponent = {
+    _id: string;
+    name: string;
+    type: string;
+    proteins: number;
+    fat: number;
+    carbohydrates: number;
+    calories: number;
+    price: number;
+    image: string;
+    image_mobile: string;
+    image_large: string;
+    __v: number;
+    uuid: string;
+}
 
 function ComponentList() {
     const dispatch = useDispatch();
-    const { bun, staffings } = useSelector(store => store.burgerConstructor);
+    const { bun, staffings } = useSelector((state: RootState) => state.burgerConstructor);
 
     const [, drop] = useDrop({
         accept: dndTypes.INGREDIENT,
         collect: monitor => ({
             isHover: monitor.isOver(),
         }),
-        drop(item) {
+        drop(item: Omit<TComponent, uuid>) {
             dispatch(addConstructorComponent({ ...item, uuid: uuid() }));
         },
     });
 
-    const moveComponent = useCallback((dragIndex, hoverIndex) => {
+    const moveComponent = useCallback((dragIndex: number, hoverIndex: number): void => {
         const reordered = [...staffings];
         const dragComponent = reordered[dragIndex];
         reordered.splice(dragIndex, 1);

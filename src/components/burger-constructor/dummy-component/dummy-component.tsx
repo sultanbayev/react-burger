@@ -1,9 +1,12 @@
-import { useMemo } from 'react'
+import { useMemo, FC, memo } from 'react'
 import styles from './styles.module.css';
-import PropTypes from 'prop-types';
 
+interface IDummyComponentProps {
+    type?: string;
+    children?: React.ReactNode;
+}
 
-function DummyComponent({ children, type }) {
+const DummyComponent: FC<IDummyComponentProps> = ({ children, type }) => {
 
     const style = useMemo(() => {
         switch (type) {
@@ -23,9 +26,4 @@ function DummyComponent({ children, type }) {
     );
 }
 
-DummyComponent.propTypes = {
-    children: PropTypes.string,
-    type: PropTypes.string,
-}
-
-export default DummyComponent
+export default memo(DummyComponent);

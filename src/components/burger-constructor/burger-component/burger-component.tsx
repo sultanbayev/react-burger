@@ -1,29 +1,40 @@
-import React, { useRef } from "react";
-import PropTypes from 'prop-types';
+import React, { useRef, FC } from "react";
 import styles from './styles.module.css';
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { componentShape } from '../../../utils/prop-types';
 import { useDispatch } from 'react-redux';
 import { removeConstructorComponent } from "../../../services/actions/burger-constructor";
 import { useDrag, useDrop } from "react-dnd";
 import { dndTypes } from "../../../utils/constants";
+import { TComponent } from '../component-list/component-list';
 
-function BurgerComponent({ type, isLocked, component, index, moveComponent }) {
-    const ref = useRef(null);
+interface IBurgerComponentProps {
+    type?: 'top' | 'bottom';
+    component: TComponent;
+    isLocked?: boolean;
+    index?: number;
+    moveComponent?: (dragIndex: number, hoverIndex: number) => void ;
+}
+
+const BurgerComponent: FC<IBurgerComponentProps> = ({ type, isLocked, component, index, moveComponent }) => {
+
+    const ref = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch();
 
     const removeItem = () => {
         dispatch(removeConstructorComponent(component));
     }
-
+    
     const [{ handlerId }, drop] = useDrop({
         accept: dndTypes.CONSTRUCTOR_ITEM,
-        collect(monitor) {
+        collect: (monitor) => {
             return {
                 handlerId: monitor.getHandlerId(),
             };
         },
-        hover(item, monitor) {
+        hover(item: { index: number }, monitor): void {
+            if (!index || !moveComponent) {
+                return;
+            }
             if (!ref.current) {
                 return;
             }
@@ -35,12 +46,14 @@ function BurgerComponent({ type, isLocked, component, index, moveComponent }) {
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
             const clientOffset = monitor.getClientOffset();
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return;
-            }
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                return;
+            const hoverClientY = clientOffset ? (clientOffset.y - hoverBoundingRect.top) : null;
+            if (hoverClientY) {
+                if ((dragIndex < hoverIndex) && (hoverClientY < hoverMiddleY)) {
+                    return;
+                }
+                if ((dragIndex > hoverIndex) && (hoverClientY > hoverMiddleY)) {
+                    return;
+                }
             }
             moveComponent(dragIndex, hoverIndex);
             item.index = hoverIndex;
@@ -74,7 +87,7 @@ function BurgerComponent({ type, isLocked, component, index, moveComponent }) {
             <div ref={ref} style={{ opacity: isDragging ? 0 : 1 }} className={styles.component} data-handler-id={handlerId}>
                 { !isLocked && <div className={styles.drag_icon}><DragIcon type="primary" /></div> }
                 <ConstructorElement
-                    type={type}
+                    type={undefined}
                     isLocked={isLocked}
                     text={component.name}
                     price={component.price}
@@ -84,12 +97,6 @@ function BurgerComponent({ type, isLocked, component, index, moveComponent }) {
             </div>
         )
     );
-}
-
-BurgerComponent.propTypes = {
-    type: PropTypes.string,
-    isLocked: PropTypes.bool,
-    component: PropTypes.shape(componentShape),
 }
 
 export default React.memo(BurgerComponent);

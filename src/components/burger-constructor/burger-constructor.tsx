@@ -4,10 +4,11 @@ import OrderInfo from './order-info/order-info';
 import Modal from '../modal/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { CLOSE_MODAL } from '../../services/actions/modal';
+import { RootState } from '../../services/reducers/index';
 
 function BurgerConstructor() {
 
-    const { isOpen, content } = useSelector(store => store.modal);
+    const { isOpen, content } = useSelector((store: RootState) => store.modal);
     const dispatch = useDispatch();
 
     const onModalClose = () => {

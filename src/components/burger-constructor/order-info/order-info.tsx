@@ -4,13 +4,14 @@ import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-co
 import { useSelector, useDispatch } from "react-redux";
 import { fetchOrder } from '../../../services/actions/order';
 import { useHistory } from 'react-router-dom';
+import { RootState } from '../../../services/reducers/index';
 
 function OrderInfo() {
 
     const dispatch = useDispatch();
-    const { bun, staffings } = useSelector(store => store.burgerConstructor);
-    const { orderRequest } = useSelector(store => store.order);
-    const { isAuthorised } = useSelector(store => store.user);
+    const { bun, staffings } = useSelector((store: RootState) => store.burgerConstructor);
+    const { orderRequest } = useSelector((store: RootState) => store.order);
+    const { isAuthorised } = useSelector((store: RootState) => store.user);
 
     const ingredientsToSend = useMemo(() => {
         if (bun && staffings.length !== 0) {
