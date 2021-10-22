@@ -79,7 +79,7 @@ function ModalSwitch() {
         <Route path="/forgot-password" exact><ForgotPasswordPage /></Route>
         <Route path="/reset-password" exact><ResetPasswordPage /></Route>
         <Route path="/ingredient/:id" exact><IngredientPage /></Route>
-        <Route><NotFoundPage path="*" /></Route>
+        <Route><NotFoundPage /></Route>
       </Switch>
 
       { (background && ingredient) && (
