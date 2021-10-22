@@ -3,26 +3,33 @@ import NavBar from './nav-bar/nav-bar';
 import AppLogo from './app-logo/app-logo';
 import { BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
+export type ILink = {
+    id: number;
+    to: string;
+    text: string;
+    icon: React.ReactNode;
+}
+
 function AppHeader() {
 
-    const links = [
+    const links: ILink[] = [
         {   
             id: 0,
             to: '/',
             text: 'Конструктор',
-            icon: <BurgerIcon />,
+            icon: <BurgerIcon type="primary" />,
         },
         {   
             id: 1,
             to: '/feed',
             text: 'Лента заказов',
-            icon: <ListIcon />,
+            icon: <ListIcon type="primary" />,
         },
         {   
             id: 2,
             to: '/profile',
             text: 'Личный кабинет',
-            icon: <ProfileIcon />,
+            icon: <ProfileIcon type="primary" />,
         },
     ];
 
