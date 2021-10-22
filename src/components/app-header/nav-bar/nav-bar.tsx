@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
-import PropTypes from 'prop-types';
+import { ILink } from '../app-header';
 
-function NavBar({ links }) {
+type TNavBarProps = {
+    links: Array<ILink>;
+};
+
+const NavBar: FC<TNavBarProps> = ({ links }) => {
 
     return (
         <nav className={styles.nav}>
@@ -28,14 +32,5 @@ function NavBar({ links }) {
         </nav>
     );
 }
-
-NavBar.propTypes = {
-    links: PropTypes.arrayOf(PropTypes.shape({   
-        id: PropTypes.number.isRequired,
-        to: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        icon: PropTypes.node,
-    }).isRequired).isRequired,
-};
 
 export default React.memo(NavBar);
