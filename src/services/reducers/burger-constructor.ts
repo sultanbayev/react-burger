@@ -2,15 +2,22 @@ import {
     ADD_CONSTRUCTOR_COMPONENT,
     REMOVE_CONSTRUCTOR_COMPONENT,
     REORDER_CONSTRUCTOR_COMPONENTS,
-    CLEAR_CONSTRUCTOR_COMPONENTS
+    CLEAR_CONSTRUCTOR_COMPONENTS,
+    TBurgerConstructorAction
 } from '../actions/burger-constructor';
+import { TIngredientWithUuid } from '../types/data';
 
-const initialState = {
+export type TBurgerConstructorState = {
+    bun: TIngredientWithUuid | null,
+    staffings: TIngredientWithUuid[],
+}
+
+const initialState: TBurgerConstructorState = {
     bun: null,
     staffings: [],
 };
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+export const burgerConstructorReducer = (state = initialState, action: TBurgerConstructorAction) => {
     switch(action.type) {
         case ADD_CONSTRUCTOR_COMPONENT: {
             if (action.item.type === 'bun') {
