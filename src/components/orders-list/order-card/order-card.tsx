@@ -1,30 +1,40 @@
 import styles from './styles.module.css';
-import { memo, useMemo, useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { memo, useMemo, useEffect, useState, FC } from "react";
+import { useSelector } from '../../../services/hooks';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getFormattedDate } from '../../../utils/date-format';
 import ComponentAvatarGroup from '../avatar-group/avatar-group';
-import PropTypes from 'prop-types';
+import { TIngredientWithCount } from '../../../services/types/data';
 
-function OrderCard({ number, createdAt, name, ingredients, status }) {
+interface IOrderCard {
+    number: number;
+    createdAt: string;
+    name:string;
+    ingredients: string[];
+    status?: string;
+}
 
-    const [updatedIngredients, setUpdatedIngredients] = useState([]);
-    const { items } = useSelector(store => store.burgerIngredients)
+const OrderCard: FC<IOrderCard> = ({ number, createdAt, name, ingredients, status }) => {
+
+    const [updatedIngredients, setUpdatedIngredients] = useState<TIngredientWithCount[]>([]);
+    const { items } = useSelector(state => state.burgerIngredients)
 
     useEffect(() => {
-        const updatedIngredients = ingredients
-                .map(ingredientId => items.find(item => item._id === ingredientId))
-                .filter(ingredient => ingredient)
-                .reduce((ingredients, ingredient) => {
-                    const existingIngredientId = ingredients.findIndex(i => i._id === ingredient._id);
-                    if (existingIngredientId >= 0) {
-                        ingredients[existingIngredientId].count++
-                    } else {
-                        ingredients.push({ ...ingredient, count: 1 })
-                    }
-                    return ingredients;
-                }, []);
-        setUpdatedIngredients(updatedIngredients);
+
+        const ids: string[] = ingredients;
+        const ingreds: TIngredientWithCount[] = [];
+        ids.forEach(id => {
+            const found: TIngredientWithCount | undefined = items.find(item => item._id === id);
+            if (found) {
+                const index = ingreds.findIndex(item => item._id === found._id);
+                if (index === -1) {
+                    ingreds.push({ ...found, count: 1 });
+                } else {
+                    ingreds[index].count++
+                }
+            }
+        });
+        setUpdatedIngredients(ingreds);
     }, [items, ingredients])
 
     const totalPrice = useMemo(() => {
@@ -64,14 +74,6 @@ function OrderCard({ number, createdAt, name, ingredients, status }) {
             </div>
         </div>
     );
-}
-
-OrderCard.propTypes = {
-    number: PropTypes.number.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    status: PropTypes.string
 }
 
 export default memo(OrderCard);

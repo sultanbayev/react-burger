@@ -1,8 +1,13 @@
-import { memo } from 'react';
+import { memo, FC } from 'react';
 import styles from './styles.module.css';
-import PropTypes from 'prop-types';
 
-function OrderColumn({ title, orders, done }) {
+interface IOrderColumnProps {
+    title: string;
+    orders: number[];
+    done?: boolean
+}
+
+const OrderColumn: FC<IOrderColumnProps> = ({ title, orders, done }) => {
 
     const columns = orders && [
         orders.slice(0, 10),
@@ -28,12 +33,6 @@ function OrderColumn({ title, orders, done }) {
             </div>
         </div>
     );
-}
-
-OrderColumn.propTypes = {
-    title: PropTypes.string.isRequired,
-    orders: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    done: PropTypes.bool,
 }
 
 export default memo(OrderColumn);

@@ -1,10 +1,14 @@
 import React from 'react';
 import styles from './styles.module.css';
 import ComponentAvatar from '../avatar/avatar';
-import PropTypes from 'prop-types';
-import { ingredientShape } from '../../../utils/prop-types';
+import { TIngredientWithCount } from '../../../services/types/data';
 
-function ComponentAvatarGroup({ items, max }) {
+interface IComponentAvatarGroupProps {
+    items: TIngredientWithCount[];
+    max: number;
+}
+
+const ComponentAvatarGroup: React.FC<IComponentAvatarGroupProps> = ({ items, max }) => {
 
     const renderItems = [ ...items ].reverse();
 
@@ -44,14 +48,6 @@ function ComponentAvatarGroup({ items, max }) {
             }) }
         </div>
     );
-}
-
-ComponentAvatarGroup.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.shape({
-        ...ingredientShape,
-        count: PropTypes.number.isRequired,
-    })).isRequired,
-    max: PropTypes.number,
 }
 
 export default React.memo(ComponentAvatarGroup); 

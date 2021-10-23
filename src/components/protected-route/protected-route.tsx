@@ -1,8 +1,14 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import { Route, Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React from 'react';
 
-function ProtectedRoute({ children, ...rest }) {
+interface IProtectedRouteProps {
+    path: string;
+    children: React.ReactNode;
+    exact?: boolean;
+}
+
+const ProtectedRoute: React.FC<IProtectedRouteProps> = ({ children, ...rest }) => {
 
     const { isAuthorised } = useSelector(store => store.user);
 
@@ -18,9 +24,4 @@ function ProtectedRoute({ children, ...rest }) {
     )
 }
 
-ProtectedRoute.propTypes = {
-    children: PropTypes.node.isRequired,
-    rest: PropTypes.object
-}
-
-export default ProtectedRoute;
+export default React.memo(ProtectedRoute);

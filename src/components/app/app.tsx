@@ -22,7 +22,7 @@ import {
 import { useEffect } from 'react';
 import ProtectedRoute from '../protected-route/protected-route';
 import { useDispatch } from '../../services/hooks';
-import { getUserData } from '../../services/actions/user';
+import { getUserDataThunk } from '../../services/actions/user';
 import { getIngredientsThunk } from '../../services/actions/burger-ingredients';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
@@ -37,7 +37,7 @@ export default function App() {
 
   useEffect(() => {
       if (refreshToken) {
-        dispatch(getUserData());
+        dispatch(getUserDataThunk());
       }
       dispatch(getIngredientsThunk());
   //eslint-disable-next-line

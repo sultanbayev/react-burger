@@ -1,11 +1,16 @@
 import styles from './style.module.css';
-import { useMemo } from 'react';
+import { useMemo, FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logoutUser } from '../../services/actions/user';
+import { useDispatch } from '../../services/hooks';
+import { logoutUserThunk } from '../../services/actions/user';
 import { useLocation } from 'react-router-dom';
+import { TLink } from '../../services/types/data';
 
-function ProfileNav({ links }) {
+interface IProfileNavProps {
+    links: TLink[];
+}
+
+const ProfileNav: FC<IProfileNavProps> = ({ links }) => {
 
     const location = useLocation();
     const dispatch = useDispatch();
@@ -13,7 +18,7 @@ function ProfileNav({ links }) {
     const setStyle = styles => styles.join(' ');
 
     const logout = () => {
-        dispatch(logoutUser());
+        dispatch(logoutUserThunk());
     }
 
     const link = useMemo(() => {

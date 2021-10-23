@@ -25,7 +25,10 @@ function ResetPasswordPage() {
     if (isAuthorised) return (<Redirect to={'/'} />);
 
     const isResetPassword = localStorage.getItem('isResetPassword');
-    if (!isResetPassword) return (<Redirect to={'/forgot-password'} />);
+    
+    if (!isResetPassword || isResetPassword !== 'true' ) {
+        return (<Redirect to={'/forgot-password'} />);
+    }
 
     const onSubmit = (e) => {
         e.preventDefault();

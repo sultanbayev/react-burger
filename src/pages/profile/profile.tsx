@@ -1,9 +1,10 @@
 import styles from './style.module.css';
 import ProfileNav from '../../components/profile-nav/profile-nav';
+import { TLink } from '../../services/types/data';
 
 function ProfilePage({ children }) {
 
-    const links = [
+    const links: TLink[] = [
         {   
             id: 0,
             to: '/profile',

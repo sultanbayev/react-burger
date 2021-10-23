@@ -1,9 +1,15 @@
-import { memo } from 'react';
+import { memo, FC } from 'react';
 import styles from './styles.module.css';
-import PropTypes from 'prop-types';
 import OrderColumn from './order-column/order-column';
 
-function OrderStats({ total, totalToday, ordersDone, ordersPending }) {
+interface IOrderStatsProps {
+    total: number;
+    totalToday: number;
+    ordersDone: number[];
+    ordersPending: number[];
+}
+
+const OrderStats: FC<IOrderStatsProps> = ({ total, totalToday, ordersDone, ordersPending }) => {
     return (
         <div className={styles.container}>
             <div className={styles.statusContainer}>
@@ -24,13 +30,6 @@ function OrderStats({ total, totalToday, ordersDone, ordersPending }) {
             </div>
         </div>
     );
-}
-
-OrderStats.propTypes = {
-    total: PropTypes.number.isRequired,
-    totalToday: PropTypes.number.isRequired,
-    ordersDone: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    ordersPending: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
 }
 
 export default memo(OrderStats);

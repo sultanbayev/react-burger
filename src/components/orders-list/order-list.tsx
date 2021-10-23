@@ -1,11 +1,17 @@
 import styles from './styles.module.css';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import OrderCard from './order-card/order-card';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { TOrder } from '../../services/types/data';
 
-function OrderList({ orders, page, withStatus }) {
+interface IOrderListProps {
+    orders: TOrder[];
+    page: string;
+    withStatus?: boolean
+}
+
+const OrderList: React.FC<IOrderListProps> = ({ orders, page, withStatus }) => {
 
     const location = useLocation();
 
@@ -37,20 +43,6 @@ function OrderList({ orders, page, withStatus }) {
             }
         </div>
     );
-}
-
-OrderList.propTypes = {
-    orders: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        number: PropTypes.number.isRequired,
-        createdAt: PropTypes.string.isRequired,
-        updatedAt: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        status: PropTypes.string.isRequired,
-        ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    })),
-    withStatus: PropTypes.bool,
-    page: PropTypes.string.isRequired,
 }
 
 export default memo(OrderList);

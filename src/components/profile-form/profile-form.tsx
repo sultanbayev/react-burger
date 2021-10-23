@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserData, patchUserData } from '../../services/actions/user';
+import { useDispatch, useSelector } from '../../services/hooks';
+import { getUserDataThunk, patchUserDataThunk } from '../../services/actions/user';
 import styles from './style.module.css';
 
 function ProfileForm() {
@@ -16,15 +16,15 @@ function ProfileForm() {
     const passwordRef = useRef(null);
     const dispatch = useDispatch();
     
-    const { user, getUserRequest, patchUserErrorMessage } = useSelector(store => store.user);
+    const { user, getUserRequest, patchUserErrorMessage } = useSelector(state => state.user);
 
     useEffect(() => {
-        dispatch(getUserData());
+        dispatch(getUserDataThunk());
         //eslint-disable-next-line
     }, []);
 
     useEffect(() => {
-        if (user.name && user.email) {
+        if ('name' in user && 'email' in user) {
             setForm({
                 ...form,
                 name: user.name,
@@ -41,20 +41,24 @@ function ProfileForm() {
         if (form.email) { formData = {...formData, email: form.email} }
         if (form.name) { formData = {...formData, name: form.name} }
         if (form.password) { formData = {...formData, password: form.password} }
-        dispatch(patchUserData(formData));
+        dispatch(patchUserDataThunk(formData));
     }
 
     const onCancelClick = (e) => {
         e.preventDefault();
-        setForm({
-            ...form,
-            name: user.name,
-            email: user.email,
-            password: '',
-        });
+        if ('name' in user && 'email' in user) {
+            setForm({
+                ...form,
+                name: user.name,
+                email: user.email,
+                password: '',
+            });
+        }
     }
 
-    const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+    const onChange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    }
 
     const onInputEditClick = (ref) => {
         ref.current.disabled = false;
