@@ -5,7 +5,7 @@ import {
     INCREASE_INGREDIENT_COUNT,
     DECREASE_INGREDIENT_COUNT,
     RESET_INGREDIENTS_COUNT,
-    TBurgerIngredientsAction
+    TBurgerIngredientsActions
 } from '../actions/burger-ingredients';
 import { TIngredientWithCount } from '../types/data';
 
@@ -23,7 +23,7 @@ const initialState: TBurgerIngredientsState = {
     itemsFailed: false,
 };
 
-export const burgerIngredientsReducer = (state = initialState, action: TBurgerIngredientsAction) => {
+export const burgerIngredientsReducer = (state = initialState, action: TBurgerIngredientsActions) => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {

@@ -11,30 +11,30 @@ export const REMOVE_CONSTRUCTOR_COMPONENT = 'REMOVE_CONSTRUCTOR_COMPONENT'as con
 export const REORDER_CONSTRUCTOR_COMPONENTS = 'REORDER_CONSTRUCTOR_COMPONENTS'as const;
 export const CLEAR_CONSTRUCTOR_COMPONENTS = 'CLEAR_CONSTRUCTOR_COMPONENTS' as const;
 
-export interface IAddConstructorComponentAction {
+interface IAddConstructorComponentAction {
     readonly type: typeof ADD_CONSTRUCTOR_COMPONENT;
     readonly item: TIngredientWithUuid;
 }
 
-export interface IRemoveConstructorComponentAction {
+interface IRemoveConstructorComponentAction {
     readonly type: typeof REMOVE_CONSTRUCTOR_COMPONENT;
     readonly item: TIngredientWithUuid;
 }
 
-export interface IReorderConstructorComponentsAction {
+interface IReorderConstructorComponentsAction {
     readonly type: typeof REORDER_CONSTRUCTOR_COMPONENTS;
     readonly reordered: TIngredientWithUuid[];
 }
 
-export interface IClearConstructorComponentsAction {
+interface IClearConstructorComponentsAction {
     readonly type: typeof CLEAR_CONSTRUCTOR_COMPONENTS;
 }
 
-export interface IDefault {
+interface IDefault {
     readonly type: undefined;
 }
 
-export type TBurgerConstructorAction =
+export type TBurgerConstructorActions =
     | IAddConstructorComponentAction
     | IRemoveConstructorComponentAction
     | IReorderConstructorComponentsAction
@@ -60,23 +60,20 @@ export const clearConstructorComponents = (): IClearConstructorComponentsAction 
     type: CLEAR_CONSTRUCTOR_COMPONENTS
 });
 
-export const addConstructorComponentThunk: AppThunk = (item: TIngredientWithUuid) => {
-    return (dispatch: AppDispatch) => {
+export const addConstructorComponentThunk: AppThunk = (item: TIngredientWithUuid) =>
+    (dispatch: AppDispatch) => {
         dispatch(addConstructorComponent(item));
         dispatch(increaseIngredientCount(item))
     }
-}
 
-export const clearComponentsAndResetCountsThunk: AppThunk = () => {
-    return (dispatch: AppDispatch) => {
+export const clearComponentsAndResetCountsThunk: AppThunk = () =>
+    (dispatch: AppDispatch) => {
         dispatch(clearConstructorComponents());
         dispatch(resetIngredientsCount());
     }
-}
 
-export const removeConstructorComponentThunk: AppThunk = (item: TIngredientWithUuid) => {
-    return (dispatch: AppDispatch) => {
+export const removeConstructorComponentThunk: AppThunk = (item: TIngredientWithUuid) => 
+    (dispatch: AppDispatch) => {
         dispatch(removeConstructorComponent(item));
         dispatch(decreaseIngredientCount(item))
     }
-}

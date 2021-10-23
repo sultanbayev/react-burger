@@ -14,59 +14,59 @@ export const USER_WS_CONNECTION_ERROR = 'USER_WS_CONNECTION_ERROR' as const;
 export const USER_WS_GET_MESSAGE = 'USER_WS_GET_MESSAGE' as const;
 export const USER_WS_CONNECTION_CLOSE = 'USER_WS_CONNECTION_CLOSE' as const;
 
-export interface IWsConnectionStartAction {
+interface IWsConnectionStartAction {
     readonly type: typeof WS_CONNECTION_START
 }
 
-export interface IWsConnectionSuccessAction {
+interface IWsConnectionSuccessAction {
     readonly type: typeof WS_CONNECTION_SUCCESS
 }
 
-export interface IWsConnectionErrorAction {
+interface IWsConnectionErrorAction {
     readonly type: typeof WS_CONNECTION_ERROR
 }
 
-export interface IWsConnectionClosedAction {
+interface IWsConnectionClosedAction {
     readonly type: typeof WS_CONNECTION_CLOSED
 }
 
-export interface IWsGetMessageAction {
+interface IWsGetMessageAction {
     readonly type: typeof WS_GET_MESSAGE;
     readonly payload: TPayload;
 }
 
-export interface IWsConnectionCloseAction {
+interface IWsConnectionCloseAction {
     readonly type: typeof WS_CONNECTION_CLOSE
 }
 
 // User actions
 
-export interface IUserWsConnectionStartAction {
+interface IUserWsConnectionStartAction {
     readonly type: typeof USER_WS_CONNECTION_START
 }
 
-export interface IUserWsConnectionSuccessAction {
+interface IUserWsConnectionSuccessAction {
     readonly type: typeof USER_WS_CONNECTION_SUCCESS
 }
 
-export interface IUserWsConnectionErrorAction {
+interface IUserWsConnectionErrorAction {
     readonly type: typeof USER_WS_CONNECTION_ERROR
 }
 
-export interface IUserWsConnectionClosedAction {
+interface IUserWsConnectionClosedAction {
     readonly type: typeof USER_WS_CONNECTION_CLOSED
 }
 
-export interface IUserWsGetMessageAction {
+interface IUserWsGetMessageAction {
     readonly type: typeof USER_WS_GET_MESSAGE;
     readonly payload: TPayload;
 }
 
-export interface IUserWsConnectionCloseAction {
+interface IUserWsConnectionCloseAction {
     readonly type: typeof USER_WS_CONNECTION_CLOSE
 }
 
-export interface IDefault {
+interface IDefault {
     readonly type: undefined
 }
 

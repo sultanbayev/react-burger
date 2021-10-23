@@ -7,24 +7,24 @@ export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS' as const;
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED' as const;
 export const RESET_ORDER = 'RESET_ORDER' as const;
 
-export interface IGetOrderRequestAction {
+interface IGetOrderRequestAction {
     readonly type: typeof GET_ORDER_REQUEST;
 }
 
-export interface IGetOrderFailedAction {
+interface IGetOrderFailedAction {
     readonly type: typeof GET_ORDER_FAILED;
 }
 
-export interface IGetOrderSuccessAction {
+interface IGetOrderSuccessAction {
     readonly type: typeof GET_ORDER_SUCCESS;
     readonly number: string;
 }
 
-export interface IResetOrderAction {
+interface IResetOrderAction {
     readonly type: typeof RESET_ORDER;
 }
 
-export interface IDefault {
+interface IDefault {
     readonly type: undefined;
 }
 
@@ -52,8 +52,8 @@ export const resetOrder = (): IResetOrderAction => ({
     type: RESET_ORDER
 });
 
-export const fetchOrderThunk: AppThunk = (ingredients: string[]) => {
-    return (dispatch: AppDispatch) => {
+export const fetchOrderThunk: AppThunk = (ingredients: { ingredients: string[] }) => {
+    return (dispatch: AppDispatch | AppThunk) => {
         dispatch(getOrderRequest());
         sendOrder(ingredients)
             .then((res) => {

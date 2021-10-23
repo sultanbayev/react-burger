@@ -36,3 +36,20 @@ export type TPayload = {
     total?: number;
     totalToday?: number;
 }
+
+export type TUserPathData = {
+    email?: string;
+    name?: string;
+    password?: string;
+}
+
+export type TUserRegisterData = {
+    email: string;
+    name: string;
+    password: string;
+}
+
+export type TUser = {
+    email: string;
+    name: string;
+}
