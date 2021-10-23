@@ -1,7 +1,11 @@
 import styles from './style.module.css';
-import PropTypes from 'prop-types';
+import React from 'react';
 
-function FormWrapper({ children }) {
+interface IFormWrapperProps {
+    children: React.ReactNode;
+}
+
+const FormWrapper: React.FC<IFormWrapperProps> = ({ children }) => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
@@ -11,8 +15,4 @@ function FormWrapper({ children }) {
     );
 }
 
-export default FormWrapper;
-
-FormWrapper.propTypes = {
-    children: PropTypes.node.isRequired,
-}
+export default React.memo(FormWrapper);
