@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { addConstructorComponent, REORDER_CONSTRUCTOR_COMPONENTS } from "../../../services/actions/burger-constructor";
 import { dndTypes } from "../../../utils/constants";
+import { v4 as uuid } from 'uuid';
 
 function ComponentList() {
     const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function ComponentList() {
             isHover: monitor.isOver(),
         }),
         drop(item) {
-            dispatch(addConstructorComponent(item));
+            dispatch(addConstructorComponent({ ...item, uuid: uuid() }));
         },
     });
 

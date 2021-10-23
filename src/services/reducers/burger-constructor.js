@@ -4,7 +4,6 @@ import {
     REORDER_CONSTRUCTOR_COMPONENTS,
     CLEAR_CONSTRUCTOR_COMPONENTS
 } from '../actions/burger-constructor';
-import { v4 as uuid } from 'uuid';
 
 const initialState = {
     bun: null,
@@ -17,12 +16,12 @@ export const burgerConstructorReducer = (state = initialState, action) => {
             if (action.item.type === 'bun') {
                 return {
                     ...state,
-                    bun: {...action.item, uuid: uuid() },
+                    bun: action.item,
                 }
             } else {
                 return {
                     ...state,
-                    staffings: [...state.staffings, { ...action.item, uuid: uuid() } ],
+                    staffings: [...state.staffings, action.item ],
                 }
             }
         }
