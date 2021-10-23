@@ -7,19 +7,19 @@ import {
   } from '../actions/wsActions';
 import { TOrder } from '../types/data';
 
-  export type TWsState = {
-    wsConnected: boolean;
-    orders: TOrder[];
-    total: number;
-    totalToday: number;
-  }
-  
-  const initialState: TWsState = {
-    wsConnected: false,
-    orders: [],
-    total: 0,
-    totalToday: 0,
-  };
+export type TWsState = {
+  wsConnected: boolean;
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
+}
+
+const initialState: TWsState = {
+  wsConnected: false,
+  orders: [],
+  total: 0,
+  totalToday: 0,
+};
   
   export const wsReducer = (state = initialState, action: TWsActions) => {
     switch (action.type) {

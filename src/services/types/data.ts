@@ -33,8 +33,8 @@ export type TOrder = {
 
 export type TPayload = {
     orders: TOrder[];
-    total?: number;
-    totalToday?: number;
+    total: number;
+    totalToday: number;
 }
 
 export type TUserPathData = {
@@ -52,4 +52,11 @@ export type TUserRegisterData = {
 export type TUser = {
     email: string;
     name: string;
+}
+
+export type TLink = {
+    id: number;
+    to: string;
+    text: string;
+    desc: string;
 }

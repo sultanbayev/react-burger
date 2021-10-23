@@ -1,4 +1,4 @@
-import { TPayload } from "../types/data";
+import { TOrder, TPayload } from "../types/data";
 
 export const WS_CONNECTION_START = 'WS_CONNECTION_START' as const;
 export const WS_CONNECTION_SUCCESS = 'WS_CONNECTION_SUCCESS' as const;
@@ -59,7 +59,7 @@ interface IUserWsConnectionClosedAction {
 
 interface IUserWsGetMessageAction {
     readonly type: typeof USER_WS_GET_MESSAGE;
-    readonly payload: TPayload;
+    readonly payload: { orders: TOrder[] };
 }
 
 interface IUserWsConnectionCloseAction {
@@ -130,7 +130,7 @@ export const userOnClose = (): IUserWsConnectionCloseAction => ({
     type: USER_WS_CONNECTION_CLOSE
 });
 
-export const userOnMessage = (payload: TPayload): IUserWsGetMessageAction => ({
+export const userOnMessage = (payload: { orders: TOrder[] }): IUserWsGetMessageAction => ({
     type: USER_WS_GET_MESSAGE,
     payload
 });
