@@ -1,14 +1,16 @@
 import { OPEN_MODAL, CLOSE_MODAL } from '../actions/modal';
-import { modalReducer } from './modal';
+import { modalReducer, TModalState } from './modal';
 
-const initialState = {
+const initialState: TModalState = {
     isOpen: false,
     content: null,
 };
 
 describe('modal reducer', () => {
     it('should return initial state', () => {
-        expect(modalReducer(undefined, {})).toEqual(initialState);
+        expect(modalReducer(undefined,
+            { type: undefined }
+        )).toEqual(initialState);
     });
 
     it('should open modal', () => {
