@@ -1,5 +1,5 @@
 # Учебный Космическая бургерная
 
 Проект приготовлен на React, с большими сочными кусками Redux.
-Приправлен Typescript и полито WebSocket.
+Приправлен Typescript и полит WebSocket.
 Тестировано на Jest и Cypress.
