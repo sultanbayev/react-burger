@@ -1,18 +1,26 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, FC } from "react";
 import styles from './styles.module.css';
 import IngredientCard from "../ingredient-card/ingredient-card";
-import { useSelector } from "react-redux";
-import PropTypes from 'prop-types';
-import { ingredientShape } from "../../../utils/prop-types";
+import { useSelector } from '../../../services/hooks';
+import { TIngredientWithCount } from "../../../services/types/data";
 
-function IngredientGroup({ name, id, items, setHeight }) {
+interface IIngredientGroup {
+    name: string;
+    id: string;
+    items: TIngredientWithCount[];
+    setHeight: (height: number) => void;
+}
+
+const IngredientGroup: FC<IIngredientGroup> = ({ name, id, items, setHeight }) => {
 
     const { itemsRequest } = useSelector(store => store.burgerIngredients);
-    const groupRef = useRef(null);
+    const groupRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const height = groupRef.current.getBoundingClientRect().height;
-        setHeight(height);
+        if (groupRef && groupRef.current) {
+            const height = groupRef.current.getBoundingClientRect().height;
+            setHeight(height);
+        }
     // eslint-disable-next-line
     }, [items]);
 
@@ -35,15 +43,6 @@ function IngredientGroup({ name, id, items, setHeight }) {
             }
         </section>
     );
-}
-
-IngredientGroup.propTypes = {
-    name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    items: PropTypes.arrayOf(PropTypes.shape({
-        ...ingredientShape,
-    }).isRequired).isRequired,
-    setHeight: PropTypes.func.isRequired,
 }
 
 export default React.memo(IngredientGroup);

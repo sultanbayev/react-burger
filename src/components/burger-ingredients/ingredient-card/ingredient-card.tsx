@@ -1,14 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {FC} from 'react';
 import styles from './styles.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientShape } from '../../../utils/prop-types';
 import { useDrag } from 'react-dnd';
 import { dndTypes } from '../../../utils/constants';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { TIngredientWithCount } from '../../../services/types/data';
 
-function IngredientCard({ ingredient }) {
+interface IIngredientCardProps {
+    ingredient: TIngredientWithCount;
+}
+
+const IngredientCard: FC<IIngredientCardProps> = ({ ingredient }) => {
 
     const location = useLocation();
 
@@ -48,13 +51,6 @@ function IngredientCard({ ingredient }) {
             { (!!ingredient.count && ingredient.count !== 0) && <Counter count={ingredient.count} size="default" />}
         </article>
     );
-}
-
-IngredientCard.propTypes = {
-    ingredient: PropTypes.shape({
-        ...ingredientShape,
-        count: PropTypes.number.isRequired
-    }).isRequired,
 }
 
 export default React.memo(IngredientCard);

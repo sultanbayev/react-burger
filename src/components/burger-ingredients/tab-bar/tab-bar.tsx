@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './styles.module.css';
-import PropTypes from 'prop-types';
 
-function TabBar({ active }) {
+interface ITabBar {
+    active: string;
+}
+
+const TabBar: FC<ITabBar> = ({ active }) => {
     const [current, setCurrent] = React.useState('buns');
 
     useEffect(() => {
         setCurrent(active)
     }, [active])
 
-    const setTab = (tabValue) => {
+    const setTab = (tabValue: string) => {
         setCurrent(tabValue);
         const element = document.getElementById(tabValue);
         if (element) element.scrollIntoView({ behavior: "smooth" });
@@ -23,10 +26,6 @@ function TabBar({ active }) {
             <Tab value="mains" active={current === 'mains'} onClick={setTab}>Начинки</Tab>
         </div>
     );
-}
-
-TabBar.propTypes = {
-    active: PropTypes.string.isRequired,
 }
 
 export default React.memo(TabBar);

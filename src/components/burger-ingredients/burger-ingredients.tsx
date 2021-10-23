@@ -1,12 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, UIEvent} from "react";
 import styles from './styles.module.css';
 import TabBar from './tab-bar/tab-bar';
 import IngredientGroup from './ingredient-group/ingredient-group';
-import { useSelector } from "react-redux";
+import { useSelector } from '../../services/hooks';
 
 function BurgerIngredients() {
-
-    const { items } = useSelector(store => store.burgerIngredients);
+    
+    const { items } = useSelector(state => state.burgerIngredients);
 
     const buns = useMemo(() => {
         return items.filter(i => i.type === 'bun')
@@ -25,8 +25,8 @@ function BurgerIngredients() {
     const [mainsHeight, setMainsHeights] = useState(0);
     const [activeTab, setActiveTab] = useState('buns');
 
-    const handleScroll = (e) => {
-        const scrollTop = e.target.scrollTop;
+    const handleScroll = (e: UIEvent<HTMLDivElement>) => {
+        const scrollTop = e.currentTarget.scrollTop;
         if (scrollTop >= 0 && scrollTop < bunsHeight) {
             setActiveTab('buns')
         } else if (scrollTop >= bunsHeight && scrollTop < bunsHeight + saucesHeight) {
