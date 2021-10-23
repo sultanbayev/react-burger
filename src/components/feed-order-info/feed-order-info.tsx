@@ -16,25 +16,28 @@ const FeedOrderInfo: FC<IFeedOrderInfoProps> = ({ order }) => {
     const { items } = useSelector(state => state.burgerIngredients)
 
     useEffect(() => {
-        const ingredients = order.ingredients
-                .map(ingredientId => items.find(item => item._id === ingredientId))
-                .filter(ingredient => ingredient)
-                .reduce((ingredients, ingredient) => {
-                    const existingIngredientId = ingredients.findIndex(i => i._id === ingredient._id);
-                    if (existingIngredientId >= 0) {
-                        ingredients[existingIngredientId].count++
-                    } else {
-                        ingredients.push({ ...ingredient, count: 1 })
-                    }
-                    return ingredients;
-                }, []);
-        setIngredients(ingredients);
+        const ids: string[] = order.ingredients;
+        const ingreds: TIngredientWithCount[] = [];
+        ids.forEach(id => {
+            const found: TIngredientWithCount | undefined = items.find(item => item._id === id);
+            if (found) {
+                const index = ingreds.findIndex(item => item._id === found._id);
+                if (index === -1) {
+                    ingreds.push({ ...found, count: 1 });
+                } else {
+                    ingreds[index].count++
+                }
+            }
+        });
+        setIngredients(ingreds);
     }, [items, order])
 
     const totalPrice = useMemo(() => {
-        return ingredients.length ? ingredients.reduce((total, ingredient) => {
-            return total + (ingredient.price * ingredient.count)
-        }, 0) : 0;
+        if (ingredients.length) {
+            return ingredients
+                .reduce((total, ingredient) => total + (ingredient.price * ingredient.count), 0)
+        }
+        return 0;
     }, [ingredients]);
 
     return (
