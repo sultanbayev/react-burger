@@ -4,36 +4,47 @@ import {
     WS_CONNECTION_CLOSED,
     WS_GET_MESSAGE
 } from '../actions/wsActions';
-import { wsReducer } from './wsReducer';
+import {
+    wsReducer,
+    TWsState
+} from './wsReducer';
 
-const initialState = {
+const initialState: TWsState = {
     wsConnected: false,
     orders: [],
     total: 0,
     totalToday: 0,
 };
 
-const orders = [
-    {
-        "_id":"616f47607deb54001ba61ea7",
-        "status":"done",
-        "name":"Флюоресцентный spicy бургер"
-    },
-    {
-        "_id":"616f326f7deb54001ba61e5a",
-        "status":"done",
-        "name":"Флюоресцентный space бургер"
-    },
-    {
-        "_id":"616ed66a7deb54001ba61dc0",
-        "status":"done",
-        "name":"Краторный бургер"
-    },
-];
+const orders = [{
+    "_id": "617425fe7deb54001ba6223a",
+    "ingredients": ["60d3b41abdacab0026a733c7", "60d3b41abdacab0026a733c7", "60d3b41abdacab0026a733cf"],
+    "status": "done",
+    "name": "Флюоресцентный антарианский бургер",
+    "createdAt": "2021-10-23T15:10:54.297Z",
+    "updatedAt": "2021-10-23T15:10:54.455Z",
+    "number": 4894
+}, {
+    "_id": "6173cf1e7deb54001ba621b1",
+    "ingredients": ["60d3b41abdacab0026a733cd", "60d3b41abdacab0026a733c7", "60d3b41abdacab0026a733c7"],
+    "status": "done",
+    "name": "Флюоресцентный space бургер",
+    "createdAt": "2021-10-23T09:00:14.925Z",
+    "updatedAt": "2021-10-23T09:00:15.069Z",
+    "number": 4893
+}, {
+    "_id": "6172f5167deb54001ba6208c",
+    "ingredients": ["60d3b41abdacab0026a733c6"],
+    "status": "done",
+    "name": "Краторный бургер",
+    "createdAt": "2021-10-22T17:29:58.497Z",
+    "updatedAt": "2021-10-22T17:29:58.568Z",
+    "number": 4892
+}];
 
 describe('websocket reducer', () => {
     it('should return initital state', () => {
-        expect(wsReducer(undefined, {})).toEqual(initialState);
+        expect(wsReducer(undefined, { type: undefined })).toEqual(initialState);
     });
 
     it('should handle WS_CONNECTION_SUCCESS', () => {
@@ -99,7 +110,11 @@ describe('websocket reducer', () => {
             totalToday: 0,
         }, {
             type: WS_GET_MESSAGE,
-            payload: { orders, total: 4333, totalToday: 36 }
+            payload: {
+                orders: orders,
+                total: 4333,
+                totalToday: 36
+            }
         })).toEqual({
             wsConnected: true,
             orders: orders,
@@ -109,12 +124,16 @@ describe('websocket reducer', () => {
 
         expect(wsReducer({
             wsConnected: true,
-            orders: [ orders[0], orders[1] ],
+            orders: [orders[0], orders[1]],
             total: 4332,
             totalToday: 35,
         }, {
             type: WS_GET_MESSAGE,
-            payload: { orders, total: 4333, totalToday: 36 }
+            payload: {
+                orders: orders,
+                total: 4333,
+                totalToday: 36
+            }
         })).toEqual({
             wsConnected: true,
             orders: orders,
@@ -122,22 +141,4 @@ describe('websocket reducer', () => {
             totalToday: 36,
         });
     });
-
-    it('should handle WS_GET_MESSAGE with undefined payload', () => {
-        expect(wsReducer({
-            wsConnected: true,
-            orders: [ orders[0], orders[1] ],
-            total: 4332,
-            totalToday: 35,
-        }, {
-            type: WS_GET_MESSAGE,
-            payload: { undefined }
-        })).toEqual({
-            wsConnected: true,
-            orders: [ orders[0], orders[1] ],
-            total: 4332,
-            totalToday: 35,
-        });
-    });
-
 });

@@ -2,17 +2,26 @@ import {
     WS_CONNECTION_SUCCESS,
     WS_CONNECTION_ERROR,
     WS_CONNECTION_CLOSED,
-    WS_GET_MESSAGE
+    WS_GET_MESSAGE,
+    TWsActions
   } from '../actions/wsActions';
+import { TOrder } from '../types/data';
+
+  export type TWsState = {
+    wsConnected: boolean;
+    orders: TOrder[];
+    total: number;
+    totalToday: number;
+  }
   
-  const initialState = {
+  const initialState: TWsState = {
     wsConnected: false,
     orders: [],
     total: 0,
     totalToday: 0,
   };
   
-  export const wsReducer = (state = initialState, action) => {
+  export const wsReducer = (state = initialState, action: TWsActions) => {
     switch (action.type) {
       case WS_CONNECTION_SUCCESS:
         return {
@@ -35,9 +44,9 @@ import {
       case WS_GET_MESSAGE:
         return {
             ...state,
-            orders: action.payload.orders ? action.payload.orders : state.orders ,
-            total: action.payload.total ? action.payload.total : state.total,
-            totalToday: action.payload.totalToday ? action.payload.totalToday : state.totalToday,
+            orders: action.payload.orders,
+            total: action.payload.total,
+            totalToday: action.payload.totalToday,
         };
   
       default:
