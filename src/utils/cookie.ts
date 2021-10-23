@@ -1,4 +1,4 @@
-export function getCookie(name) {
+export function getCookie(name: string) {
     const matches = document.cookie.match(
       // eslint-disable-next-line
       new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
@@ -35,6 +35,6 @@ export function deleteCookie(name) {
 
 export function setAccessCookie(accessToken) {
   if (accessToken.indexOf('Bearer') === 0) {
-      setCookie('accessToken', accessToken.split('Bearer ')[1])
+      setCookie('accessToken', accessToken.split('Bearer ')[1], undefined)
   }
 }
