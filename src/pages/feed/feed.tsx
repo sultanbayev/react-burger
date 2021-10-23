@@ -2,13 +2,13 @@ import styles from './style.module.css';
 import { useMemo, useEffect } from 'react';
 import OrderList from '../../components/orders-list/order-list';
 import OrderStats from '../../components/orders-stats/order-stats';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSE } from '../../services/actions/wsActions';
 
 function FeedPage() {
     
     const dispatch = useDispatch();
-    const { wsConnected, orders, total, totalToday } = useSelector(store => store.orders);
+    const { wsConnected, orders, total, totalToday } = useSelector(state => state.orders);
 
     useEffect(() => {
         if (!wsConnected) {

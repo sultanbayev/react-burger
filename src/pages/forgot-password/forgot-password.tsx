@@ -1,8 +1,8 @@
 import styles from './style.module.css';
 import { useState } from 'react';
 import { Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { forgotUserPassword } from '../../services/actions/user';
+import { useDispatch, useSelector } from '../../services/hooks';
+import { forgotUserPasswordThunk } from '../../services/actions/user';
 import { Redirect, Link } from 'react-router-dom';
 import FormWrapper from '../../components/form-wrapper/form-wrapper';
 
@@ -11,7 +11,7 @@ function ForgotPasswordPage() {
     const onChange = e => setEmail(e.target.value);
     const dispatch = useDispatch()
 
-    const { forgotPasswordSuccess, forgotPasswordRequest, isAuthorised } = useSelector(store => store.user);
+    const { forgotPasswordSuccess, forgotPasswordRequest, isAuthorised } = useSelector(state => state.user);
 
     if (isAuthorised) return (<Redirect to={{ pathname: '/' }} />);
 
@@ -19,7 +19,7 @@ function ForgotPasswordPage() {
         e.preventDefault();
         const formData = { email: email };
         if (formData.email) {
-            dispatch(forgotUserPassword(formData));
+            dispatch(forgotUserPasswordThunk(formData));
         }
     }
 

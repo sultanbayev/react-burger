@@ -1,8 +1,8 @@
 import styles from './style.module.css';
 import { useState, useRef } from 'react';
 import { Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { resetUserPassword } from '../../services/actions/user';
+import { useSelector, useDispatch } from '../../services/hooks';
+import { resetUserPasswordThunk } from '../../services/actions/user';
 import { Redirect, Link } from 'react-router-dom';
 import FormWrapper from '../../components/form-wrapper/form-wrapper';
 
@@ -11,8 +11,8 @@ function ResetPasswordPage() {
         token: '',
         password: '',
     });
-    const [passwordIcon, setPasswordIcon] = useState('ShowIcon');
-    const passwordRef = useRef(null);
+    const [passwordIcon, setPasswordIcon] = useState<any>('ShowIcon');
+    const passwordRef = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch();
 
     const {
@@ -34,19 +34,21 @@ function ResetPasswordPage() {
         e.preventDefault();
         const formData = { ...form };
         if (formData.password && formData.token) {
-            dispatch(resetUserPassword(formData));
+            dispatch(resetUserPasswordThunk(formData));
         }
     }
 
     const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
     const onIconClick = () => {
-        if (passwordRef.current.type === 'password') {
-            passwordRef.current.type = 'text';
-            setPasswordIcon('HideIcon');
-        } else {
-            passwordRef.current.type = 'password';
-            setPasswordIcon('ShowIcon');
+        if(passwordRef.current) {
+            if (passwordRef.current.type === 'password') {
+                passwordRef.current.type = 'text';
+                setPasswordIcon('HideIcon');
+            } else {
+                passwordRef.current.type = 'password';
+                setPasswordIcon('ShowIcon');
+            }
         }
     }
 

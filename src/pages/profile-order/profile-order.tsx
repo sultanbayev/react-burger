@@ -1,30 +1,38 @@
 import styles from './style.module.css';
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import { useParams } from 'react-router-dom';
 import FeedOrderInfo from '../../components/feed-order-info/feed-order-info';
-import { WS_CONNECTION_START, WS_CONNECTION_CLOSE } from '../../services/actions/wsActions';
+import { userWsClose, userWsInit } from '../../services/actions/wsActions';
+import { TOrder } from '../../services/types/data';
 
-function FeedOrderPage() {
+function ProfileOrderPage() {
 
-    const { id } = useParams();
+    const { id } = useParams<any>();
+
     const dispatch = useDispatch();
-    const { wsConnected, orders } = useSelector(store => store.orders);
-    const [order, setOrder] = useState(null);
+    const { isAuthorised, wsConnected, orders } = useSelector(state => ({
+        orders: state.userOrders.orders,
+        wsConnected: state.userOrders.wsConnected,
+        isAuthorised: state.user.isAuthorised,
+    }));
+    const [order, setOrder] = useState<TOrder | null>(null);
 
     useEffect(() => {
-        if (!wsConnected) {
-            dispatch({ type: WS_CONNECTION_START});
+        if (isAuthorised && !wsConnected) {
+          dispatch(userWsInit());
         }
         return () => {
-            dispatch({ type: WS_CONNECTION_CLOSE});
+            dispatch(userWsClose());
         }
-    //eslint-disable-next-line
-    }, []);
+        //eslint-disable-next-line
+    }, [isAuthorised]);
 
     useEffect(() => {
         const order = orders.find(o => o._id === id);
-        setOrder(order);
+        if (order) {
+            setOrder(order);
+        }
     //eslint-disable-next-line
     }, [orders]);
 
@@ -55,4 +63,4 @@ function FeedOrderPage() {
     }
 }
 
-export default FeedOrderPage;
+export default ProfileOrderPage;

@@ -1,25 +1,25 @@
 import styles from './style.module.css';
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import OrderList from '../../components/orders-list/order-list';
-import { USER_WS_CONNECTION_CLOSE, USER_WS_CONNECTION_START } from '../../services/actions/wsActions';
+import { userWsClose, userWsInit } from '../../services/actions/wsActions';
 
 function ProfileOrdersPage() {
 
     const dispatch = useDispatch();
-    const { isAuthorised, wsConnected, orders } = useSelector(store => ({
-        orders: store.userOrders.orders,
-        wsConnected: store.userOrders.wsConnected,
-        isAuthorised: store.user.isAuthorised,
+    const { isAuthorised, wsConnected, orders } = useSelector(state => ({
+        orders: state.userOrders.orders,
+        wsConnected: state.userOrders.wsConnected,
+        isAuthorised: state.user.isAuthorised,
     }));
 
     useEffect(() => {
         if (isAuthorised && !wsConnected) {
-          dispatch({ type: USER_WS_CONNECTION_START});
+          dispatch(userWsInit());
         }
 
         return () => {
-            dispatch({ type: USER_WS_CONNECTION_CLOSE});
+            dispatch(userWsClose());
         }
         //eslint-disable-next-line
     }, [isAuthorised]);

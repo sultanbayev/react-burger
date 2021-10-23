@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import styles from './style.module.css';
 import { useState, useRef } from 'react';
 import { Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import { registerUser } from '../../services/actions/user';
+import { registerUserThunk } from '../../services/actions/user';
 import { Redirect, Link } from 'react-router-dom';
 import FormWrapper from '../../components/form-wrapper/form-wrapper';
 
@@ -13,10 +13,10 @@ function RegisterPage() {
         email: '',
         password: '',
     });
-    const [passwordIcon, setPasswordIcon] = useState('ShowIcon');
-    const passwordRef = useRef(null);
+    const [passwordIcon, setPasswordIcon] = useState<any>('ShowIcon');
+    const passwordRef = useRef<HTMLInputElement>(null);
     
-    const { registerRequest, isAuthorised, registerErrorMessage } = useSelector(store => store.user)
+    const { registerRequest, isAuthorised, registerErrorMessage } = useSelector(state => state.user)
 
     if (isAuthorised) return (<Redirect to={{ pathname: '/' }} />);
 
@@ -24,19 +24,21 @@ function RegisterPage() {
         e.preventDefault();
         const formData = { ...form };
         if (formData.email && formData.password && formData.name) {
-            dispatch(registerUser(formData));
+            dispatch(registerUserThunk(formData));
         }
     }
 
     const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
     const onIconClick = () => {
-        if (passwordRef.current.type === 'password') {
-            passwordRef.current.type = 'text';
-            setPasswordIcon('HideIcon');
-        } else {
-            passwordRef.current.type = 'password';
-            setPasswordIcon('ShowIcon');
+        if (passwordRef.current) {
+            if (passwordRef.current.type === 'password') {
+                passwordRef.current.type = 'text';
+                setPasswordIcon('HideIcon');
+            } else {
+                passwordRef.current.type = 'password';
+                setPasswordIcon('ShowIcon');
+            }
         }
     }
 
