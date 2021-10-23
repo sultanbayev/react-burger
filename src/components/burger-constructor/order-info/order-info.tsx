@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import styles from './styles.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from '../../../services/hooks';
-import { fetchOrder } from '../../../services/actions/order';
+import { fetchOrderThunk } from '../../../services/actions/order';
 import { useHistory } from 'react-router-dom';
 
 function OrderInfo() {
@@ -34,9 +34,8 @@ function OrderInfo() {
             history.push('/login');
         } else {
             if (ingredientsToSend) {
-                dispatch(fetchOrder({
-                    ingredients: ingredientsToSend
-                }));
+                const orderIds = { ingredients: ingredientsToSend }
+                dispatch(fetchOrderThunk(orderIds));
             }
         }
     }
