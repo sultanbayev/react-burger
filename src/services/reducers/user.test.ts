@@ -24,9 +24,9 @@ import {
     LOGOUT_SUCCESS,
     LOGOUT_FAILED
 } from '../actions/user';
-import { userReducer } from './user';
+import { userReducer, TUserState } from './user';
 
-const initialState = {
+const initialState: TUserState = {
     user: {},
     isAuthorised: false,
     
@@ -65,7 +65,7 @@ const user = {
 
 describe('user reducer', () => {
     it('should return initial state', () => {
-        expect(userReducer(undefined, {})).toEqual(initialState);
+        expect(userReducer(undefined, { type: undefined })).toEqual(initialState);
     });
 
     it('should handle REGISTER_REQUEST', () => {
@@ -315,8 +315,7 @@ describe('user reducer', () => {
 
     it('should handle LOGOUT_SUCCESS', () => {
         expect(userReducer(initialState, {
-            type: LOGOUT_SUCCESS,
-            user: user
+            type: LOGOUT_SUCCESS
         })).toEqual({
             ...initialState,
             isAuthorised: false,

@@ -22,10 +22,44 @@ import {
     PATCH_USER_FAILED,
     LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
-    LOGOUT_FAILED
+    LOGOUT_FAILED,
+    TUserActions
 } from '../actions/user';
+import { TUser } from '../types/data';
 
-const initialState = {
+export type TUserState = {
+    user: TUser | {},
+    isAuthorised: boolean,
+    
+    registerRequest: boolean,
+    registerFailed: boolean,
+    registerErrorMessage: string,
+    loginRequest: boolean,
+    loginFailed: boolean,
+    loginErrorMessage: string,
+    forgotPasswordRequest: boolean,
+    forgotPasswordSuccess: boolean,
+    forgotPasswordFailed: boolean,
+    resetPasswordRequest: boolean,
+    resetPasswordSuccess: boolean,
+    resetPasswordFailed: boolean,
+    resetPasswordErrorMessage: string,
+    getUserRequest: boolean,
+    getUserFailed: boolean,
+    getUserErrorMessage: string,
+    refreshTokenRequest: boolean,
+    refreshTokenSuccess: boolean,
+    refreshTokenFailed: boolean,
+    refreshTokenErrorMessage: string,
+    patchUserRequest: boolean,
+    patchUserFailed: boolean,
+    patchUserErrorMessage: string,
+    logoutRequest: boolean,
+    logoutFailed: boolean,
+    logoutErrorMessage: string,
+}
+
+const initialState: TUserState = {
     user: {},
     isAuthorised: false,
     
@@ -57,7 +91,7 @@ const initialState = {
     logoutErrorMessage: '',
 }
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions) => {
     switch(action.type) {
         case REGISTER_REQUEST: {
             return {
