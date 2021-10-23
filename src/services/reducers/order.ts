@@ -1,17 +1,24 @@
 import {
     GET_ORDER_REQUEST,
     GET_ORDER_SUCCESS,
-    GET_ORDER_FAILED
+    GET_ORDER_FAILED,
+    RESET_ORDER,
+    TOrderActions
 } from '../actions/order';
 
-const initialState = {
-    name: '',
-    number: '',
+export type TOrderState = {
+    number: string | null,
+    orderRequest: boolean,
+    orderFailed: boolean,
+}
+
+const initialState: TOrderState = {
+    number: null,
     orderRequest: false,
     orderFailed: false,
 };
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TOrderActions) => {
     switch (action.type) {
         case GET_ORDER_REQUEST: {
             return {
@@ -22,9 +29,8 @@ export const orderReducer = (state = initialState, action) => {
         case GET_ORDER_SUCCESS: {
             return {
                 ...state,
-                orderFailed: false,
-                name: action.name,
                 number: action.number,
+                orderFailed: false,
                 orderRequest: false
             };
         }
@@ -34,6 +40,9 @@ export const orderReducer = (state = initialState, action) => {
                 orderFailed: true,
                 orderRequest: false
             };
+        }
+        case RESET_ORDER: {
+            return initialState
         }
         default: {
             return state;
