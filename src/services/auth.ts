@@ -1,16 +1,19 @@
 import { BASE_URL, sendData, getResponse } from "./api";
 import { getCookie } from "../utils/cookie";
+import { TUserPathData, TUserRegisterData } from "./types/data";
 
-export function register(formData) {
-    return sendData('/auth/register', formData).then(getResponse);
+export async function register(formData: TUserRegisterData) {
+    const res = await sendData('/auth/register', formData);
+    return getResponse(res);
 }
 
-export function login(formData) {
-    return sendData('/auth/login', formData).then(getResponse);
+export async function login(formData: { email: string; password: string; }) {
+    const res = await sendData('/auth/login', formData);
+    return getResponse(res);
 }
 
-export function getUser() {
-    const reqOptions = {
+export async function getUser() {
+    const reqOptions: RequestInit = {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
@@ -22,15 +25,17 @@ export function getUser() {
         redirect: 'follow',
         referrerPolicy: 'no-referrer'
     }
-    return fetch(BASE_URL + '/auth/user', reqOptions).then(getResponse);
+    const res = await fetch(BASE_URL + '/auth/user', reqOptions);
+    return getResponse(res);
 }
 
-export function refreshToken(tokenData) {
-    return sendData('/auth/token', tokenData).then(getResponse);
+export async function refreshToken(tokenData: { token: string; }) {
+    const res = await sendData('/auth/token', tokenData);
+    return getResponse(res);
 }
 
-export function patchUser(userData) {
-    const reqOptions = {
+export async function patchUser(userData: TUserPathData) {
+    const reqOptions: RequestInit = {
         method: 'PATCH',
         mode: 'cors',
         cache: 'no-cache',
@@ -43,7 +48,8 @@ export function patchUser(userData) {
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(userData)
     };
-    return fetch(BASE_URL + '/auth/user', reqOptions).then(getResponse);
+    const res = await fetch(BASE_URL + '/auth/user', reqOptions);
+    return getResponse(res);
 }
 
 export function logout(tokenData) {
