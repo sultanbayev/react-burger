@@ -1,8 +1,18 @@
 import { getCookie } from '../../utils/cookie';
 
-export const socketMiddleware = (wsUrl, wsActions, isUserSocket = false) => {
+type TActions = {
+  wsInit: string;
+  wsClose: string;
+  onOpen: string;
+  onMessage: string;
+  onClose: string;
+  onError: string;
+}
+
+export const socketMiddleware = (wsUrl: string, wsActions: TActions, isUserSocket: boolean = false) => {
   return store => {
-    let socket = null;
+
+    let socket: WebSocket | null = null;
 
     return next => action => {
       const { dispatch } = store;
@@ -30,10 +40,10 @@ export const socketMiddleware = (wsUrl, wsActions, isUserSocket = false) => {
         socket.onmessage = event => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-          // console.log(parsedData);
           const { success, ...restParsedData } = parsedData;
-          
-          dispatch({ type: onMessage, payload: restParsedData });
+          if (success) {
+            dispatch({ type: onMessage, payload: restParsedData });
+          }
         };
 
         socket.onclose = event => {
@@ -41,7 +51,7 @@ export const socketMiddleware = (wsUrl, wsActions, isUserSocket = false) => {
         };
       }
 
-      if (type === wsClose) {
+      if (socket && type === wsClose) {
         socket.close();
       }
 
