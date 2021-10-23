@@ -30,3 +30,9 @@ export type TOrder = {
     updatedAt: string;
     number: number;
 }
+
+export type TPayload = {
+    orders: TOrder[];
+    total?: number;
+    totalToday?: number;
+}
