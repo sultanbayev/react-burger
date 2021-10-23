@@ -1,19 +1,21 @@
 import { useMemo } from "react";
 import styles from './styles.module.css';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from '../../../services/hooks';
 import { fetchOrder } from '../../../services/actions/order';
 import { useHistory } from 'react-router-dom';
-import { RootState } from '../../../services/reducers/index';
 
 function OrderInfo() {
 
     const dispatch = useDispatch();
-    const { bun, staffings } = useSelector((store: RootState) => store.burgerConstructor);
-    const { orderRequest } = useSelector((store: RootState) => store.order);
-    const { isAuthorised } = useSelector((store: RootState) => store.user);
+    const { bun, staffings, orderRequest, isAuthorised } = useSelector(state => ({
+        bun: state.burgerConstructor.bun,
+        staffings: state.burgerConstructor.staffings,
+        orderRequest: state.order.orderRequest,
+        isAuthorised: state.user.isAuthorised,
+    }));
 
-    const ingredientsToSend = useMemo(() => {
+    const ingredientsToSend: string[] | null = useMemo(() => {
         if (bun && staffings.length !== 0) {
             const staffingIds = staffings.map(c => c._id)
             return [

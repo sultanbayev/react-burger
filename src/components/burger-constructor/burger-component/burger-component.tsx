@@ -1,27 +1,27 @@
 import React, { useRef, FC } from "react";
 import styles from './styles.module.css';
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from 'react-redux';
-import { removeConstructorComponent } from "../../../services/actions/burger-constructor";
-import { useDrag, useDrop } from "react-dnd";
+import { useDispatch } from '../../../services/hooks';
+import { removeConstructorComponentThunk } from "../../../services/actions/burger-constructor";
+import { useDrag, useDrop, XYCoord  } from "react-dnd";
 import { dndTypes } from "../../../utils/constants";
-import { TComponent } from '../component-list/component-list';
+import { TIngredientWithUuid } from '../../../services/types/data';
 
 interface IBurgerComponentProps {
     type?: 'top' | 'bottom';
-    component: TComponent;
+    component: TIngredientWithUuid;
     isLocked?: boolean;
     index?: number;
-    moveComponent?: (dragIndex: number, hoverIndex: number) => void ;
+    moveComponent?: (dragIndex: number, hoverIndex: number) => void;
 }
 
 const BurgerComponent: FC<IBurgerComponentProps> = ({ type, isLocked, component, index, moveComponent }) => {
 
-    const ref = useRef<HTMLInputElement>(null);
+    const ref = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
 
     const removeItem = () => {
-        dispatch(removeConstructorComponent(component));
+        dispatch(removeConstructorComponentThunk(component));
     }
     
     const [{ handlerId }, drop] = useDrop({
@@ -31,31 +31,36 @@ const BurgerComponent: FC<IBurgerComponentProps> = ({ type, isLocked, component,
                 handlerId: monitor.getHandlerId(),
             };
         },
-        hover(item: { index: number }, monitor): void {
-            if (!index || !moveComponent) {
-                return;
-            }
+        hover(item: { id: string; index: number }, monitor): void {
             if (!ref.current) {
                 return;
             }
+            
             const dragIndex = item.index;
-            const hoverIndex = index;
+            let hoverIndex: number;
+
+            if (index !== undefined) {
+                hoverIndex = index;
+            } else {
+                return;
+            }
+
             if (dragIndex === hoverIndex) {
                 return;
             }
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-            const clientOffset = monitor.getClientOffset();
+            const clientOffset: XYCoord | null = monitor.getClientOffset();
             const hoverClientY = clientOffset ? (clientOffset.y - hoverBoundingRect.top) : null;
             if (hoverClientY) {
-                if ((dragIndex < hoverIndex) && (hoverClientY < hoverMiddleY)) {
+                if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                     return;
                 }
-                if ((dragIndex > hoverIndex) && (hoverClientY > hoverMiddleY)) {
+                if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
                     return;
                 }
             }
-            moveComponent(dragIndex, hoverIndex);
+            moveComponent && moveComponent(dragIndex, hoverIndex);
             item.index = hoverIndex;
         }
     });
@@ -87,7 +92,6 @@ const BurgerComponent: FC<IBurgerComponentProps> = ({ type, isLocked, component,
             <div ref={ref} style={{ opacity: isDragging ? 0 : 1 }} className={styles.component} data-handler-id={handlerId}>
                 { !isLocked && <div className={styles.drag_icon}><DragIcon type="primary" /></div> }
                 <ConstructorElement
-                    type={undefined}
                     isLocked={isLocked}
                     text={component.name}
                     price={component.price}

@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 
 interface IDummyComponentProps {
     type?: string;
-    children?: React.ReactNode;
+    children: React.ReactNode;
 }
 
 const DummyComponent: FC<IDummyComponentProps> = ({ children, type }) => {
