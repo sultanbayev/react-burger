@@ -12,6 +12,7 @@ import {
     FeedOrderPage,
     ProfileOrderPage } from '../../pages';
 import BaseLayout from '../layouts/base-layout';
+import { Location } from 'history';
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,13 +21,14 @@ import {
   useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import ProtectedRoute from '../protected-route/protected-route';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks';
 import { getUserData } from '../../services/actions/user';
-import { fetchIngredients } from '../../services/actions/burger-ingredients';
+import { getIngredientsThunk } from '../../services/actions/burger-ingredients';
 import IngredientDetails from '../modal/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import FeedOrderInfo from '../feed-order-info/feed-order-info';
 import ProfileForm from '../profile-form/profile-form';
+import { TIngredientWithCount } from '../../services/types/data';
  
 export default function App() {
 
@@ -37,7 +39,7 @@ export default function App() {
       if (refreshToken) {
         dispatch(getUserData());
       }
-      dispatch(fetchIngredients());
+      dispatch(getIngredientsThunk());
   //eslint-disable-next-line
   }, []);
 
@@ -48,10 +50,16 @@ export default function App() {
   );
 }
 
+interface IState {
+  background?: Location;
+  ingredient?: TIngredientWithCount;
+  order?: any
+}
+
 function ModalSwitch() {
 
   let history = useHistory();
-  const location = useLocation();
+  const location = useLocation<IState>();
 
   const background = history.action === 'PUSH' && location.state && location.state.background;
   const ingredient = location.state && location.state.ingredient;
