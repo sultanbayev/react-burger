@@ -1,15 +1,19 @@
 import styles from './styles.module.css';
-import { memo, useMemo, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import { memo, useMemo, useState, useEffect, FC } from 'react';
+import { useSelector } from '../../services/hooks';
 import { getFormattedDate } from '../../utils/date-format';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ComponentAvatar from '../orders-list/avatar/avatar';
+import { TIngredientWithCount, TOrder } from '../../services/types/data';
 
-function FeedOrderInfo({ order }) {
+interface IFeedOrderInfoProps {
+    order: TOrder;
+}
 
-    const [ingredients, setIngredients] = useState([]);
-    const { items } = useSelector(store => store.burgerIngredients)
+const FeedOrderInfo: FC<IFeedOrderInfoProps> = ({ order }) => {
+
+    const [ingredients, setIngredients] = useState<TIngredientWithCount[]>([]);
+    const { items } = useSelector(state => state.burgerIngredients)
 
     useEffect(() => {
         const ingredients = order.ingredients
@@ -81,18 +85,6 @@ function FeedOrderInfo({ order }) {
             
         </div>
     );
-}
-
-FeedOrderInfo.propTypes = {
-    order: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        number: PropTypes.number.isRequired,
-        createdAt: PropTypes.string.isRequired,
-        updatedAt: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        status: PropTypes.string.isRequired,
-        ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    }).isRequired
 }
 
 export default memo(FeedOrderInfo);
