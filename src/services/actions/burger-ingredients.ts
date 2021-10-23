@@ -37,7 +37,7 @@ export interface IResetIngredientsCountAction  {
 }
 
 export interface IDefault {
-    readonly type: typeof undefined;
+    readonly type: undefined;
 }
 
 export type TBurgerIngredientsAction =
