@@ -4,17 +4,26 @@ import {
     GET_INGREDIENTS_FAILED,
     INCREASE_INGREDIENT_COUNT,
     DECREASE_INGREDIENT_COUNT,
-    RESET_INGREDIENTS_COUNT
+    RESET_INGREDIENTS_COUNT,
+    TBurgerIngredientsAction
 } from '../actions/burger-ingredients';
+import { TIngredientWithCount } from '../types/data';
 
-const initialState = {
+export type TBurgerIngredientsState = {
+    items: TIngredientWithCount[];
+    itemsRequest: boolean;
+    itemsSuccess: boolean;
+    itemsFailed: boolean;
+} 
+
+const initialState: TBurgerIngredientsState = {
     items: [],
     itemsRequest: false,
     itemsSuccess: false,
     itemsFailed: false,
 };
 
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (state = initialState, action: TBurgerIngredientsAction) => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {
