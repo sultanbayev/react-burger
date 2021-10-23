@@ -1,9 +1,23 @@
 import styles from './styles.module.css';
-import React from 'react';
+import React, { useEffect, FC } from 'react';
 import ConfirmedLogo from '../../../assets/images/confirm-order.svg';
-import PropTypes from 'prop-types';
+import { useDispatch } from '../../../services/hooks';
+import { resetOrder } from '../../../services/actions/order';
 
-function OrderDetails({ orderNumber }) {
+interface IOrderDetailsProps {
+    orderNumber: string;
+}
+
+const OrderDetails: FC<IOrderDetailsProps> = ({ orderNumber }) => {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetOrder());
+        }
+    //eslint-disable-next-line
+    }, [])
 
     return (
         <div className={styles.container}>
@@ -16,10 +30,6 @@ function OrderDetails({ orderNumber }) {
             <p className="text text_type_main-default text_color_inactive">Дождитесь готовности на орбитальной станции</p>
         </div>
     );
-}
-
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.string.isRequired,
 }
 
 export default React.memo(OrderDetails);

@@ -1,9 +1,12 @@
 import styles from './styles.module.css';
 import React from 'react';
-import PropTypes from 'prop-types';
-import { ingredientShape } from '../../../utils/prop-types';
+import { TIngredientWithCount } from '../../../services/types/data';
 
-function IngredientDetails({ ingredient }) {
+interface IIngredientDetailsProps {
+    ingredient: TIngredientWithCount;
+}
+
+const IngredientDetails: React.FC<IIngredientDetailsProps> = ({ ingredient }) => {
 
     return (
         <div className={styles.container}>
@@ -35,13 +38,6 @@ function IngredientDetails({ ingredient }) {
         </div>
         
     );
-}
-
-IngredientDetails.propTypes = {
-    ingredient: PropTypes.shape({
-            ...ingredientShape,
-            count: PropTypes.number,
-        }).isRequired,
 }
 
 export default React.memo(IngredientDetails);
