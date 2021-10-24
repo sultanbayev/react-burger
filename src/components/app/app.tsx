@@ -72,7 +72,7 @@ function ModalSwitch() {
   return (
     <BaseLayout>
       <Switch location={ background || location } >
-        <Route path="/" exact><HomePage /></Route>
+        <Route path="/"><HomePage /></Route>
         <Route path="/feed" exact><FeedPage /></Route>
         <Route path="/feed/:id" exact><FeedOrderPage /></Route>
         <ProtectedRoute path="/profile" exact>
